@@ -49,7 +49,7 @@ export const { GET, POST } = auth.createAuthRouteHandlers({
         );
       }
     }
-    redirect("/workspaces");
+    redirect("/workspace");
   },
   onSignout() {
     redirect("/");
