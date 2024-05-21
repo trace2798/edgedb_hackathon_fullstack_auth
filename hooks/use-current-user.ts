@@ -9,6 +9,11 @@ export const useCurrentUser = async () => {
     `SELECT User {*} FILTER .id = global current_user.id`
   );
   console.log(user);
+  if (!user) {
+    // Handle the case when user is undefined
+    // You can return a default value or throw an error
+    return "User not found";
+  }
   // const currentUser = await user
   const currentUser = JSON.parse(JSON.stringify(await user));
   // console.log(currentUser);

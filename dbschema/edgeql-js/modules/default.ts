@@ -20,6 +20,9 @@ export type $UserλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c2
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "userRole": $.PropertyDesc<$Role, $.Cardinality.AtMostOne, false, false, false, true>;
   "email": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "workspaces": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, true,  false, false>;
+  "<user[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<user": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $User = $.ObjectType<"default::User", $UserλShape, null, [
   ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
@@ -28,6 +31,24 @@ type $User = $.ObjectType<"default::User", $UserλShape, null, [
 const $User = $.makeType<$User>(_.spec, "f8eecf20-173b-11ef-99ee-077a2226c534", _.syntax.literal);
 
 const User: $.$expr_PathNode<$.TypeSet<$User, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($User, $.Cardinality.Many), null);
+
+export type $WorkspaceλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "user": $.LinkDesc<$User, $.Cardinality.One, {}, false, false,  false, false>;
+  "userId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
+  "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "description": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "name": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "<workspaces[is User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspaces[is current_user]": $.LinkDesc<$current_user, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspaces": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $Workspace = $.ObjectType<"default::Workspace", $WorkspaceλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $Workspace = $.makeType<$Workspace>(_.spec, "4b6624ef-1781-11ef-bcab-718c3bf79eec", _.syntax.literal);
+
+const Workspace: $.$expr_PathNode<$.TypeSet<$Workspace, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Workspace, $.Cardinality.Many), null);
 
 export type $current_userλShape = $.typeutil.flatten<$UserλShape & {
 }>;
@@ -49,17 +70,19 @@ const $default__globals: {  current_user: _.syntax.$expr_Global<
 
 
 
-export { Role, $User, User, $current_user, current_user };
+export { Role, $User, User, $Workspace, Workspace, $current_user, current_user };
 
 type __defaultExports = {
   "Role": typeof Role;
   "User": typeof User;
+  "Workspace": typeof Workspace;
   "current_user": typeof current_user;
   "global": typeof $default__globals
 };
 const __defaultExports: __defaultExports = {
   "Role": Role,
   "User": User,
+  "Workspace": Workspace,
   "current_user": current_user,
   "global": $default__globals
 };

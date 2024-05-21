@@ -12,28 +12,35 @@ import Link from "next/link";
 import Starfield from "@/components/star-field";
 import { Separator } from "@/components/ui/separator";
 import { auth } from "@/edgedb";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@/types";
 
 interface PageProps {}
 
 const client = createClient();
 const Page: FC<PageProps> = async ({}) => {
   // const session = await auth();
-  const session =  auth.getSession();
+  // const session =  auth.getSession();
+  // const signedIn = await session.isSignedIn();
+  // console.log(signedIn)
+  // console.log(session);
+  const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(signedIn)
   console.log(session);
-  // const workspaces = await e
-  //   .select(e.Workspace, (workspace) => ({
-  //     id: true,
-  //     name: true,
-  //     filter: e.op(workspace.user.id, "=", e.uuid(session?.user?.id as string)),
-  //     order_by: {
-  //       expression: workspace.created,
-  //       direction: e.DESC,
-  //     },
-  //   }))
-  //   .run(client);
-  // console.log(workspaces);
+  const user = (await useCurrentUser()) as User;
+  console.log(user);
+  const workspaces = await e
+    .select(e.Workspace, (workspace) => ({
+      id: true,
+      name: true,
+      filter: e.op(workspace.user.id, "=", e.uuid(user?.id as string)),
+      order_by: {
+        expression: workspace.created,
+        direction: e.DESC,
+      },
+    }))
+    .run(client);
+  console.log(workspaces);
   // // query selects Workspace objects where the current user is a member but not the creator, and it returns the id and name properties of these workspaces.
   // const workspaceMember = await e
   //   .select(e.Workspace, (workspace) => ({
@@ -43,10 +50,10 @@ const Page: FC<PageProps> = async ({}) => {
   //       e.op(
   //         workspace.workspaceMember.user.id,
   //         "=",
-  //         e.uuid(session?.user?.id as string)
+  //         e.uuid(user?.id as string)
   //       ),
   //       "and",
-  //       e.op(workspace.user.id, "!=", e.uuid(session?.user?.id as string))
+  //       e.op(workspace.user.id, "!=", e.uuid(user?.id as string))
   //     ),
   //     order_by: {
   //       expression: workspace.created,
@@ -73,7 +80,7 @@ const Page: FC<PageProps> = async ({}) => {
         <Card className=" mb-5 border-none">
           <AddWorkspaceButton />
         </Card>
-        {/* <div>
+        <div>
           {workspaces.map((workspace: { id: string; name: string }) => (
             <Link
               href={`/workspace/${workspace.id}`}
@@ -88,7 +95,7 @@ const Page: FC<PageProps> = async ({}) => {
               </Card>
             </Link>
           ))}
-        </div> */}
+        </div>
         {/* {workspaceMember.length > 0 && (
           <>
             <Separator />

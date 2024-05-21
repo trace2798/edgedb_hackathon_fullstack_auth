@@ -24,12 +24,27 @@ module default {
       default := "user";
     };
 
-     created: cal::local_datetime {
+    created: cal::local_datetime {
       default := cal::to_local_datetime(datetime_current(), 'UTC');
     }
     updated: cal::local_datetime {
       default := cal::to_local_datetime(datetime_current(), 'UTC');
     }
+    multi workspaces := .<user[is Workspace];
+    index on (.githubUsername)
+  }
+
+  type Workspace {
+    required name: str;
+    description: str;
+    required userId := .user.id;
+    created: cal::local_datetime {
+      default := cal::to_local_datetime(datetime_current(), 'UTC');
+    }
+    updated: cal::local_datetime {
+      default := cal::to_local_datetime(datetime_current(), 'UTC');
+    }
+    required link user -> User
   }
 
 }

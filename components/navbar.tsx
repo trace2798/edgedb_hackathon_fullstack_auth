@@ -42,41 +42,14 @@ const NavBar: FC<NavBarProps> = async ({}) => {
         </div>
         <div className="flex space-x-3 items-center">
           <ModeToggle />
-          {user && (
+          {user && signedIn && (
             <UserAccountNav
               email={user?.email as string}
               name={user?.name as string}
               imageUrl={user?.avatarUrl as string}
             />
           )}
-          {/* {!signedIn ? (
-            <>
-              <Link
-                  href={auth.getBuiltinUIUrl()}
-                  className="text-sm font-semibold leading-6 text-gray-800"
-                >
-                  <button className="ring-2 ring-inset ring-primary bg-primarylight px-4 py-2 rounded-md">
-                    Sign in
-                  </button>
-                </Link>
-              <Link
-                href={auth.getBuiltinUISignUpUrl()}
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
-                <button className="bg-primary px-4 py-2 rounded-md text-white">
-                  Get Started
-                </button>
-              </Link>
-            </>
-          ) : (
-            <Link
-              href="collection"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              <Button>My Collection</Button>
-            </Link>
-          )} */}
-          {!user && (
+          {!signedIn && (
             <Link href={auth.getBuiltinUISignUpUrl()}>
               <Button variant="outline">Get Started</Button>
             </Link>
