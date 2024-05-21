@@ -18,7 +18,7 @@ const SettingsPage = async ({
           status={status as StatusType}
           workspaceId={params.workspaceId}
         />
-        <DeleteWorkspace status={status} workspaceId={params.workspaceId} />
+        <DeleteWorkspace status={status as StatusType} workspaceId={params.workspaceId} />
       </div>
     </>
   );

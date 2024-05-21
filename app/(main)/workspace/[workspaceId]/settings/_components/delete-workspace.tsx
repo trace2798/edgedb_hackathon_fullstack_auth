@@ -21,19 +21,20 @@ import {
 import { deleteWorkspace } from "@/actions/workspace";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { StatusType } from "./transfer-ownership";
 
 const DeleteWorkspace = ({
   status,
   workspaceId,
 }: {
-  status: any;
+  status: StatusType;
   workspaceId: string;
 }) => {
   console.log(workspaceId);
   console.log(status);
   const router = useRouter();
   const handleWorkspaceDelete = async ({}: {}) => {
-    const response = await deleteWorkspace(workspaceId);
+    const response = await deleteWorkspace(workspaceId, status.memberRole);
     console.log(response);
     if (response === "Done") {
       toast.success("Workspace Deleted");
@@ -67,7 +68,8 @@ const DeleteWorkspace = ({
                   <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
                   <AlertDialogDescription>
                     This action cannot be undone. This will permanently delete
-                    your account and remove your data from our servers.
+                    your account and remove your data from our servers. Only
+                    owner can delete the workspace.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>
