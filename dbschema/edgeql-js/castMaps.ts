@@ -64,6 +64,7 @@ export type scalarAssignableBy<T extends $.ScalarType> =
   T extends _extai.$DistanceFunction ? _extai.$DistanceFunction : 
   T extends _extai.$ChatParticipantRole ? _extai.$ChatParticipantRole : 
   T extends _default.$Role ? _default.$Role : 
+  T extends _default.$MemberRole ? _default.$MemberRole : 
   T extends _cfg.$memory ? _cfg.$memory : 
   T extends _cfg.$QueryCacheMode ? _cfg.$QueryCacheMode : 
   T extends _cfg.$ConnectionTransport ? _cfg.$ConnectionTransport : 
@@ -125,6 +126,7 @@ export type scalarCastableFrom<T extends $.ScalarType> =
   T extends _extai.$DistanceFunction ? _extai.$DistanceFunction : 
   T extends _extai.$ChatParticipantRole ? _extai.$ChatParticipantRole : 
   T extends _default.$Role ? _default.$Role : 
+  T extends _default.$MemberRole ? _default.$MemberRole : 
   T extends _cfg.$memory ? _cfg.$memory : 
   T extends _cfg.$QueryCacheMode ? _cfg.$QueryCacheMode : 
   T extends _cfg.$ConnectionTransport ? _cfg.$ConnectionTransport : 
@@ -433,6 +435,12 @@ type getSharedParentScalar<A, B> =
   :
   A extends _default.$Role ?
     B extends _default.$Role ?
+    B
+    :
+    never
+  :
+  A extends _default.$MemberRole ?
+    B extends _default.$MemberRole ?
     B
     :
     never
@@ -804,6 +812,12 @@ function getSharedParentScalar<A extends $.ScalarType, B extends $.ScalarType>(a
     }
   if (a.__name__ === "default::Role") {
     if(b.__name__ === "default::Role") {
+      return b;
+    }
+    throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);
+    }
+  if (a.__name__ === "default::MemberRole") {
+    if(b.__name__ === "default::MemberRole") {
       return b;
     }
     throw new Error(`Types are not castable: ${a.__name__}, ${b.__name__}`);

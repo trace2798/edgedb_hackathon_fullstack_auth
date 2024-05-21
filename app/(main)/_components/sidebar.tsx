@@ -1,4 +1,4 @@
-import { auth } from "@/auth";
+// import { auth } from "@/auth";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import UserAccountNav from "@/components/user-account-nav";
@@ -8,6 +8,9 @@ import Link from "next/link";
 import { BoardListName } from "../workspace/[workspaceId]/boards/_components/board-list-name";
 import { SelectWorkspaceBox } from "./select-workspace-box";
 import { SidebarItem } from "./sidebar-item";
+import { auth } from "@/edgedb";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@/types";
 
 type Props = {
   className?: string;
@@ -17,13 +20,18 @@ type Props = {
 const client = createClient();
 
 export const Sidebar = async ({ className, workspaceId }: Props) => {
-  const session = await auth();
+  // const session = await auth();
+  const session = auth.getSession();
+  const signedIn = await session.isSignedIn();
+  console.log(session);
+  const user = (await useCurrentUser()) as User;
+  console.log(user);
   console.log(workspaceId);
   const workspaces = await e
     .select(e.Workspace, (workspace) => ({
       id: true,
       name: true,
-      filter: e.op(workspace.user.id, "=", e.uuid(session?.user?.id as string)),
+      filter: e.op(workspace.user.id, "=", e.uuid(user?.id as string)),
       order_by: {
         expression: workspace.created,
         direction: e.DESC,
@@ -39,12 +47,12 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       name: true,
       filter: e.op(
         e.op(
-          workspace.workspaceMember.user.id,
+          workspace.workspaceMembers.user.id,
           "=",
-          e.uuid(session?.user?.id as string)
+          e.uuid(user?.id as string)
         ),
         "and",
-        e.op(workspace.user.id, "!=", e.uuid(session?.user?.id as string))
+        e.op(workspace.user.id, "!=", e.uuid(user?.id as string))
       ),
       order_by: {
         expression: workspace.created,
@@ -72,10 +80,10 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       <div className="flex flex-col gap-y-2 flex-1">
         <Separator />
         <div className="hidden lg:flex">
-          <SelectWorkspaceBox
+          {/* <SelectWorkspaceBox
             workspace={combinedWorkspaces}
             currentWorkspaceId={workspaceId}
-          />
+          /> */}
         </div>
         <SidebarItem label="Tasks" href="/issues" />
         <div className="ml-5 flex flex-col border-l-2 ">
@@ -97,9 +105,9 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       </div>
       <div className="p-4">
         <UserAccountNav
-          email={session?.user?.email as string}
-          name={session?.user?.name as string}
-          imageUrl={session?.user?.image as string}
+          email={user?.email as string}
+          name={user?.name as string}
+          imageUrl={user?.avatarUrl as string}
         />
       </div>
     </div>
