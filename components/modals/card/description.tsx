@@ -2,7 +2,7 @@
 
 import { AlignLeft } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -11,14 +11,26 @@ import { FormSubmit } from "@/app/(main)/workspace/[workspaceId]/boards/[boardId
 import { FormTextarea } from "@/app/(main)/workspace/[workspaceId]/boards/[boardId]/_components/form-textarea";
 import { Button } from "@/components/ui/button";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { Card } from "@/types";
+import { Card, User } from "@/types";
 
 interface DescriptionProps {
   data: Card;
 }
 
 export const Description = ({ data }: DescriptionProps) => {
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const router = useRouter();
   const params = useParams();
   const [isEditing, setIsEditing] = useState(false);

@@ -30,7 +30,7 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Check } from "lucide-react";
-import { User } from "next-auth";
+
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
@@ -41,6 +41,7 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
+import { User } from "@/types";
 
 interface IssueModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -54,12 +55,23 @@ const formSchema = z.object({
 });
 
 export function IssueModal({ className, ...props }: IssueModalProps) {
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const issues = useIssues();
   const members = useIssues((state) => state.members);
   const defaultStatus = useIssues((state) => state.defaultStatus);
   console.log(defaultStatus);
   console.log(members);
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
   console.log(user);
   const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
     members as Member[],

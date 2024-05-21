@@ -9,7 +9,9 @@ export const useCurrentUser = async () => {
     `SELECT User {*} FILTER .id = global current_user.id`
   );
   console.log(user);
-  const currentUser = await user
-  console.log(currentUser);
+  // const currentUser = await user
+  const currentUser = JSON.parse(JSON.stringify(await user));
+  // console.log(currentUser);
+  // console.log(currentUser);
   return currentUser;
 };

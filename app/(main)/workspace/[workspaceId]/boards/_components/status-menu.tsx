@@ -28,6 +28,7 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { statuses } from "@/lib/constant";
 import { cn } from "@/lib/utils";
+import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
     ArrowUpCircle,
@@ -39,7 +40,7 @@ import {
     XCircle,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -67,7 +68,19 @@ const CardMenuStatus: FC<CardMenuStatusProps> = ({
   currentStatus,
   displayTitle = false,
 }) => {
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

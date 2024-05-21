@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
@@ -22,6 +22,7 @@ import { useWorkspaces } from "@/hooks/use-workspaces";
 import { createWorkspace } from "@/actions/workspace";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { Textarea } from "../ui/textarea";
+import { User } from "@/types";
 
 interface WorkspaceModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -31,9 +32,19 @@ const formSchema = z.object({
 });
 
 export function WorkspaceModal({ className, ...props }: WorkspaceModalProps) {
-  const workspaces = useWorkspaces();
-  const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+  const workspaces = useWorkspaces();
+  console.log(user);
+
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

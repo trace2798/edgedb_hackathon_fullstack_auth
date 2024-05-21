@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ExternalLink } from "lucide-react";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button, buttonVariants } from "../ui/button";
@@ -33,6 +33,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from "../ui/hover-card";
+import { User } from "@/types";
 
 const formSchema = z.object({
   url: z.string().min(2),
@@ -44,7 +45,18 @@ interface AddLinkModalProps {
 }
 
 const AddLinkModal: FC<AddLinkModalProps> = ({ issueId }) => {
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+
+  console.log(user);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({

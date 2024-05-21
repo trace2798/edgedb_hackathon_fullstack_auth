@@ -20,6 +20,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { LocalDateTime } from "edgedb";
@@ -39,10 +40,22 @@ interface ChangeDueDateProps {
 }
 
 const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
-  const [isMounted, setIsMounted] = useState(false);
+  const [isMounted, setIsMounted] = useState(false); 
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   
   console.log(currentDueDate);
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

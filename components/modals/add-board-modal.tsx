@@ -2,7 +2,7 @@
 import { Member } from "@/app/(main)/workspace/[workspaceId]/members/_components/members/column";
 import { useBoards } from "@/hooks/use-boards";
 import { useCurrentUser } from "@/hooks/use-current-user";
-import { User } from "next-auth";
+// import { User } from "next-auth";
 import { FC, useEffect, useState } from "react";
 import { Dialog, DialogContent, DialogHeader } from "../ui/dialog";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +25,7 @@ import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
 import { FileUpload } from "../file-upload";
 import { createBoard } from "@/actions/board";
+import { User } from "@/types";
 
 const formSchema = z.object({
   name: z.string().min(2).max(50),
@@ -37,11 +38,23 @@ const formSchema = z.object({
 interface AddBoardModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const board = useBoards();
   const members = useBoards((state) => state.members);
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
   console.log(user);
   const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
     members as Member[],

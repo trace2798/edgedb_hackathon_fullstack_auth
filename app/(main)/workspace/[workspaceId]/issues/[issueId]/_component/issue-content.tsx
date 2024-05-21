@@ -34,6 +34,7 @@ import CommandMenuPriority from "../../_components/command-menu-priority";
 
 import ActivityAccordian from "./activity-accordian";
 import LinkAccordian from "./link-accordian";
+import { User } from "@/types";
 
 interface IssueContentProps {
   issue: any;
@@ -49,8 +50,20 @@ const formSchema = z.object({
 
 const IssueContent: FC<IssueContentProps> = ({ issue, members }) => {
   const [isModified, setIsModified] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
 
-  const user = useCurrentUser();
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
+
+  // const user = useCurrentUser();
   console.log(issue);
   const [loading, setLoading] = useState(false);
   const router = useRouter();

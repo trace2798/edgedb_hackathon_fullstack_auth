@@ -14,6 +14,7 @@ import { Separator } from "@/components/ui/separator";
 import { auth } from "@/edgedb";
 
 interface PageProps {}
+
 const client = createClient();
 const Page: FC<PageProps> = async ({}) => {
   // const session = await auth();
@@ -69,9 +70,9 @@ const Page: FC<PageProps> = async ({}) => {
             <CardDescription>Your Workspaces</CardDescription>
           </CardHeader>
         </Card>
-        {/* <Card className=" mb-5 border-none">
+        <Card className=" mb-5 border-none">
           <AddWorkspaceButton />
-        </Card> */}
+        </Card>
         {/* <div>
           {workspaces.map((workspace: { id: string; name: string }) => (
             <Link

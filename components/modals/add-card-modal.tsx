@@ -56,6 +56,18 @@ const formSchema = z.object({
 });
 
 export function AddCardModal({ className, ...props }: CardModalProps) {
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const card = useAddCardModal();
   const members = useAddCardModal((state) => state.members);
   const listId = useAddCardModal((state) => state.listId);
@@ -63,7 +75,7 @@ export function AddCardModal({ className, ...props }: CardModalProps) {
   //   console.log(defaultStatus);
   console.log(listId);
   console.log(members);
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
   console.log(user);
   const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
     members as Member[],

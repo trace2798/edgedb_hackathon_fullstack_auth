@@ -1,7 +1,7 @@
 "use client";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Trash } from "lucide-react";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteIssue } from "@/actions/issues";
 import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@/types";
 
 interface DeleteIssueButtonProps {
   issueId: string;
@@ -24,7 +25,19 @@ interface DeleteIssueButtonProps {
 
 const DeleteIssueButton: FC<DeleteIssueButtonProps> = ({ issueId }) => {
   const router = useRouter();
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const handleIssueDelete = async ({}: {}) => {
     const response = await deleteIssue(issueId, user?.id as string);
     console.log(response);

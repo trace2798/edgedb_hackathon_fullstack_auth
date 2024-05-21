@@ -1,11 +1,11 @@
 "use client";
 
 import { toast } from "sonner";
-import { ElementRef, useRef, useState } from "react";
+import { ElementRef, useEffect, useRef, useState } from "react";
 import { Layout } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FormInput } from "@/app/(main)/workspace/[workspaceId]/boards/[boardId]/_components/form-input";
-import { Card } from "@/types";
+import { Card, User } from "@/types";
 import { updateCardTitle } from "@/actions/card";
 import { useCurrentUser } from "@/hooks/use-current-user";
 
@@ -15,7 +15,19 @@ interface HeaderProps {
 
 export const Header = ({ data }: HeaderProps) => {
 
-  const user = useCurrentUser();
+  // const user = useCurrentUser();
+  const [user, setUser] = useState<User | null>(null);
+ 
+  useEffect(() => {
+    const fetchUser = async () => {
+      const currentUser = await useCurrentUser();
+      setUser(currentUser);
+    };
+
+    fetchUser();
+  }, []);
+ 
+  console.log(user);
   const inputRef = useRef<ElementRef<"input">>(null);
 
   const [title, setTitle] = useState(data.title);
