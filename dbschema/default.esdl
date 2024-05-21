@@ -47,7 +47,7 @@ module default {
     }
     required link user -> User;
     multi workspaceMembers := .<workspace[is WorkspaceMember];
-   
+    multi activities := .<workspace[is Activity];
   }
 
   type WorkspaceMember {
@@ -65,6 +65,20 @@ module default {
     }
     required link user -> User;
     required link workspace -> Workspace;
+  }
+
+  type Activity {
+    message: str;
+    required workspaceId := .workspace.id;
+      created: cal::local_datetime {
+      default := cal::to_local_datetime(datetime_current(), 'UTC');
+    }
+    updated: cal::local_datetime {
+      default := cal::to_local_datetime(datetime_current(), 'UTC');
+    }
+    required link workspace -> Workspace {
+      on target delete delete source;
+    }
   }
 
 }

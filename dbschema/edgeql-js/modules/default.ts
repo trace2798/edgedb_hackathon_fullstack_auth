@@ -3,8 +3,8 @@
 import * as $ from "../reflection";
 import * as _ from "../imports";
 import type * as _std from "./std";
-import type * as _extauth from "./ext/auth";
 import type * as _cal from "./cal";
+import type * as _extauth from "./ext/auth";
 export type $MemberRole = {
   "admin": $.$expr_Literal<$MemberRole>;
   "member": $.$expr_Literal<$MemberRole>;
@@ -17,6 +17,22 @@ export type $Role = {
   "user": $.$expr_Literal<$Role>;
 } & $.EnumType<"default::Role", ["admin", "user"]>;
 const Role: $Role = $.makeType<$Role>(_.spec, "f8eec2f7-173b-11ef-accd-5986d958bd74", _.syntax.literal);
+
+export type $ActivityλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "workspace": $.LinkDesc<$Workspace, $.Cardinality.One, {}, false, false,  false, false>;
+  "workspaceId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
+  "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "message": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "<activities[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<activities": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $Activity = $.ObjectType<"default::Activity", $ActivityλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $Activity = $.makeType<$Activity>(_.spec, "e6c8032b-1790-11ef-ab4d-1b4b9fca96b3", _.syntax.literal);
+
+const Activity: $.$expr_PathNode<$.TypeSet<$Activity, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Activity, $.Cardinality.Many), null);
 
 export type $UserλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
   "identity": $.LinkDesc<_extauth.$Identity, $.Cardinality.One, {}, false, false,  false, false>;
@@ -49,9 +65,11 @@ export type $WorkspaceλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73
   "name": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "workspaceMembers": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, true,  false, false>;
+  "activities": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, true,  false, false>;
   "<workspaces[is User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces[is current_user]": $.LinkDesc<$current_user, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is WorkspaceMember]": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspace[is Activity]": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
@@ -103,11 +121,12 @@ const $default__globals: {  current_user: _.syntax.$expr_Global<
 
 
 
-export { MemberRole, Role, $User, User, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
+export { MemberRole, Role, $Activity, Activity, $User, User, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
 
 type __defaultExports = {
   "MemberRole": typeof MemberRole;
   "Role": typeof Role;
+  "Activity": typeof Activity;
   "User": typeof User;
   "Workspace": typeof Workspace;
   "WorkspaceMember": typeof WorkspaceMember;
@@ -117,6 +136,7 @@ type __defaultExports = {
 const __defaultExports: __defaultExports = {
   "MemberRole": MemberRole,
   "Role": Role,
+  "Activity": Activity,
   "User": User,
   "Workspace": Workspace,
   "WorkspaceMember": WorkspaceMember,

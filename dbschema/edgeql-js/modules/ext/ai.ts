@@ -113,8 +113,8 @@ export type $ChatPromptλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f7
 }>;
 type $ChatPrompt = $.ObjectType<"ext::ai::ChatPrompt", $ChatPromptλShape, null, [
   ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
-  {messages: {__element__: $ChatPromptMessage, __cardinality__: $.Cardinality.One | $.Cardinality.AtMostOne },},
   {name: {__element__: _std.$str, __cardinality__: $.Cardinality.One | $.Cardinality.AtMostOne },},
+  {messages: {__element__: $ChatPromptMessage, __cardinality__: $.Cardinality.One | $.Cardinality.AtMostOne },},
 ]>;
 const $ChatPrompt = $.makeType<$ChatPrompt>(_.spec, "e5cc9c09-da53-53f0-905a-4eb5eb74fb62", _.syntax.literal);
 
