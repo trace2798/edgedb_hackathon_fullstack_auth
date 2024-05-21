@@ -1,6 +1,6 @@
 "use client";
 
-import { createIssue } from "@/actions/issues";
+import { createTask } from "@/actions/issues";
 import { Member } from "@/app/(main)/workspace/[workspaceId]/members/_components/members/column";
 import {
   Command,
@@ -64,7 +64,7 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
   const issues = useIssues();
   const members = useIssues((state) => state.members);
@@ -105,7 +105,7 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
       setLoading(true);
 
       console.log(values);
-      await createIssue(
+      const response = await createTask(
         user?.id as string,
         values.title,
         values.description,
@@ -114,10 +114,14 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
         values.assigneeId,
         values.duedate
       );
-      form.reset();
-      toast.success("Task Created.");
-      router.refresh();
-      issues.onClose();
+      if (response === "Task Created") {
+        form.reset();
+        toast.success("Task Created.");
+        router.refresh();
+        issues.onClose();
+      } else {
+        toast.error(response);
+      }
     } catch (error) {
       console.error(error);
       toast.error("Error creating Workspace.");
@@ -337,7 +341,7 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
                                   ? members?.find(
                                       (member) =>
                                         (member?.id as string) === field.value
-                                    )?.name
+                                    )?.githubUsername
                                   : "Assignee"}
                               </Button>
                             </FormControl>
@@ -357,7 +361,7 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
                                     }}
                                   >
                                     <div className="flex items-center">
-                                      {member.name}
+                                      {member.githubUsername}
                                     </div>
                                     <Check
                                       className={cn(

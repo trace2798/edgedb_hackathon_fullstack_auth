@@ -37,7 +37,7 @@ import LinkAccordian from "./link-accordian";
 import { User } from "@/types";
 
 interface IssueContentProps {
-  issue: any;
+  task: any;
   members: Member[];
 }
 
@@ -48,10 +48,10 @@ const formSchema = z.object({
   duedate: z.date().optional(),
 });
 
-const IssueContent: FC<IssueContentProps> = ({ issue, members }) => {
+const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
   const [isModified, setIsModified] = useState(false);
   const [user, setUser] = useState<User | null>(null);
- 
+
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await useCurrentUser();
@@ -60,21 +60,21 @@ const IssueContent: FC<IssueContentProps> = ({ issue, members }) => {
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
 
   // const user = useCurrentUser();
-  console.log(issue);
+  console.log(task);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      id: issue.id || "",
-      title: issue.title || "",
-      description: issue.description || "",
-      duedate: issue.duedate || undefined,
+      id: task.id || "",
+      title: task.title || "",
+      description: task.description || "",
+      duedate: task.duedate || undefined,
     },
   });
   type FormData = z.infer<typeof formSchema>;
@@ -85,10 +85,10 @@ const IssueContent: FC<IssueContentProps> = ({ issue, members }) => {
   const watchedFields = watch();
   useEffect(() => {
     const initialValues = {
-      id: issue.id || "",
-      title: issue.title || "",
-      description: issue.description || "",
-      duedate: issue.duedate || undefined,
+      id: task.id || "",
+      title: task.title || "",
+      description: task.description || "",
+      duedate: task.duedate || undefined,
     };
 
     setIsModified(
@@ -223,46 +223,46 @@ const IssueContent: FC<IssueContentProps> = ({ issue, members }) => {
             </form>
           </Form>
 
-          <div className="grid grid-cols-1 gap-3 mt-5 lg:hidden">
+          <div className="grid grid-cols-1 gap-3 mt-5 md:grid-cols-2 lg:hidden">
             <CommandMenuStatus
-              id={issue.id as string}
-              currentStatus={issue.status as string}
+              id={task.id as string}
+              currentStatus={task.status as string}
               displayTitle={true}
             />
             <CommandMenuPriority
-              id={issue.id as string}
-              currentPriority={issue.priority as string}
+              id={task.id as string}
+              currentPriority={task.priority as string}
               displayTitle={true}
             />
             <ChangeAssignee
-              id={issue.id as string}
-              currentAssigneeId={issue.assigneeId as string}
+              id={task.id as string}
+              currentAssigneeId={task.assigneeId as string}
               members={members}
             />
-            <AddLinkModal issueId={issue.id as string} />
+            <AddLinkModal taskId={task.id as string} />
           </div>
 
-          <LinkAccordian issue={issue} />
-          <ActivityAccordian issue={issue} />
+          <LinkAccordian weblinks={task.websiteaddresses} taskId={task.id} />
+          <ActivityAccordian taskActivities={task.taskactivities} />
         </div>
         <div className="max-w-sm hidden lg:block">
           <div className="flex flex-col w-full space-y-3 pl-3 justify-end">
             <CommandMenuStatus
-              id={issue.id as string}
-              currentStatus={issue.status as string}
+              id={task.id as string}
+              currentStatus={task.status as string}
               displayTitle={true}
             />
             <CommandMenuPriority
-              id={issue.id as string}
-              currentPriority={issue.priority as string}
+              id={task.id as string}
+              currentPriority={task.priority as string}
               displayTitle={true}
             />
             <ChangeAssignee
-              id={issue.id as string}
-              currentAssigneeId={issue.assigneeId as string}
+              id={task.id as string}
+              currentAssigneeId={task.assigneeId as string}
               members={members}
             />
-            <AddLinkModal issueId={issue.id as string} />
+            <AddLinkModal taskId={task.id as string} />
             {/* <FileUpload
               endpoint="cardFile"
               value={""}

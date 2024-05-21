@@ -48,6 +48,7 @@ module default {
     required link user -> User;
     multi workspaceMembers := .<workspace[is WorkspaceMember];
     multi activities := .<workspace[is Activity];
+    multi tasks := .<workspace[is Task]
   }
 
   type WorkspaceMember {
@@ -67,12 +68,13 @@ module default {
     required link workspace -> Workspace {
       on target delete delete source;
     }
+    multi tasks := .<workspaceMember[is Task]
   }
 
   type Activity {
     message: str;
     required workspaceId := .workspace.id;
-      created: cal::local_datetime {
+    created: cal::local_datetime {
       default := cal::to_local_datetime(datetime_current(), 'UTC');
     }
     updated: cal::local_datetime {
@@ -82,6 +84,58 @@ module default {
       on target delete delete source;
     }
     index on (.workspace);
+  }
+
+  type Task {
+      required title: str;
+      required status: str {
+        default := "todo";
+        index on (.status);
+      }
+      description: str;
+      duedate: cal::local_datetime;
+      required priority: str {
+        default := "no priority";
+        index on (.priority);
+      }
+      required workspaceId := .workspace.id;
+      created: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
+      updated: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
+      required link workspace -> Workspace {
+        on target delete delete source;
+      }
+      assigneeId: uuid;
+      required link workspaceMember -> WorkspaceMember;
+      multi taskactivities := .<task[is TaskActivity];
+      multi websiteaddresses := .<task[is WebsiteAddress];
+      index on (.workspace);
+  }
+
+   type WebsiteAddress {
+      required url: str;
+      description: str;
+      required link task -> Task {
+        on target delete delete source;
+      }
+    index on (.task)
+  }
+
+
+   type TaskActivity {
+      required message: str;
+      required link task -> Task {
+        on target delete delete source;
+      }
+      created: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
+      updated: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
   }
 
 }

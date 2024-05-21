@@ -4,41 +4,44 @@ import e, { createClient } from "@/dbschema/edgeql-js";
 const client = createClient();
 
 export async function createLink(
-  userName: string,
-  issueId: string,
+  githubUsername: string,
+  taskId: string,
   url: string,
   description: string | undefined
 ) {
   try {
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (task) => ({
         id: true,
         title: true,
         duedate: true,
         workspaceId: true,
-        filter_single: e.op(issue.id, "=", e.uuid(issueId)),
+        filter_single: e.op(task.id, "=", e.uuid(taskId)),
       }))
       .run(client);
-    console.log(issue);
+    console.log(findTask);
+    if (!findTask) {
+      return "Task not found";
+    }
     const createLink = await e
       .insert(e.WebsiteAddress, {
         url: url as string,
         description: description as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
     console.log(createLink);
-    const issueActivity = await e
-      .insert(e.IssueActivity, {
-        message: `${userName} added an link called ${url}.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+    const taskActivity = await e
+      .insert(e.TaskActivity, {
+        message: `${githubUsername} added an link called ${url}.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
-    console.log(issueActivity);
+    console.log(taskActivity);
     return "Done";
   } catch (error) {
     return "Error Adding Link";

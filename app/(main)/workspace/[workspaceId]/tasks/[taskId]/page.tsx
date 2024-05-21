@@ -4,14 +4,14 @@ import IssueContent from "./_component/issue-content";
 import { Member } from "../../members/_components/members/column";
 
 interface PageProps {
-  params: { workspaceId: string; issueId: string };
+  params: { workspaceId: string; taskId: string };
 }
 
 const client = createClient();
 
 const Page: FC<PageProps> = async ({ params }) => {
-  const issue = await e
-    .select(e.Issue, (issue) => ({
+  const task = await e
+    .select(e.Task, (task) => ({
       id: true,
       title: true,
       description: true,
@@ -21,28 +21,26 @@ const Page: FC<PageProps> = async ({ params }) => {
       updated: true,
       duedate: true,
       assigneeId: true,
-      // urls: true,
-      filter_single: e.op(issue.id, "=", e.uuid(params.issueId)),
+      filter_single: e.op(task.id, "=", e.uuid(params.taskId)),
       websiteaddresses: {
         id: true,
         url: true,
         description: true,
       },
-      issueactivity: {
+      taskactivities: {
         id: true,
         message: true,
-      }
+      },
     }))
     .run(client);
-  console.log(issue);
-  if (!issue) {
-    return <div>Issue not found</div>;
+  console.log(task);
+  if (!task) {
+    return <div>Task not found</div>;
   }
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
-      name: true,
-      email: true,
+      githubUsername: true,
       memberRole: true,
       created: true,
       filter: e.op(
@@ -59,7 +57,7 @@ const Page: FC<PageProps> = async ({ params }) => {
   return (
     <>
       <div className="mx-5 lg:ml-[15vw] pt-14">
-        <IssueContent issue={issue} members={members as Member[]} />
+        <IssueContent task={task} members={members as Member[]} />
       </div>
     </>
   );

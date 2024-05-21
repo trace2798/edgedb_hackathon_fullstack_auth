@@ -108,7 +108,7 @@ const CommandMenuStatus: FC<CommandMenuStatusProps> = ({
         values.status,
         user?.id as string
       );
-      if (response === "Issue Status Updated") {
+      if (response === "Task Status Updated") {
         toast.success("Status updated");
         router.refresh();
       } else {

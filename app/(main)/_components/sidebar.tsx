@@ -80,15 +80,15 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       <div className="flex flex-col gap-y-2 flex-1">
         <Separator />
         <div className="hidden lg:flex">
-          {/* <SelectWorkspaceBox
+           <SelectWorkspaceBox
             workspace={combinedWorkspaces}
             currentWorkspaceId={workspaceId}
-          /> */}
+          /> 
         </div>
-        <SidebarItem label="Tasks" href="/issues" />
+        <SidebarItem label="Tasks" href="/tasks" />
         <div className="ml-5 flex flex-col border-l-2 ">
-          <SidebarItem label="Active" href="/issues/active" />
-          <SidebarItem label="Future" href="/issues/future" />
+          <SidebarItem label="Active" href="/tasks/active" />
+          <SidebarItem label="Future" href="/tasks/future" />
         </div>
         <SidebarItem label="Boards" href="/boards" />
         <ScrollArea className="ml-5 max-h-72 flex flex-col border-l-2 ">

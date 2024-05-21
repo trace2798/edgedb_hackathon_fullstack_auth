@@ -8,11 +8,9 @@ import {
 import { buttonVariants } from "@/components/ui/button";
 import { FC } from "react";
 
-interface ActivityAccordianProps {
-  issue: any;
-}
 
-const ActivityAccordian: FC<ActivityAccordianProps> = ({ issue }) => {
+
+const ActivityAccordian = ({ taskActivities }: { taskActivities: { id: string; message: string }[] }) => {
   return (
     <>
       <div>
@@ -28,7 +26,7 @@ const ActivityAccordian: FC<ActivityAccordianProps> = ({ issue }) => {
               Activities
             </AccordionTrigger>
             <AccordionContent className="space-y-3">
-              {issue.issueactivity?.map(
+              {taskActivities.map(
                 (activity: { id: string; message: string }) => (
                   <>
                     <div

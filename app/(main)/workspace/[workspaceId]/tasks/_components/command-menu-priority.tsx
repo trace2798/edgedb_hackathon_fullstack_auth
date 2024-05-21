@@ -108,7 +108,7 @@ const CommandMenuPriority: FC<CommandMenuPriorityProps> = ({
         values.priority,
         user?.id as string
       );
-      if (response === "Issue Priority Updated") {
+      if (response === "Task Priority Updated") {
         toast.success("Priority updated");
         router.refresh();
       } else {

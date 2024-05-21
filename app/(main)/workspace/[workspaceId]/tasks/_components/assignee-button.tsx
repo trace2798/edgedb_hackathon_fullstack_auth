@@ -95,7 +95,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
         values.assigneeId,
         user?.id as string
       );
-      if (response === "Issue Assignee Updated") {
+      if (response === "Task Assignee Updated") {
         toast.success("Assignee updated");
         router.refresh();
       } else {
@@ -136,7 +136,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
                                 ? members?.find(
                                     (member) =>
                                       (member?.id as string) === field.value
-                                  )?.name
+                                  )?.githubUsername
                                 : "Assignee"}
                             </HoverCardTrigger>
                             <HoverCardContent
@@ -167,7 +167,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
                               }}
                             >
                               <div className="flex items-center">
-                                {member.name}
+                                {member.githubUsername}
                               </div>
                               <Check
                                 className={cn(

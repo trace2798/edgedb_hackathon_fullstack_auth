@@ -15,15 +15,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { deleteIssue } from "@/actions/issues";
+import { deleteTask } from "@/actions/issues";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@/types";
 
-interface DeleteIssueButtonProps {
-  issueId: string;
+interface DeleteTaskButtonProps {
+  taskId: string;
 }
 
-const DeleteIssueButton: FC<DeleteIssueButtonProps> = ({ issueId }) => {
+const DeleteTaskButton: FC<DeleteTaskButtonProps> = ({ taskId }) => {
   const router = useRouter();
   // const user = useCurrentUser();
   const [user, setUser] = useState<User | null>(null);
@@ -38,11 +38,11 @@ const DeleteIssueButton: FC<DeleteIssueButtonProps> = ({ issueId }) => {
   }, []);
  
   console.log(user);
-  const handleIssueDelete = async ({}: {}) => {
-    const response = await deleteIssue(issueId, user?.id as string);
+  const handleTaskDelete = async ({}: {}) => {
+    const response = await deleteTask(taskId, user?.id as string);
     console.log(response);
     if (response === "Done") {
-      toast.success("Issue Deleted");
+      toast.success("Task Deleted");
       router.refresh();
     } else {
       toast.error(response);
@@ -71,7 +71,7 @@ const DeleteIssueButton: FC<DeleteIssueButtonProps> = ({ issueId }) => {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction onClick={() => handleIssueDelete(issueId)}>
+              <AlertDialogAction onClick={() => handleTaskDelete(taskId)}>
                 Continue
               </AlertDialogAction>
             </AlertDialogFooter>
@@ -82,4 +82,4 @@ const DeleteIssueButton: FC<DeleteIssueButtonProps> = ({ issueId }) => {
   );
 };
 
-export default DeleteIssueButton;
+export default DeleteTaskButton;

@@ -34,6 +34,49 @@ const $Activity = $.makeType<$Activity>(_.spec, "e6c8032b-1790-11ef-ab4d-1b4b9fc
 
 const Activity: $.$expr_PathNode<$.TypeSet<$Activity, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Activity, $.Cardinality.Many), null);
 
+export type $TaskλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "priority": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, true>;
+  "status": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, true>;
+  "workspace": $.LinkDesc<$Workspace, $.Cardinality.One, {}, false, false,  false, false>;
+  "workspaceId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
+  "workspaceMember": $.LinkDesc<$WorkspaceMember, $.Cardinality.One, {}, false, false,  false, false>;
+  "assigneeId": $.PropertyDesc<_std.$uuid, $.Cardinality.AtMostOne, false, false, false, false>;
+  "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "description": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "duedate": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, false>;
+  "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "taskactivities": $.LinkDesc<$TaskActivity, $.Cardinality.Many, {}, false, true,  false, false>;
+  "websiteaddresses": $.LinkDesc<$WebsiteAddress, $.Cardinality.Many, {}, false, true,  false, false>;
+  "<tasks[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<tasks[is WorkspaceMember]": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<task[is TaskActivity]": $.LinkDesc<$TaskActivity, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<task[is WebsiteAddress]": $.LinkDesc<$WebsiteAddress, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<task": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<tasks": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $Task = $.ObjectType<"default::Task", $TaskλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $Task = $.makeType<$Task>(_.spec, "aa49d9c3-1795-11ef-8c90-2547ca16a380", _.syntax.literal);
+
+const Task: $.$expr_PathNode<$.TypeSet<$Task, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Task, $.Cardinality.Many), null);
+
+export type $TaskActivityλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "task": $.LinkDesc<$Task, $.Cardinality.One, {}, false, false,  false, false>;
+  "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "message": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "<taskactivities[is Task]": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<taskactivities": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $TaskActivity = $.ObjectType<"default::TaskActivity", $TaskActivityλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $TaskActivity = $.makeType<$TaskActivity>(_.spec, "5adf1e6a-179e-11ef-b883-0fef70a85ca4", _.syntax.literal);
+
+const TaskActivity: $.$expr_PathNode<$.TypeSet<$TaskActivity, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($TaskActivity, $.Cardinality.Many), null);
+
 export type $UserλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
   "identity": $.LinkDesc<_extauth.$Identity, $.Cardinality.One, {}, false, false,  false, false>;
   "avatarUrl": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
@@ -57,6 +100,20 @@ const $User = $.makeType<$User>(_.spec, "f8eecf20-173b-11ef-99ee-077a2226c534", 
 
 const User: $.$expr_PathNode<$.TypeSet<$User, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($User, $.Cardinality.Many), null);
 
+export type $WebsiteAddressλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "task": $.LinkDesc<$Task, $.Cardinality.One, {}, false, false,  false, false>;
+  "description": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "url": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "<websiteaddresses[is Task]": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<websiteaddresses": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $WebsiteAddress = $.ObjectType<"default::WebsiteAddress", $WebsiteAddressλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $WebsiteAddress = $.makeType<$WebsiteAddress>(_.spec, "ea4b082e-17a1-11ef-9d8c-9f4bee91c5f7", _.syntax.literal);
+
+const WebsiteAddress: $.$expr_PathNode<$.TypeSet<$WebsiteAddress, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($WebsiteAddress, $.Cardinality.Many), null);
+
 export type $WorkspaceλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
   "user": $.LinkDesc<$User, $.Cardinality.One, {}, false, false,  false, false>;
   "userId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
@@ -66,10 +123,12 @@ export type $WorkspaceλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "workspaceMembers": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, true,  false, false>;
   "activities": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, true,  false, false>;
+  "tasks": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, true,  false, false>;
   "<workspaces[is User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces[is current_user]": $.LinkDesc<$current_user, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is Activity]": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is WorkspaceMember]": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspace[is Task]": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
@@ -89,9 +148,12 @@ export type $WorkspaceMemberλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "githubUsername": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
   "workspace": $.LinkDesc<$Workspace, $.Cardinality.One, {}, false, false,  false, false>;
+  "tasks": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, true,  false, false>;
   "<workspaceMembers[is User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaceMembers[is current_user]": $.LinkDesc<$current_user, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaceMembers[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspaceMember[is Task]": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspaceMember": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaceMembers": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $WorkspaceMember = $.ObjectType<"default::WorkspaceMember", $WorkspaceMemberλShape, null, [
@@ -121,13 +183,16 @@ const $default__globals: {  current_user: _.syntax.$expr_Global<
 
 
 
-export { MemberRole, Role, $Activity, Activity, $User, User, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
+export { MemberRole, Role, $Activity, Activity, $Task, Task, $TaskActivity, TaskActivity, $User, User, $WebsiteAddress, WebsiteAddress, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
 
 type __defaultExports = {
   "MemberRole": typeof MemberRole;
   "Role": typeof Role;
   "Activity": typeof Activity;
+  "Task": typeof Task;
+  "TaskActivity": typeof TaskActivity;
   "User": typeof User;
+  "WebsiteAddress": typeof WebsiteAddress;
   "Workspace": typeof Workspace;
   "WorkspaceMember": typeof WorkspaceMember;
   "current_user": typeof current_user;
@@ -137,7 +202,10 @@ const __defaultExports: __defaultExports = {
   "MemberRole": MemberRole,
   "Role": Role,
   "Activity": Activity,
+  "Task": Task,
+  "TaskActivity": TaskActivity,
   "User": User,
+  "WebsiteAddress": WebsiteAddress,
   "Workspace": Workspace,
   "WorkspaceMember": WorkspaceMember,
   "current_user": current_user,

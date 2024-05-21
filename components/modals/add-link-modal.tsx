@@ -41,10 +41,10 @@ const formSchema = z.object({
 });
 
 interface AddLinkModalProps {
-  issueId: string;
+  taskId: string;
 }
 
-const AddLinkModal: FC<AddLinkModalProps> = ({ issueId }) => {
+const AddLinkModal: FC<AddLinkModalProps> = ({ taskId }) => {
   // const user = useCurrentUser();
   const [user, setUser] = useState<User | null>(null);
   useEffect(() => {
@@ -78,8 +78,8 @@ const AddLinkModal: FC<AddLinkModalProps> = ({ issueId }) => {
 
     console.log(values);
     const response = await createLink(
-      user?.name as string,
-      issueId,
+      user?.githubUsername as string,
+      taskId,
       values.url,
       values.description
     );

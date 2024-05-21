@@ -1,9 +1,10 @@
 "use server";
 import e, { createClient } from "@/dbschema/edgeql-js";
+import { LocalDateTime } from "edgedb";
 
 const client = createClient();
 
-export async function createIssue(
+export async function createTask(
   userId: string,
   title: string,
   description: string,
@@ -22,8 +23,7 @@ export async function createIssue(
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
@@ -33,20 +33,19 @@ export async function createIssue(
     const verifyMember = await e
       .select(e.WorkspaceMember, (member) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         workspaceId: true,
         filter_single: e.op(member.id, "=", e.uuid(assigneeId)),
       }))
       .run(client);
     console.log(verifyMember);
-    const newIssue = await e
-      .insert(e.Issue, {
+    const newTask = await e
+      .insert(e.Task, {
         title: title as string,
         description: description as string,
         status: status as string,
         priority: priority as string,
-        duedate: duedate as Date | undefined,
+        duedate: duedate as LocalDateTime | undefined,
         workspace: e.select(e.Workspace, (workspace) => ({
           filter_single: e.op(
             workspace.id,
@@ -55,17 +54,17 @@ export async function createIssue(
           ),
         })),
         workspaceMember: e.select(e.WorkspaceMember, (member) => ({
-          filter_single: e.op(member.id, "=", e.uuid(assigneeId as string)),
+          filter_single: e.op(member.user.id, "=", e.uuid(userId as string)),
         })),
         assigneeId: e.uuid(assigneeId as string),
       })
       .run(client);
-    console.log(newIssue);
+    console.log(newTask);
 
     const activity = await e
       .insert(e.Activity, {
         message:
-          `${user.name} created an issue: "${title}". Issue assigned to : ${verifyMember?.name} ` as string,
+          `${user.githubUsername} created an task: "${title}". Task assigned to : ${verifyMember?.githubUsername} ` as string,
         workspace: e.select(e.Workspace, (workspace) => ({
           filter_single: e.op(
             workspace.id,
@@ -73,25 +72,22 @@ export async function createIssue(
             e.uuid(verifyMember?.workspaceId as string)
           ),
         })),
-        user: e.select(e.User, (user) => ({
-          filter_single: e.op(user.id, "=", e.uuid(userId)),
-        })),
       })
       .run(client);
     console.log(activity);
-    const issueActivity = await e
-      .insert(e.IssueActivity, {
-        message: `${user.name} created this issue.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(newIssue?.id as string)),
+    const taskActivity = await e
+      .insert(e.TaskActivity, {
+        message: `${user.githubUsername} created this issue.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(newTask?.id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Created";
+    return "Task Created";
   } catch (error) {
     console.error(error);
-    return "Error Creating Issue";
+    return "Error Creating Task";
   }
 }
 
@@ -108,46 +104,45 @@ export async function updatePriority(
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
     if (!user) {
       return "User Not Found";
     }
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const task = await e
+      .select(e.Task, (task) => ({
         id: true,
         title: true,
         priority: true,
         workspaceId: true,
-        filter_single: e.op(issue.id, "=", e.uuid(id)),
+        filter_single: e.op(task.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
+    console.log(task);
 
-    const updateIssuePriority = await e
-      .update(e.Issue, () => ({
+    const updateTaskPriority = await e
+      .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
         set: {
           priority: priority as string,
         },
       }))
       .run(client);
-    console.log(updateIssuePriority);
+    console.log(updateTaskPriority);
 
-    const issueActivity = await e
-      .insert(e.IssueActivity, {
+    const taskActivity = await e
+      .insert(e.TaskActivity, {
         message:
-          `${user.name} created Priority from: ${issue?.priority} to: ${priority}.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+          `${user.githubUsername} changed Priority from: ${task?.priority} to: ${priority}.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Priority Updated";
+    return "Task Priority Updated";
   } catch (error) {
     console.error(error);
     return "Error Updating Priority";
@@ -163,16 +158,15 @@ export async function updateStatus(id: string, status: string, userId: string) {
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
     if (!user) {
       return "User Not Found";
     }
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (issue) => ({
         id: true,
         title: true,
         status: true,
@@ -180,29 +174,32 @@ export async function updateStatus(id: string, status: string, userId: string) {
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
+    console.log(findTask);
+    if (!findTask) {
+      return "Task not found";
+    }
 
-    const updateIssuePriority = await e
-      .update(e.Issue, () => ({
+    const updateTaskPriority = await e
+      .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
         set: {
           status: status as string,
         },
       }))
       .run(client);
-    console.log(updateIssuePriority);
+    console.log(updateTaskPriority);
 
     const issueActivity = await e
-      .insert(e.IssueActivity, {
+      .insert(e.TaskActivity, {
         message:
-          `${user.name} created Status from: ${issue?.status} to: ${status}.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+          `${user.githubUsername} changed Status from: ${findTask?.status} to: ${status}.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Status Updated";
+    return "Task Status Updated";
   } catch (error) {
     console.error(error);
     return "Error Updating Status";
@@ -222,35 +219,41 @@ export async function updateAssigneeId(
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
     if (!user) {
       return "User Not Found";
     }
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (task) => ({
         id: true,
         title: true,
         status: true,
         workspaceId: true,
-        filter_single: e.op(issue.id, "=", e.uuid(id)),
+        filter_single: e.op(task.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
-
+    console.log(findTask);
+    if (!findTask) {
+      return "Task not found";
+    }
     const member = await e
       .select(e.WorkspaceMember, (member) => ({
         id: true,
-        name: true,
-        filter_single: e.op(member.id, "=", e.uuid(assigneeId)),
+        githubUsername: true,
+        // filter_single: e.op(member.id, "=", e.uuid(assigneeId)),
+        filter_single: e.op(
+          e.op(member.id, "=", e.uuid(assigneeId)),
+          "and",
+          e.op(member.workspace.id, "=", e.uuid(findTask?.workspaceId))
+        ),
       }))
       .run(client);
     console.log(member);
     const updateIssueAssignee = await e
-      .update(e.Issue, () => ({
+      .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
         set: {
           assigneeId: assigneeId as string,
@@ -260,16 +263,16 @@ export async function updateAssigneeId(
     console.log(updateIssueAssignee);
 
     const issueActivity = await e
-      .insert(e.IssueActivity, {
+      .insert(e.TaskActivity, {
         message:
-          `${user.name} assigneed this issue to: ${member?.name}.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+          `${user.githubUsername} assigneed this issue to: ${member?.githubUsername}.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Assignee Updated";
+    return "Task Assignee Updated";
   } catch (error) {
     console.error(error);
     return "Error Updating Status";
@@ -334,10 +337,10 @@ export async function updateDueDate(
   }
 }
 
-export async function deleteIssue(id: string, currentUserId: string) {
+export async function deleteTask(id: string, currentUserId: string) {
   try {
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (issue) => ({
         id: true,
         title: true,
         status: true,
@@ -346,9 +349,9 @@ export async function deleteIssue(id: string, currentUserId: string) {
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
-    if (!issue) {
-      return "Issue Not Found";
+    console.log(findTask);
+    if (!findTask) {
+      return "Task Not Found";
     }
 
     const currentUserMemberInfo = await e
@@ -356,7 +359,7 @@ export async function deleteIssue(id: string, currentUserId: string) {
         id: true,
         memberRole: true,
         filter_single: e.op(
-          e.op(wspm.workspaceId, "=", e.uuid(issue?.workspaceId as string)),
+          e.op(wspm.workspaceId, "=", e.uuid(findTask?.workspaceId as string)),
           "and",
           e.op(wspm.userId, "=", e.uuid(currentUserId))
         ),
@@ -364,11 +367,11 @@ export async function deleteIssue(id: string, currentUserId: string) {
       .run(client);
     console.log(currentUserMemberInfo);
     if (
-      issue.workspaceMember.id === currentUserMemberInfo?.id ||
+      findTask.workspaceMember.id === currentUserMemberInfo?.id ||
       currentUserMemberInfo?.memberRole === "owner"
     ) {
       await e
-        .delete(e.Issue, (issue) => ({
+        .delete(e.Task, (issue) => ({
           filter_single: e.op(issue.id, "=", e.uuid(id)),
         }))
         .run(client);
@@ -443,56 +446,3 @@ export async function updateIssue(
     return "Error Updating Issue";
   }
 }
-// export async function deleteLinkFromIssue(
-//   id: string,
-//   currentUserId: string,
-//   url: string
-// ) {
-//   try {
-//     const issue = await e
-//       .select(e.Issue, (issue) => ({
-//         id: true,
-//         title: true,
-//         status: true,
-//         workspaceId: true,
-//         workspaceMember: true,
-//         filter_single: e.op(issue.id, "=", e.uuid(id)),
-//       }))
-//       .run(client);
-//     console.log(issue);
-//     if (!issue) {
-//       return "Issue Not Found";
-//     }
-
-//     const currentUserMemberInfo = await e
-//       .select(e.WorkspaceMember, (wspm) => ({
-//         id: true,
-//         memberRole: true,
-//         filter_single: e.op(
-//           e.op(wspm.workspaceId, "=", e.uuid(issue?.workspaceId as string)),
-//           "and",
-//           e.op(wspm.userId, "=", e.uuid(currentUserId))
-//         ),
-//       }))
-//       .run(client);
-//     console.log(currentUserMemberInfo);
-//     if (
-//       issue.workspaceMember.id === currentUserMemberInfo?.id ||
-//       currentUserMemberInfo?.memberRole === "owner"
-//     ) {
-//       await e
-//         .update(e.Issue, (issue) => ({
-//           filter_single: e.op(issue.id, "=", e.uuid(id)),
-//           set: {
-//             urls: e.array_remove(issue.urls, e.str(url)),
-//           },
-//         }))
-//         .run(client);
-//       return "Done";
-//     } else {
-//       return "You do not have permission to delete this issue.";
-//     }
-//   } catch (error) {
-//     return "Error Deleting Issue";
-//   }
-// }

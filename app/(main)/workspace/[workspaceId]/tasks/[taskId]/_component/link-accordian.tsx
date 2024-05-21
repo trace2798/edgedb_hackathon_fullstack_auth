@@ -18,11 +18,11 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteWebLink } from "@/actions/links";
 
-interface LinkAccordianProps {
-  issue: any;
-}
+// interface LinkAccordianProps {
+//   webLinks: any;
+// }
 
-const LinkAccordian: FC<LinkAccordianProps> = ({ issue }) => {
+const LinkAccordian  = ({ weblinks, taskId }: {weblinks : {id: string; url: string; description: string }[], taskId: string}) => {
   const router = useRouter();
   const removeWebLink = async (id: string) => {
     try {
@@ -37,7 +37,7 @@ const LinkAccordian: FC<LinkAccordianProps> = ({ issue }) => {
       toast.error("Error removing web link.");
     }
   };
-  console.log(issue.websiteaddresses);
+  console.log(weblinks);
   return (
     <>
       <div>
@@ -53,7 +53,7 @@ const LinkAccordian: FC<LinkAccordianProps> = ({ issue }) => {
               Links
             </AccordionTrigger>
             <AccordionContent className="space-y-3">
-              {issue.websiteaddresses?.map(
+              {weblinks?.map(
                 (link: { id: string; url: string; description: string }) => (
                   <div
                     key={link.id}
@@ -96,11 +96,11 @@ const LinkAccordian: FC<LinkAccordianProps> = ({ issue }) => {
                   </div>
                 )
               )}
-              {issue.websiteaddresses.length === 0 && (
+              {weblinks.length === 0 && (
                 <div className="flex flex-col items-center justify-center">
                   <h1>No links added</h1>
                   <br />
-                  <AddLinkModal issueId={issue.id as string} />
+                  <AddLinkModal taskId={taskId as string} />
                 </div>
               )}
             </AccordionContent>

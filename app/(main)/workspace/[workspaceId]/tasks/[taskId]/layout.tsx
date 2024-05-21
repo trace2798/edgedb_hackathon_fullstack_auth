@@ -5,7 +5,7 @@ import Link from "next/link";
 
 type Props = {
   children: React.ReactNode;
-  params: { workspaceId: string; issueId: string };
+  params: { workspaceId: string; taskId: string };
 };
 
 const client = createClient();
@@ -20,8 +20,8 @@ const IssueIdLayout = async ({ children, params }: Props) => {
     }))
     .run(client);
   console.log(workspace);
-  const allIssues = await e
-    .select(e.Issue, (issue) => ({
+  const allTasks = await e
+    .select(e.Task, (task) => ({
       id: true,
       title: true,
       status: true,
@@ -29,33 +29,32 @@ const IssueIdLayout = async ({ children, params }: Props) => {
       created: true,
       updated: true,
       duedate: true,
-      // urls: true,
-      filter: e.op(issue.workspaceId, "=", e.uuid(params.workspaceId)),
+      filter: e.op(task.workspaceId, "=", e.uuid(params.workspaceId)),
       order_by: {
-        expression: issue.created,
+        expression: task.created,
         direction: e.DESC,
       },
     }))
     .run(client);
-  console.log(allIssues);
-  const issue = await e
-    .select(e.Issue, (issue) => ({
+  console.log(allTasks);
+  const task = await e
+    .select(e.Task, (task) => ({
       id: true,
       title: true,
       description: true,
-      filter_single: e.op(issue.id, "=", e.uuid(params.issueId)),
+      filter_single: e.op(task.id, "=", e.uuid(params.taskId)),
     }))
     .run(client);
-  console.log(issue);
-  const currentIssueIndex = allIssues.findIndex(
-    (issue) => issue.id === params.issueId
+  console.log(task);
+  const currentTaskIndex = allTasks.findIndex(
+    (task) => task.id === params.taskId
   );
 
   // Calculate the total number of issues
-  const totalIssues = allIssues.length;
+  const totalTasks = allTasks.length;
 
-  const prevIssueId = allIssues[currentIssueIndex - 1]?.id;
-  const nextIssueId = allIssues[currentIssueIndex + 1]?.id;
+  const prevTaskId = allTasks[currentTaskIndex - 1]?.id;
+  const nextTaskId = allTasks[currentTaskIndex + 1]?.id;
   return (
     <>
       <div className="lg:px-5 py-2 mt-10 lg:mt-0 border border-secondary text-sm flex justify-between dark:bg-zinc-950 items-center ">
@@ -73,7 +72,7 @@ const IssueIdLayout = async ({ children, params }: Props) => {
           </Link>
           <ChevronRight className="h-4 w-4" />
           <Link
-            href={`/workspace/${params.workspaceId}/issues`}
+            href={`/workspace/${params.workspaceId}/tasks`}
             className={buttonVariants({
               variant: "sidebar",
               size: "sidebar",
@@ -90,7 +89,7 @@ const IssueIdLayout = async ({ children, params }: Props) => {
               className: "w-fit px-2 text-indigo-400",
             })}
           >
-            {issue?.title}
+            {task?.title}
           </div>
         </div>
         <div className="flex flex-col md:flex-row space-x-1 items-center">
@@ -101,14 +100,14 @@ const IssueIdLayout = async ({ children, params }: Props) => {
               className: "w-fit px-2 text-muted-foreground",
             })}
           >
-            <span className="text-sm">{currentIssueIndex + 1}</span>
+            <span className="text-sm">{currentTaskIndex + 1}</span>
             &nbsp;/&nbsp;
-            <span className="text-sm text-primary">{totalIssues}</span>
+            <span className="text-sm text-primary">{totalTasks}</span>
           </div>
           <div>
-            {prevIssueId ? (
+            {prevTaskId ? (
               <Link
-                href={`/workspace/${params.workspaceId}/issues/${prevIssueId}`}
+                href={`/workspace/${params.workspaceId}/tasks/${prevTaskId}`}
               >
                 <Button variant={"sidebar"} size={"sidebar"}>
                   <ChevronUp className="h-4 w-4" />
@@ -120,9 +119,9 @@ const IssueIdLayout = async ({ children, params }: Props) => {
               </Button>
             )}
 
-            {nextIssueId ? (
+            {nextTaskId ? (
               <Link
-                href={`/workspace/${params.workspaceId}/issues/${nextIssueId}`}
+                href={`/workspace/${params.workspaceId}/tasks/${nextTaskId}`}
               >
                 <Button variant={"sidebar"} size={"sidebar"}>
                   <ChevronDown className="h-4 w-4" />

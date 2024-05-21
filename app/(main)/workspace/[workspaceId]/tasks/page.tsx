@@ -10,8 +10,7 @@ const Page = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
-      name: true,
-      email: true,
+      githubUsername: true,
       memberRole: true,
       userId: true,
       created: true,
