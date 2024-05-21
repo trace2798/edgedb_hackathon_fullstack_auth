@@ -2,12 +2,13 @@
 
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
+import { LocalDateTime } from "edgedb";
 import { ArrowUpDown } from "lucide-react";
 
 export type Activity = {
   id: string;
   message: string;
-  created: Date;
+  created: LocalDateTime;
 };
 
 export const columns: ColumnDef<Activity>[] = [
