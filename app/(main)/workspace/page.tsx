@@ -42,26 +42,26 @@ const Page: FC<PageProps> = async ({}) => {
     .run(client);
   console.log(workspaces);
   // // query selects Workspace objects where the current user is a member but not the creator, and it returns the id and name properties of these workspaces.
-  // const workspaceMember = await e
-  //   .select(e.Workspace, (workspace) => ({
-  //     id: true,
-  //     name: true,
-  //     filter: e.op(
-  //       e.op(
-  //         workspace.workspaceMember.user.id,
-  //         "=",
-  //         e.uuid(user?.id as string)
-  //       ),
-  //       "and",
-  //       e.op(workspace.user.id, "!=", e.uuid(user?.id as string))
-  //     ),
-  //     order_by: {
-  //       expression: workspace.created,
-  //       direction: e.DESC,
-  //     },
-  //   }))
-  //   .run(client);
-  // console.log(workspaceMember);
+  const workspaceMember = await e
+    .select(e.Workspace, (workspace) => ({
+      id: true,
+      name: true,
+      filter: e.op(
+        e.op(
+          workspace.workspaceMembers.user.id,
+          "=",
+          e.uuid(user?.id as string)
+        ),
+        "and",
+        e.op(workspace.user.id, "!=", e.uuid(user?.id as string))
+      ),
+      order_by: {
+        expression: workspace.created,
+        direction: e.DESC,
+      },
+    }))
+    .run(client);
+  console.log(workspaceMember);
   return (
     <>
       <div className=" flex flex-col pt-24 items-center text-center bg-zinc-950 h-[100vh] w-[100vw]">
@@ -96,7 +96,7 @@ const Page: FC<PageProps> = async ({}) => {
             </Link>
           ))}
         </div>
-        {/* {workspaceMember.length > 0 && (
+        {workspaceMember.length > 0 && (
           <>
             <Separator />
             <Card className=" border-none bg-transparent">
@@ -125,7 +125,7 @@ const Page: FC<PageProps> = async ({}) => {
               )}
             </div>
           </>
-        )} */}
+        )}
       </div>
     </>
   );

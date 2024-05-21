@@ -11,15 +11,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { LocalDateTime } from "edgedb";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Member = {
   id: string;
-  name: string;
+  // name: string;
   memberRole: "member" | "owner" | "admin";
-  email: string;
-  created: Date;
+  // email: string;
+  githubUsername: string;
+  created: LocalDateTime;
   userId?: string;
 };
 
@@ -28,13 +30,13 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "memberRole",
     header: "Role",
   },
+  // {
+  //   accessorKey: "email",
+  //   header: "Email",
+  // },
   {
-    accessorKey: "email",
-    header: "Email",
-  },
-  {
-    accessorKey: "name",
-    header: "Name",
+    accessorKey: "githubUsername",
+    header: "Github Username",
   },
   {
     accessorKey: "created",

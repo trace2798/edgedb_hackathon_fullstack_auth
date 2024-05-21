@@ -10,8 +10,7 @@ const MembersPage = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
-      name: true,
-      email: true,
+      githubUsername: true,
       memberRole: true,
       created: true,
       filter: e.op(
@@ -25,6 +24,7 @@ const MembersPage = async ({ params }: { params: { workspaceId: string } }) => {
       },
     }))
     .run(client);
+  console.log(members);
   return (
     <>
       <div className="py-24 px-[10vw] lg:pl-[256px]">

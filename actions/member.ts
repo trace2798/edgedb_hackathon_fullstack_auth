@@ -1,35 +1,44 @@
 "use server";
-import { auth } from "@/auth";
+
 import e, { createClient } from "@/dbschema/edgeql-js";
+import { auth } from "@/edgedb";
+import { useCurrentUser } from "@/hooks/use-current-user";
+import { User } from "@/types";
 import { EnumLike } from "zod";
 
 const client = createClient();
-export const getUserByEmail = async (email: string) => {
-  try {
-    const user = await e
-      .select(e.User, (user) => ({
-        id: true,
-        email: true,
-        name: true,
-        filter_single: e.op(user.email, "=", e.str_lower(email)),
-      }))
-      .run(client);
-    console.log(user);
-    return user;
-  } catch {
-    return null;
-  }
-};
+// export const getUserByEmail = async (email: string) => {
+//   try {
+//     const user = await e
+//       .select(e.User, (user) => ({
+//         id: true,
+//         email: true,
+//         name: true,
+//         filter_single: e.op(user.email, "=", e.str_lower(email)),
+//       }))
+//       .run(client);
+//     console.log(user);
+//     return user;
+//   } catch {
+//     return null;
+//   }
+// };
 
-export const addMemberByEmail = async (email: string, workspaceId: string) => {
+export const addMemberByGithubUsername = async (githubUsername: string, workspaceId: string) => {
   try {
-    const session = await auth();
+    // const session = await auth();
+    const session = auth.getSession();
+    const signedIn = await session.isSignedIn();
+    console.log(session);
+    const currentUserFe = (await useCurrentUser()) as User;
+    console.log(currentUserFe);
     const currentUser = await e
       .select(e.User, (user) => ({
         id: true,
         email: true,
         name: true,
-        filter_single: e.op(user.id, "=", e.uuid(session?.user?.id as string)),
+        githubUsername: true,
+        filter_single: e.op(user.id, "=", e.uuid(currentUserFe?.id as string)),
       }))
       .run(client);
     const user = await e
@@ -37,7 +46,8 @@ export const addMemberByEmail = async (email: string, workspaceId: string) => {
         id: true,
         email: true,
         name: true,
-        filter_single: e.op(user.email, "=", e.str(email)),
+        githubUsername: true,
+        filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
     console.log(user);
@@ -71,33 +81,32 @@ export const addMemberByEmail = async (email: string, workspaceId: string) => {
     }
     const addNewWorkspaceMember = await e
       .insert(e.WorkspaceMember, {
-        name: user.name as string,
-        email: user.email as string,
+        githubUsername: user.githubUsername as string,
         memberRole: "member",
         workspace: e.select(e.Workspace, (workspace) => ({
           filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
         })),
         user: e.select(e.User, (user) => ({
-          filter_single: e.op(user.email, "=", e.str_lower(email)),
+          filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
         })),
       })
       .run(client);
     console.log(addNewWorkspaceMember);
-    const activity = await e
-      .insert(e.Activity, {
-        message: `${currentUser?.name} added ${user.name}` as string,
-        workspace: e.select(e.Workspace, (workspace) => ({
-          filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
-        })),
-        user: e.select(e.User, (user) => ({
-          filter_single: e.op(
-            user.id,
-            "=",
-            e.uuid(session?.user?.id as string)
-          ),
-        })),
-      })
-      .run(client);
+    // const activity = await e
+    //   .insert(e.Activity, {
+    //     message: `${currentUser?.name} added ${user.name}` as string,
+    //     workspace: e.select(e.Workspace, (workspace) => ({
+    //       filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
+    //     })),
+    //     user: e.select(e.User, (user) => ({
+    //       filter_single: e.op(
+    //         user.id,
+    //         "=",
+    //         e.uuid(session?.user?.id as string)
+    //       ),
+    //     })),
+    //   })
+    //   .run(client);
     return "Done";
   } catch {
     return "Error adding member to workspace";
@@ -111,13 +120,18 @@ export const transferOwnership = async (
 ) => {
   try {
     console.log(email, workspaceId);
-    const session = await auth();
+    // const session = await auth();
+    const session = auth.getSession();
+    const signedIn = await session.isSignedIn();
+    console.log(session);
+    const currentUserFe = (await useCurrentUser()) as User;
+    console.log(currentUserFe);
     const currentUser = await e
       .select(e.User, (user) => ({
         id: true,
         email: true,
         name: true,
-        filter_single: e.op(user.id, "=", e.uuid(session?.user?.id as string)),
+        filter_single: e.op(user.id, "=", e.uuid(currentUserFe?.id as string)),
       }))
       .run(client);
     const user = await e
@@ -173,18 +187,18 @@ export const transferOwnership = async (
         },
       }))
       .run(client);
-    const activity = await e
-      .insert(e.Activity, {
-        message:
-          `${currentUser?.name} transferred ownership to ${user.name}` as string,
-        workspace: e.select(e.Workspace, (workspace) => ({
-          filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
-        })),
-        user: e.select(e.User, (u) => ({
-          filter_single: e.op(u.id, "=", e.uuid(user.id)),
-        })),
-      })
-      .run(client);
+    // const activity = await e
+    //   .insert(e.Activity, {
+    //     message:
+    //       `${currentUser?.name} transferred ownership to ${user.name}` as string,
+    //     workspace: e.select(e.Workspace, (workspace) => ({
+    //       filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
+    //     })),
+    //     user: e.select(e.User, (u) => ({
+    //       filter_single: e.op(u.id, "=", e.uuid(user.id)),
+    //     })),
+    //   })
+    //   .run(client);
     return "Done";
   } catch (error) {
     return "Error transferring ownership of workspace";

@@ -1,5 +1,5 @@
 "use client";
-import { addMemberByEmail } from "@/actions/member";
+import { addMemberByGithubUsername } from "@/actions/member";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().min(2).max(50),
+  githubUsername: z.string().min(2).max(50),
 });
 interface AddMemberFormProps {
   workspaceId: string;
@@ -30,11 +30,11 @@ const AddMemberForm: FC<AddMemberFormProps> = ({ workspaceId }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      githubUsername: "",
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await addMemberByEmail(values.email, workspaceId);
+    const response = await addMemberByGithubUsername(values.githubUsername, workspaceId);
     console.log(response);
     if (response === "Done") {
       toast.success("Member Added");
@@ -50,12 +50,12 @@ const AddMemberForm: FC<AddMemberFormProps> = ({ workspaceId }) => {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="email"
+            name="githubUsername"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Github Username</FormLabel>
                 <FormControl>
-                  <Input className="max-w-2xl" placeholder="Email address" {...field} />
+                  <Input className="max-w-2xl" placeholder="Github Username" {...field} />
                 </FormControl>
                 <FormDescription>
                   User needs to have an account in productivus.
