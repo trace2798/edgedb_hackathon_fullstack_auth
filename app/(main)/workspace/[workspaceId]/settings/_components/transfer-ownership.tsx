@@ -11,8 +11,7 @@ import TransferOwnershipForm from "./transfer-ownership-form";
 
 export type StatusType = {
   id: string;
-  name: string;
-  email: string;
+  githubUsername: string;
   memberRole: string;
   userId: string;
 };
