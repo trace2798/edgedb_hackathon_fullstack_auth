@@ -24,7 +24,10 @@ const client = createClient();
 //   }
 // };
 
-export const addMemberByGithubUsername = async (githubUsername: string, workspaceId: string) => {
+export const addMemberByGithubUsername = async (
+  githubUsername: string,
+  workspaceId: string
+) => {
   try {
     // const session = await auth();
     const session = auth.getSession();
@@ -92,21 +95,15 @@ export const addMemberByGithubUsername = async (githubUsername: string, workspac
       })
       .run(client);
     console.log(addNewWorkspaceMember);
-    // const activity = await e
-    //   .insert(e.Activity, {
-    //     message: `${currentUser?.name} added ${user.name}` as string,
-    //     workspace: e.select(e.Workspace, (workspace) => ({
-    //       filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
-    //     })),
-    //     user: e.select(e.User, (user) => ({
-    //       filter_single: e.op(
-    //         user.id,
-    //         "=",
-    //         e.uuid(session?.user?.id as string)
-    //       ),
-    //     })),
-    //   })
-    //   .run(client);
+    const activity = await e
+      .insert(e.Activity, {
+        message:
+          `${currentUser?.githubUsername} added ${user.githubUsername}` as string,
+        workspace: e.select(e.Workspace, (workspace) => ({
+          filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
+        })),
+      })
+      .run(client);
     return "Done";
   } catch {
     return "Error adding member to workspace";
@@ -131,6 +128,7 @@ export const transferOwnership = async (
         id: true,
         email: true,
         name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(currentUserFe?.id as string)),
       }))
       .run(client);
@@ -139,6 +137,7 @@ export const transferOwnership = async (
         id: true,
         email: true,
         name: true,
+        githubUsername: true,
         filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
@@ -187,18 +186,15 @@ export const transferOwnership = async (
         },
       }))
       .run(client);
-    // const activity = await e
-    //   .insert(e.Activity, {
-    //     message:
-    //       `${currentUser?.name} transferred ownership to ${user.name}` as string,
-    //     workspace: e.select(e.Workspace, (workspace) => ({
-    //       filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
-    //     })),
-    //     user: e.select(e.User, (u) => ({
-    //       filter_single: e.op(u.id, "=", e.uuid(user.id)),
-    //     })),
-    //   })
-    //   .run(client);
+    const activity = await e
+      .insert(e.Activity, {
+        message:
+          `${currentUser?.githubUsername} transferred ownership to ${user.githubUsername}` as string,
+        workspace: e.select(e.Workspace, (workspace) => ({
+          filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
+        })),
+      })
+      .run(client);
     return "Done";
   } catch (error) {
     return "Error transferring ownership of workspace";

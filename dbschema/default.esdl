@@ -64,7 +64,9 @@ module default {
       default := "member";
     }
     required link user -> User;
-    required link workspace -> Workspace;
+    required link workspace -> Workspace {
+      on target delete delete source;
+    }
   }
 
   type Activity {
@@ -79,6 +81,7 @@ module default {
     required link workspace -> Workspace {
       on target delete delete source;
     }
+    index on (.workspace);
   }
 
 }

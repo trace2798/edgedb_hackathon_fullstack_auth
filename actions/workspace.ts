@@ -1,5 +1,6 @@
 "use server";
 import e, { createClient } from "@/dbschema/edgeql-js";
+import { revalidatePath } from "next/cache";
 
 const client = createClient();
 
@@ -49,18 +50,16 @@ export async function createWorkspace(
       .run(client);
     console.log(addWorkspaceCreatorAsOwner);
 
-    // const activity = await e
-    //   .insert(e.Activity, {
-    //     message: `Created Workspace: ${name} by ${user.name}` as string,
-    //     workspace: e.select(e.Workspace, (workspace) => ({
-    //       filter_single: e.op(workspace.id, "=", e.uuid(newWorkspace.id)),
-    //     })),
-    //     user: e.select(e.User, (user) => ({
-    //       filter_single: e.op(user.id, "=", e.uuid(userId)),
-    //     })),
-    //   })
-    //   .run(client);
-    // console.log(activity);
+    const activity = await e
+      .insert(e.Activity, {
+        message:
+          `Created Workspace: ${name} by ${user.githubUsername}` as string,
+        workspace: e.select(e.Workspace, (workspace) => ({
+          filter_single: e.op(workspace.id, "=", e.uuid(newWorkspace.id)),
+        })),
+      })
+      .run(client);
+    console.log(activity);
 
     return "Workspace Created";
   } catch (error) {
@@ -72,11 +71,16 @@ export async function createWorkspace(
 export async function deleteWorkspace(workspaceId: string, memberRole: string) {
   try {
     if (memberRole !== "owner") return "Only owner can delete workspace";
-    const deleteWorkspace = await e
-      .delete(e.Workspace, (workspace) => ({
-        filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
-      }))
-      .run(client);
+    try {
+      const deleteWorkspace = await e
+        .delete(e.Workspace, (workspace) => ({
+          filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
+        }))
+        .run(client);
+    } catch (error) {
+      console.log(error);
+    }
+    revalidatePath(`/workspace`);
     return "Done";
   } catch (error) {
     return "Error Deleting Workspace";
