@@ -19,7 +19,7 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 const formSchema = z.object({
-  email: z.string().min(2).max(50),
+  githubUsername: z.string().min(2).max(50),
 });
 interface TransferOwnershipFormProps {
   workspaceId: string;
@@ -33,11 +33,11 @@ const TransferOwnershipForm: FC<TransferOwnershipFormProps> = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      githubUsername: "",
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const response = await transferOwnership(values.email, workspaceId);
+    const response = await transferOwnership(values.githubUsername, workspaceId);
     console.log(response);
     if (response === "Done") {
       toast.success("Member Added");
@@ -53,12 +53,12 @@ const TransferOwnershipForm: FC<TransferOwnershipFormProps> = ({
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="email"
+            name="githubUsername"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel>Github Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Email address" {...field} />
+                  <Input placeholder="Github Username" {...field} />
                 </FormControl>
                 <FormDescription>
                   User needs to have an account in productivus.

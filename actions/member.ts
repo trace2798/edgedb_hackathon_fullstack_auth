@@ -114,12 +114,12 @@ export const addMemberByGithubUsername = async (githubUsername: string, workspac
 };
 
 export const transferOwnership = async (
-  email: string,
+  githubUsername: string,
   workspaceId: string
   // membershipId: string
 ) => {
   try {
-    console.log(email, workspaceId);
+    console.log(githubUsername, workspaceId);
     // const session = await auth();
     const session = auth.getSession();
     const signedIn = await session.isSignedIn();
@@ -139,7 +139,7 @@ export const transferOwnership = async (
         id: true,
         email: true,
         name: true,
-        filter_single: e.op(user.email, "=", e.str(email)),
+        filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
     console.log(user);
@@ -162,7 +162,7 @@ export const transferOwnership = async (
     const checkMembership = await e
       .select(e.WorkspaceMember, (workspaceMember) => ({
         id: true,
-        name: true,
+        githubUsername: true,
         memberRole: true,
         filter_single: e.op(workspaceMember.userId, "=", e.uuid(user.id)),
       }))
