@@ -3,7 +3,7 @@ import {
   CardContent,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from "@/components/ui/card";
 import {
   HoverCard,
@@ -11,7 +11,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import e, { createClient } from "@/dbschema/edgeql-js";
-import { format } from "date-fns";
+import { format, parseISO } from "date-fns";
 import { CircleDotDashed } from "lucide-react";
 import { Member } from "../../members/_components/members/column";
 import AddIssueButton from "../_components/add-issue-button";
@@ -26,8 +26,7 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
-      name: true,
-      email: true,
+      githubUsername: true,
       memberRole: true,
       userId: true,
       created: true,
@@ -43,26 +42,27 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
     }))
     .run(client);
   console.log(members);
-  const issues = await e
-    .select(e.Issue, (issue) => ({
+  const tasks = await e
+    .select(e.Task, (task) => ({
       id: true,
       title: true,
       status: true,
       priority: true,
       created: true,
       updated: true,
+      duedate: true,
       filter: e.op(
-        e.op(issue.workspaceId, "=", e.uuid(params.workspaceId)),
+        e.op(task.workspaceId, "=", e.uuid(params.workspaceId)),
         "and",
-        e.op(issue.status, "=", e.str("future"))
+        e.op(task.status, "=", e.str("future"))
       ),
       order_by: {
-        expression: issue.created,
+        expression: task.created,
         direction: e.DESC,
       },
     }))
     .run(client);
-  console.log(issues);
+  console.log(tasks);
   return (
     <>
       <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col rounded-2xl">
@@ -75,7 +75,7 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
           />
         </div>
         <div>
-          {issues.length === 0 && (
+          {tasks.length === 0 && (
             <div className="h-screen flex flex-col items-center justify-center ">
               <Card className="bg-secondary max-w-lg">
                 <CardHeader className="space-y-5">
@@ -108,7 +108,7 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
               </Card>
             </div>
           )}
-          {issues.map((issue, index) => {
+          {tasks.map((task, index) => {
             return (
               <div
                 key={index}
@@ -117,49 +117,67 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
                 <div className="flex  justify-between items-center">
                   <div className="flex space-x-3 w-18 mr-5">
                     {" "}
-                    <DeleteTaskButton taskId={issue.id as string} />
+                    <DeleteTaskButton taskId={task.id as string} />
                     <CommandMenuPriority
-                      id={issue.id as string}
-                      currentPriority={issue.priority as string}
+                      id={task.id as string}
+                      currentPriority={task.priority as string}
                     />
                     <CommandMenuStatus
-                      id={issue.id as string}
-                      currentStatus={issue.status as string}
+                      id={task.id as string}
+                      currentStatus={task.status as string}
                     />
                   </div>
-                  <div className="line-clamp-1">{issue.title}</div>
+                  <div className="line-clamp-1">{task.title}</div>
                 </div>
 
-                <div className="lg:flex space-x-3 hidden">
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <h1>
-                        {format(new Date(issue.created as Date), "MMM dd")}
-                      </h1>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-fit dark:bg-zinc-800 text-sm py-1 px-2">
-                      Created on:{" "}
-                      {format(
-                        new Date(issue.created as Date),
-                        "MMM dd, yyyy HH:mm"
-                      )}
-                    </HoverCardContent>
-                  </HoverCard>
-
-                  <HoverCard>
-                    <HoverCardTrigger asChild>
-                      <h1>
-                        {format(new Date(issue.updated as Date), "MMM dd")}
-                      </h1>
-                    </HoverCardTrigger>
-                    <HoverCardContent className="w-fit text-sm py-1 px-2">
-                      Updated on:{" "}
-                      {format(
-                        new Date(issue.updated as Date),
-                        "MMM dd, yyyy HH:mm"
-                      )}
-                    </HoverCardContent>
-                  </HoverCard>
+                <div className="flex space-x-3">
+                  <div>
+                    {task.duedate ? (
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <h1 className="w-[60px] px-1">
+                            {/* {format(new Date(task.duedate as Date), "MMM dd")} */}
+                            {format(
+                              parseISO(task.duedate.toString()),
+                              "MMM dd"
+                            )}
+                          </h1>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-fit text-sm py-1 px-2">
+                          Due on:{" "}
+                          {format(
+                            parseISO(task.duedate.toString()),
+                            "MMM dd, yyyy"
+                          )}
+                        </HoverCardContent>
+                      </HoverCard>
+                    ) : (
+                      <h1 className="w-[60px] px-1"></h1>
+                    )}
+                  </div>
+                  <div className="hidden lg:flex">
+                    {task.updated ? (
+                      <HoverCard>
+                        <HoverCardTrigger asChild>
+                          <h1 className="w-[60px] px-1">
+                            {format(
+                              parseISO(task?.updated.toString()),
+                              "MMM dd"
+                            )}
+                          </h1>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-fit text-sm py-1 px-2">
+                          Updated on:{" "}
+                          {format(
+                            parseISO(task?.updated.toString()),
+                            "MMM dd, yyyy"
+                          )}
+                        </HoverCardContent>
+                      </HoverCard>
+                    ) : (
+                      <h1 className="w-[60px] px-1"></h1>
+                    )}
+                  </div>
                 </div>
               </div>
             );
