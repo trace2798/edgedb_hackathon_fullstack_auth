@@ -1,4 +1,4 @@
-import { checkStatus } from "@/lib/checkStatus";
+import { CheckStatus } from "@/lib/checkStatus";
 import { MobileHeader } from "../../_components/mobile-header";
 import { Sidebar } from "../../_components/sidebar";
 import DialogNonUser from "./_components/dialog-non-member";
@@ -10,7 +10,7 @@ type Props = {
 
 const WorkspaceLayout = async ({ children, params }: Props) => {
   console.log(params);
-  const status = await checkStatus({ workspaceId: params.workspaceId });
+  const status = await CheckStatus({ workspaceId: params.workspaceId });
   console.log(status);
   if (status === "not member") {
     return <DialogNonUser />;

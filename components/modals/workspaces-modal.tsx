@@ -35,12 +35,12 @@ export function WorkspaceModal({ className, ...props }: WorkspaceModalProps) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   useEffect(() => {
-    const fetchUser = async () => {
+    const FetchUser = async () => {
       const currentUser = await useCurrentUser();
       setUser(currentUser);
     };
 
-    fetchUser();
+    FetchUser();
   }, []);
   const workspaces = useWorkspaces();
   console.log(user);

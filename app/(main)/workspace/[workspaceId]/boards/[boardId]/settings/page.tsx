@@ -1,6 +1,6 @@
 import { FC } from "react";
 import DeleteBoard from "../_components/delete-board";
-import { checkStatus } from "@/lib/checkStatus";
+import { CheckStatus } from "@/lib/checkStatus";
 
 interface PageProps {}
 
@@ -9,7 +9,7 @@ const Page = async ({
 }: {
   params: { workspaceId: string; boardId: string };
 }) => {
-  const status = await checkStatus({ workspaceId: params.workspaceId });
+  const status = await CheckStatus({ workspaceId: params.workspaceId });
   console.log(status);
   return (
     <>

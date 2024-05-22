@@ -58,12 +58,12 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const fetchUser = async () => {
+    const FetchUser = async () => {
       const currentUser = await useCurrentUser();
       setUser(currentUser);
     };
 
-    fetchUser();
+    FetchUser();
   }, []);
 
   console.log(user);

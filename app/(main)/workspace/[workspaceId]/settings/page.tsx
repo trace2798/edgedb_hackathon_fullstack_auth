@@ -1,4 +1,4 @@
-import { checkStatus } from "@/lib/checkStatus";
+import { CheckStatus } from "@/lib/checkStatus";
 import DeleteWorkspace from "./_components/delete-workspace";
 import TransferOwnership, {
   StatusType,
@@ -9,7 +9,7 @@ const SettingsPage = async ({
 }: {
   params: { workspaceId: string };
 }) => {
-  const status = await checkStatus({ workspaceId: params.workspaceId });
+  const status = await CheckStatus({ workspaceId: params.workspaceId });
   console.log(status);
   return (
     <>
