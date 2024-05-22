@@ -22,6 +22,7 @@ import DeleteTaskButton from "./delete-issue-button";
 import ChangeDueDate from "./change-due-date";
 import { LocalDateTime } from "edgedb";
 import { buttonVariants } from "@/components/ui/button";
+import ChangeAssignee from "./assignee-button";
 
 const client = createClient();
 
@@ -41,6 +42,7 @@ export const IssueList = async ({
       created: true,
       updated: true,
       duedate: true,
+      assigneeId: true,
       filter: e.op(task.workspaceId, "=", e.uuid(params.workspaceId)),
       order_by: {
         expression: task.created,
@@ -107,7 +109,7 @@ export const IssueList = async ({
                   <div className="line-clamp-1">{task.title}</div>
                 </Link>
               </div>
-              <div className="flex space-x-3">
+              <div className="space-x-3 hidden lg:flex">
                 <div>
                   <ChangeDueDate
                     id={task.id as string}
@@ -153,6 +155,9 @@ export const IssueList = async ({
                   ) : (
                     <h1 className="w-[60px] px-1"></h1>
                   )}
+                </div>
+                <div>
+                  <ChangeAssignee id={task.id as string} members={members}  currentAssigneeId={task.assigneeId as string} />
                 </div>
               </div>
             </div>

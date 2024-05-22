@@ -28,9 +28,7 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Check
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -58,7 +56,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
 }) => {
   // const user = useCurrentUser();
   const [user, setUser] = useState<User | null>(null);
- 
+
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await useCurrentUser();
@@ -67,7 +65,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
