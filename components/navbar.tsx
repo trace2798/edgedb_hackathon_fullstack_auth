@@ -28,7 +28,7 @@ const NavBar: FC<NavBarProps> = async ({}) => {
 
   return (
     <>
-      <div className="pt-5 pb-2 shadow-md dark:shadow-sm dark:shadow-blue-50 px-[10vw] flex justify-between items-center fixed top-0 left-0 w-full backdrop-blur-sm">
+      <div className="pt-5 pb-2 z-20 dark:bg-zinc-950 shadow-md dark:shadow-sm dark:shadow-zinc-700 px-[10vw] flex justify-between items-center fixed top-0 left-0 w-full">
         <div>
           <Link
             href="/"

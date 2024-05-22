@@ -1,4 +1,5 @@
 import NavBar from "@/components/navbar";
+import { cn } from "@/lib/utils";
 
 type Props = {
   children: React.ReactNode;
@@ -7,8 +8,12 @@ type Props = {
 const MarketingLayout = ({ children }: Props) => {
   return (
     <>
-      <NavBar />
-      {children}
+     <div
+          
+        >
+        <NavBar />
+        {children}
+      </div>
     </>
   );
 };

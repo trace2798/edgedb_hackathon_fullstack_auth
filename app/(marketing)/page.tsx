@@ -1,32 +1,27 @@
 import { auth } from "@/edgedb";
+import { cn } from "@/lib/utils";
 
 export default async function Home() {
   // const session = await auth();
   // // console.log(session);
-  const session =  auth.getSession();
+  const session = auth.getSession();
   const signedIn = await session.isSignedIn();
   // console.log(signedIn);
   return (
     <>
       {/* <main className=""> */}
-      <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">
-        {/* <a href="/workspace">Workspace</a> */}
-        {/* <div className="max-w-7xl w-full">
-          <Spotlight
-            className="-top-40 -left-10 md:-left-32 md:-top-20 h-screen"
-            fill="white"
-          />
-          <Spotlight
-            className="h-[80vh] w-[50vw] top-10 left-full"
-            fill="purple"
-          />
-          <Spotlight className="left-80 top-28 h-[80vh] w-[50vw]" fill="blue" />
-        </div> */}
-        {/* <div className="h-screen flex items-center">
-
-        <Button hueValue={0}>Generate Site</Button>
-        </div> */}
-  
+      <main className="relative h-screen flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5  bg-gradient-to-b from-zinc-950 to-zinc-950 via-slate-900">
+        <div className=" max-w-3xl text-center">
+          <h1 className="text-7xl">
+            Efficiently manage your tasks with{" "}
+            <span className="tracking-wide bg-gradient-to-r bg-clip-text text-transparent from-indigo-500  to-indigo-300 via-indigo-600 hover:cursor-pointer animate-text">
+              Productivus
+            </span>
+          </h1>
+          <h2 className="text-2xl mt-5 text-muted-foreground">
+            Productivus is my submission for EdgeDB hackathon
+          </h2>
+        </div>
       </main>
     </>
   );

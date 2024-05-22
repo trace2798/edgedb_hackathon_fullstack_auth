@@ -3,6 +3,7 @@ import { Member } from "../members/_components/members/column";
 import AddIssueButton from "./_components/add-issue-button";
 import { IssueList } from "./_components/issue-list";
 import { Suspense } from "react";
+import { buttonVariants } from "@/components/ui/button";
 
 const client = createClient();
 
@@ -29,9 +30,11 @@ const Page = async ({ params }: { params: { workspaceId: string } }) => {
 
   return (
     <>
-      <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col rounded-2xl">
-        <div className="px-5 py-2 border border-secondary text-sm flex justify-between">
-          <h1>All Tasks</h1>
+      <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col">
+        <div className="px-5 py-2 border border-secondary text-sm flex justify-between items-center">
+          {/* <div className="flex items-baseline"> */}
+            <div className={buttonVariants({ variant: "ghost", size: "sidebar" })}>All Tasks</div>
+          {/* </div> */}
           <AddIssueButton members={members as Member[]} defaultStatus="todo" />
         </div>
         <Suspense fallback={<IssueList.Skeleton />}>

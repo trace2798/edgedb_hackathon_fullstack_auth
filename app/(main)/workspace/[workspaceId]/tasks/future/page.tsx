@@ -67,9 +67,15 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
   // console.log(tasks);
   return (
     <>
-      <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col rounded-2xl">
+      <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col">
         <div className="px-5 py-2 border border-secondary text-sm flex justify-between">
-          <h1>Future Tasks</h1>
+          <div className="flex items-baseline">
+            <div
+              className={buttonVariants({ variant: "ghost", size: "sidebar" })}
+            >
+              Future Tasks
+            </div>
+          </div>
           <AddIssueButton
             members={members as Member[]}
             defaultStatus="future"
