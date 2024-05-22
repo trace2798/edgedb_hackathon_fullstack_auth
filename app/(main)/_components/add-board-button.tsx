@@ -6,20 +6,20 @@ import { Member } from "../workspace/[workspaceId]/members/_components/members/c
 import { useBoards } from "@/hooks/use-boards";
 
 interface AddBoardButtonProps {
-  members: Member[];
-  currentWorkspaceId: string;
+  // members: Member[];
+  // currentWorkspaceId: string;
 }
 
 const AddBoardButton: FC<AddBoardButtonProps> = ({
-  members,
-  currentWorkspaceId,
+  // members,
+  // currentWorkspaceId,
 }) => {
   const board = useBoards();
   return (
     <>
       <Button
         onClick={() => {
-          board.onOpen(members);
+          board.onOpen();
         }}
         variant={"sidebar"}
         size={"sidebar"}

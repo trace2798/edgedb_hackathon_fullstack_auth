@@ -21,6 +21,14 @@ const nextConfig = {
           protocol: "https",
           hostname: "utfs.io",
         },
+        {
+          protocol: "https",
+          hostname: "img.playbook.com",
+        },
+        {
+          protocol: "http",
+          hostname: "localhost",
+        },
       ],
     },
   };

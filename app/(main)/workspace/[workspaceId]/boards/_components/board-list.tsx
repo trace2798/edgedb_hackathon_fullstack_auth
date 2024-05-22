@@ -15,9 +15,9 @@ import AddBoardButtonFooter from "./add-board-button-footer";
 const client = createClient();
 
 export const BoardList = async ({
-  params,
+  params, members
 }: {
-  params: { workspaceId: string };
+  params: { workspaceId: string }, members: Member[];
 }) => {
   const boards = await e
     .select(e.Board, (board) => ({
@@ -34,21 +34,21 @@ export const BoardList = async ({
   console.log(boards);
   const workspaceId = params.workspaceId;
   console.log(workspaceId);
-  const members = await e
-    .select(e.WorkspaceMember, (workspaceMember) => ({
-      id: true,
-      name: true,
-      email: true,
-      memberRole: true,
-      userId: true,
-      created: true,
-      filter: e.op(workspaceMember.workspaceId, "=", e.uuid(workspaceId)),
-      order_by: {
-        expression: workspaceMember.created,
-        direction: e.DESC,
-      },
-    }))
-    .run(client);
+  // const members = await e
+  //   .select(e.WorkspaceMember, (workspaceMember) => ({
+  //     id: true,
+  //     name: true,
+  //     email: true,
+  //     memberRole: true,
+  //     userId: true,
+  //     created: true,
+  //     filter: e.op(workspaceMember.workspaceId, "=", e.uuid(workspaceId)),
+  //     order_by: {
+  //       expression: workspaceMember.created,
+  //       direction: e.DESC,
+  //     },
+  //   }))
+  //   .run(client);
     console.log(members);
   return (
     <>
@@ -85,7 +85,7 @@ export const BoardList = async ({
                 title="Add A Board"
               /> */}
                 <AddBoardButtonFooter
-                  members={members as Member[]}
+                  // members={members as Member[]}
                   title="Add A Board"
                 />
               </CardFooter>

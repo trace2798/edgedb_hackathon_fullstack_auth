@@ -32,14 +32,14 @@ const formSchema = z.object({
   description: z.string().min(0).max(250),
   backgroundImage: z.string().optional(),
   creatorUserId: z.string().min(2).max(50),
-  currentUsersMembershipId: z.string().min(2).max(50),
+  // currentUsersMembershipId: z.string().min(2).max(50),
 });
 
 interface AddBoardModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
   const [user, setUser] = useState<User | null>(null);
- 
+
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await useCurrentUser();
@@ -48,30 +48,35 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const board = useBoards();
-  const members = useBoards((state) => state.members);
+  // const members = useBoards((state) => state.members);
   // const user = useCurrentUser();
   console.log(user);
-  const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
-    members as Member[],
-    user as User
-  ) as string;
+  // console.log(members);
+  // const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
+  //   members as Member[],
+  //   user as User
+  // ) as string;
+  // useEffect(() => {
+  //   form.setValue("currentUsersMembershipId", membershipIdOfCurrentUser);
+  // }, [membershipIdOfCurrentUser]);
+  // console.log(membershipIdOfCurrentUser);
   useEffect(() => {
-    form.setValue("currentUsersMembershipId", membershipIdOfCurrentUser);
-  }, [membershipIdOfCurrentUser]);
-  console.log(membershipIdOfCurrentUser);
+    form.setValue("creatorUserId", user?.id as string);
+  }, [user?.id]);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       description: "",
-      backgroundImage: "",
+      backgroundImage: "https://img.playbook.com/4CmZP_UkfhGGYyHpM6jbQxhJg358eUaJHNtL0Cc1KRo/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2RjNDY3ZGQ1/LTNkM2YtNDc2OS04/OTc2LWIzN2QxZTE4/MmYzNg",
+      // backgroundImage: "",
       creatorUserId: user?.id as string,
-      currentUsersMembershipId: membershipIdOfCurrentUser as string,
+      // currentUsersMembershipId: membershipIdOfCurrentUser as string,
     },
   });
   type FormData = z.infer<typeof formSchema>;
@@ -84,11 +89,11 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
 
       console.log(values);
       const response = await createBoard(
-        values.creatorUserId,
         values.name,
         values.description,
         values.backgroundImage as string,
-        values.currentUsersMembershipId
+        values.creatorUserId
+        // values.currentUsersMembershipId
       );
       console.log(response);
       if (response === "Done") {
@@ -181,7 +186,25 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
                       )}
                     />
                   </div>
-
+                  <div>
+                    <FormField
+                      control={form.control}
+                      name="creatorUserId"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <Input
+                              id="creatorUserId"
+                              value={user?.id}
+                              placeholder={user?.githubUsername}
+                              disabled
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <Button disabled={isLoading} className="mt-5">
                     {isLoading && <Spinner />}
                     Create Board
@@ -196,11 +219,11 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
   );
 }
 
-function findCurrentUsersMembershipId(members: Member[], user: User) {
-  for (let i = 0; i < members.length; i++) {
-    if (members[i].userId === user.id) {
-      return members[i].id;
-    }
-  }
-  return null;
-}
+// function findCurrentUsersMembershipId(members: Member[], user: User) {
+//   for (let i = 0; i < members.length; i++) {
+//     if (members[i].userId === user.id) {
+//       return members[i].id;
+//     }
+//   }
+//   return null;
+// }

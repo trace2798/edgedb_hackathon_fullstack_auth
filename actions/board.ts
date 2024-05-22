@@ -4,11 +4,11 @@ import e, { createClient } from "@/dbschema/edgeql-js";
 const client = createClient();
 
 export async function createBoard(
-  creatorUserId: string,
   name: string,
   description: string,
   backgroundImage: string,
-  currentUsersMembershipId: string
+  creatorUserId: string,
+  // currentUsersMembershipId: string
 ) {
   try {
     console.log(name, "NAME");
@@ -18,21 +18,20 @@ export async function createBoard(
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+      githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
+    console.log(user);
     if (!user) {
       return "User Not Found";
     }
     const verifyMember = await e
       .select(e.WorkspaceMember, (member) => ({
         id: true,
-        email: true,
-        name: true,
+      githubUsername: true,
         workspaceId: true,
-        filter_single: e.op(member.id, "=", e.uuid(currentUsersMembershipId)),
+        filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
     console.log(verifyMember);

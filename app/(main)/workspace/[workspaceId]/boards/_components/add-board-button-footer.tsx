@@ -6,12 +6,12 @@ import { Member } from "../../members/_components/members/column";
 import { useBoards } from "@/hooks/use-boards";
 
 interface AddBoardButtonFooterProps {
-  members: Member[];
+  // members: Member[];
   title: string;
 }
 
 const AddBoardButtonFooter: FC<AddBoardButtonFooterProps> = ({
-  members,
+  // members,
   title,
 }) => {
   const board = useBoards();
@@ -19,7 +19,7 @@ const AddBoardButtonFooter: FC<AddBoardButtonFooterProps> = ({
     <>
       <Button
         onClick={() => {
-          board.onOpen(members);
+          board.onOpen();
         }}
         className=" items-middle flex justify-start px-3 py-1 h-8 bg-blue-500 text-neutral-300 hover:bg-blue-600"
       >

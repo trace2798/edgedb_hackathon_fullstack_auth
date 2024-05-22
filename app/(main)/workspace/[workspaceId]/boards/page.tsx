@@ -10,8 +10,7 @@ const page = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
-      name: true,
-      email: true,
+      githubUsername: true,
       memberRole: true,
       userId: true,
       created: true,
@@ -37,13 +36,13 @@ const page = async ({ params }: { params: { workspaceId: string } }) => {
             </div>
             <div>
               <AddBoardButton
-                members={members as Member[]}
-                currentWorkspaceId={params.workspaceId}
+                // members={members as Member[]}
+                // currentWorkspaceId={params.workspaceId}
               />
             </div>
           </div>
           <Suspense fallback={<BoardList.Skeleton />}>
-            <BoardList params={params} />
+            <BoardList params={params} members={members as Member[]} />
           </Suspense>
         </div>
       </div>

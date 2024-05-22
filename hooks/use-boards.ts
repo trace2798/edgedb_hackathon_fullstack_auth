@@ -2,17 +2,17 @@ import { Member } from "@/app/(main)/workspace/[workspaceId]/members/_components
 import { create } from "zustand";
 
 type BoardsStore = {
-  members?: Member[];
+
   isOpen: boolean;
-  onOpen: (members: Member[]) => void;
+  onOpen: () => void;
   onClose: () => void;
 };
 
 export const useBoards = create<BoardsStore>((set) => ({
-  members: [],
+ 
   isOpen: false,
   defaultStatus: "",
-  onOpen: (members: Member[]) =>
-    set({ isOpen: true, members }),
+  onOpen: () =>
+    set({ isOpen: true }),
   onClose: () => set({ isOpen: false }),
 }));
