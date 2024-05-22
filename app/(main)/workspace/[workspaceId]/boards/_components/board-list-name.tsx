@@ -12,22 +12,22 @@ export const BoardListName = async ({
 }: {
   params: { workspaceId: string };
 }) => {
-  // const boards = await e
-  //   .select(e.Board, (board) => ({
-  //     id: true,
-  //     name: true,
-  //     backgroundImage: true,
-  //     filter: e.op(board.workspace.id, "=", e.uuid(params.workspaceId)),
-  //     order_by: {
-  //       expression: board.created,
-  //       direction: e.DESC,
-  //     },
-  //   }))
-  //   .run(client);
-  // console.log(boards);
+  const boards = await e
+    .select(e.Board, (board) => ({
+      id: true,
+      name: true,
+      backgroundImage: true,
+      filter: e.op(board.workspace.id, "=", e.uuid(params.workspaceId)),
+      order_by: {
+        expression: board.created,
+        direction: e.DESC,
+      },
+    }))
+    .run(client);
+  console.log(boards);
   return (
     <div className="flex flex-col">
-      {/* {boards.map((board) => (
+      {boards.map((board) => (
         <div
           key={board.id}
           className="flex flex-row justify-between items-center  hover:bg-secondary rounded-md"
@@ -45,7 +45,7 @@ export const BoardListName = async ({
           </Link>
           <BoardOptions id={board.id} workspaceId={params.workspaceId} />
         </div>
-      ))} */}
+      ))}
     </div>
   );
 };
