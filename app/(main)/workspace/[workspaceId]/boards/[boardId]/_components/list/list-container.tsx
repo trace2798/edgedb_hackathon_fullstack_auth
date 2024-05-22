@@ -3,19 +3,14 @@
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-import { Card, ListWithCards } from "@/types";
+// import { Card, ListWithCards } from "@/types";
 import { ListForm } from "./list-form";
 import { ListItem } from "./list-item";
 import { updateCardOrder } from "@/actions/update-card-order";
 import { updateListOrder } from "@/actions/update-list-order";
 import { Member } from "../../../../members/_components/members/column";
+import {  Card, ListWithCards } from "@/types";
 
-// type Card = {
-//   id: string;
-//   title: string;
-//   order: number;
-//   listId: string;
-// };
 interface ListContainerProps {
   data: ListWithCards[];
   boardId: string;

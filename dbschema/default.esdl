@@ -172,8 +172,35 @@ module default {
       required link board -> Board {
         on target delete delete source;
       }
-      
+      multi cards := .<list[is Card];
       index on (.board);
   }
+  type Card {
+      required title: str;
+      required order: int64;
+      description: str;
+      required listId := .list.id;
+      created: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
+      updated: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+        rewrite update using (cal::to_local_datetime(datetime_current(), 'UTC'));
+      } 
+      required list -> List {
+        on target delete delete source;
+      }
+      required status: str {
+        default := "todo";
+        index on (.status);
+      }
+      duedate: datetime;
+      required priority: str {
+        default := "no priority";
+        index on (.priority);
+      }
+      assigneeId: uuid;
+    index on (.list);
+}
 
 }

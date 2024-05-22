@@ -56,6 +56,28 @@ const $Board = $.makeType<$Board>(_.spec, "400b4297-1809-11ef-89de-0338c7b80a4e"
 
 const Board: $.$expr_PathNode<$.TypeSet<$Board, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Board, $.Cardinality.Many), null);
 
+export type $CardλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
+  "priority": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, true>;
+  "list": $.LinkDesc<$List, $.Cardinality.One, {}, false, false,  false, false>;
+  "status": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, true>;
+  "listId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
+  "assigneeId": $.PropertyDesc<_std.$uuid, $.Cardinality.AtMostOne, false, false, false, false>;
+  "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "description": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
+  "duedate": $.PropertyDesc<_std.$datetime, $.Cardinality.AtMostOne, false, false, false, false>;
+  "order": $.PropertyDesc<_std.$int64, $.Cardinality.One, false, false, false, false>;
+  "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
+  "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "<cards[is List]": $.LinkDesc<$List, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<cards": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
+}>;
+type $Card = $.ObjectType<"default::Card", $CardλShape, null, [
+  ..._std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588['__exclusives__'],
+]>;
+const $Card = $.makeType<$Card>(_.spec, "1ab7b80c-1814-11ef-bc28-a5690fb5c95a", _.syntax.literal);
+
+const Card: $.$expr_PathNode<$.TypeSet<$Card, $.Cardinality.Many>, null> = _.syntax.$PathNode($.$toSet($Card, $.Cardinality.Many), null);
+
 export type $ListλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c22d7eaa58588λShape & {
   "board": $.LinkDesc<$Board, $.Cardinality.One, {}, false, false,  false, false>;
   "boardId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
@@ -63,7 +85,10 @@ export type $ListλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c2
   "order": $.PropertyDesc<_std.$int64, $.Cardinality.One, false, false, false, false>;
   "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
+  "cards": $.LinkDesc<$Card, $.Cardinality.Many, {}, false, true,  false, false>;
   "<lists[is Board]": $.LinkDesc<$Board, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<list[is Card]": $.LinkDesc<$Card, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<list": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<lists": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
 type $List = $.ObjectType<"default::List", $ListλShape, null, [
@@ -226,13 +251,14 @@ const $default__globals: {  current_user: _.syntax.$expr_Global<
 
 
 
-export { MemberRole, Role, $Activity, Activity, $Board, Board, $List, List, $Task, Task, $TaskActivity, TaskActivity, $User, User, $WebsiteAddress, WebsiteAddress, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
+export { MemberRole, Role, $Activity, Activity, $Board, Board, $Card, Card, $List, List, $Task, Task, $TaskActivity, TaskActivity, $User, User, $WebsiteAddress, WebsiteAddress, $Workspace, Workspace, $WorkspaceMember, WorkspaceMember, $current_user, current_user };
 
 type __defaultExports = {
   "MemberRole": typeof MemberRole;
   "Role": typeof Role;
   "Activity": typeof Activity;
   "Board": typeof Board;
+  "Card": typeof Card;
   "List": typeof List;
   "Task": typeof Task;
   "TaskActivity": typeof TaskActivity;
@@ -248,6 +274,7 @@ const __defaultExports: __defaultExports = {
   "Role": Role,
   "Activity": Activity,
   "Board": Board,
+  "Card": Card,
   "List": List,
   "Task": Task,
   "TaskActivity": TaskActivity,
