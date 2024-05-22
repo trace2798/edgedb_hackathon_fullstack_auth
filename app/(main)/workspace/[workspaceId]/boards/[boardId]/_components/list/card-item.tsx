@@ -18,6 +18,7 @@ interface CardItemProps {
 }
 
 export const CardItem = ({ data, index, members }: CardItemProps) => {
+  
   const cardModal = useCardModal();
 
   return (
@@ -41,7 +42,7 @@ export const CardItem = ({ data, index, members }: CardItemProps) => {
             </div>
             <ChangeDueDate
               id={data.id}
-              currentDueDate={data.duedate as Date}
+              currentDueDate={data.duedate as Date | null}
             />
           </div>
           <div>

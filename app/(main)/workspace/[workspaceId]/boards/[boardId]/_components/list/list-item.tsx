@@ -1,17 +1,13 @@
 "use client";
 
-import { ElementRef, useRef, useState } from "react";
-import { Draggable, Droppable } from "@hello-pangea/dnd";
-
 import { cn } from "@/lib/utils";
-import { List, ListWithCards } from "@/types";
-
-// import { CardForm } from "./card-form";
-// import { CardItem } from "./card-item";
-import { ListHeader } from "./list-header";
-import { CardItem } from "./card-item";
+import { ListWithCards } from "@/types";
+import { Draggable, Droppable } from "@hello-pangea/dnd";
+import { ElementRef, useRef, useState } from "react";
 import { Member } from "../../../../members/_components/members/column";
 import CardForm from "./card-form";
+import { CardItem } from "./card-item";
+import { ListHeader } from "./list-header";
 
 interface ListItemProps {
   data: ListWithCards;

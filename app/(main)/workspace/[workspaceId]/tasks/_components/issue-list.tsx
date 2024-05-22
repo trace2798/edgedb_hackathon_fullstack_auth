@@ -21,6 +21,7 @@ import CommandMenuPriority from "./command-menu-priority";
 import DeleteTaskButton from "./delete-issue-button";
 import ChangeDueDate from "./change-due-date";
 import { LocalDateTime } from "edgedb";
+import { buttonVariants } from "@/components/ui/button";
 
 const client = createClient();
 
@@ -108,8 +109,11 @@ export const IssueList = async ({
               </div>
               <div className="flex space-x-3">
                 <div>
-                  {/* <ChangeDueDate id={task.id as string} currentDueDate={task.duedate as Date | null} /> */}
-                  {task.duedate ? (
+                  <ChangeDueDate
+                    id={task.id as string}
+                    currentDueDate={task.duedate as Date | null}
+                  />
+                  {/* {task.duedate ? (
                     <HoverCard>
                       <HoverCardTrigger asChild>
                         <h1 className="w-[60px] px-1">
@@ -122,13 +126,19 @@ export const IssueList = async ({
                     </HoverCard>
                   ) : (
                     <h1 className="w-[60px] px-1"></h1>
-                  )}
+                  )} */}
                 </div>
                 <div className="hidden lg:flex">
                   {task.updated ? (
                     <HoverCard>
-                      <HoverCardTrigger asChild>
-                        <h1 className="w-[60px] px-1 text-muted-foreground">
+                      <HoverCardTrigger
+                        asChild
+                        className={buttonVariants({
+                          variant: "sidebar",
+                          size: "sidebar",
+                        })}
+                      >
+                        <h1 className="w-[60px] px-1">
                           {format(parseISO(task?.updated.toString()), "MMM dd")}
                         </h1>
                       </HoverCardTrigger>

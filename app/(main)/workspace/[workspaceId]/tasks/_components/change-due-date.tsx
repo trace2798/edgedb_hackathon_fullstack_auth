@@ -23,6 +23,7 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
+import { CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -42,7 +43,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
   console.log(currentDueDate);
   // const user = useCurrentUser();
   const [user, setUser] = useState<User | null>(null);
- 
+
   useEffect(() => {
     const fetchUser = async () => {
       const currentUser = await useCurrentUser();
@@ -51,7 +52,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,11 +66,22 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
   const { watch } = form;
   const watchedDueDate = watch("duedate");
 
+  // useEffect(() => {
+  //   if (watchedDueDate !== currentDueDate) {
+  //     onSubmit({ id, duedate: watchedDueDate });
+  //   }
+  // }, [watchedDueDate]);
   useEffect(() => {
-    if (watchedDueDate !== currentDueDate) {
-      onSubmit({ id, duedate: watchedDueDate });
+    if (
+      watchedDueDate === null ||
+      (watchedDueDate &&
+        currentDueDate &&
+        watchedDueDate.getTime() === currentDueDate.getTime())
+    ) {
+      return;
     }
-  }, [watchedDueDate]);
+    onSubmit({ id, duedate: watchedDueDate });
+  }, [watchedDueDate, currentDueDate]);
 
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
@@ -118,11 +130,24 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
                             <HoverCardTrigger className="flex items-center">
                               {field.value ? (
                                 <>
+                                  {/* <CalendarClock className="w-4 h-4 mr-1" />
                                   {field.value ? (
                                     format(field.value, "MMM dd")
                                   ) : (
                                     <span>Due Date</span>
-                                  )}
+                                  )} */}
+                                  <div
+                                    className={`${
+                                      isPastDue(field.value)
+                                        ? "text-red-500" // Red for past due
+                                        : isToday(field.value)
+                                        ? "text-orange-500" // Orange for today
+                                        : "text-green-500" // Green for future due date
+                                    } flex items-center`}
+                                  >
+                                    <CalendarClock className="w-4 h-4 mr-1" />
+                                    <span>{format(field.value, "MMM dd")}</span>
+                                  </div>
                                 </>
                               ) : (
                                 "Due Date"
@@ -146,7 +171,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
                         mode="single"
                         selected={field.value ?? new Date()}
                         onSelect={field.onChange}
-                        disabled={(date) => date < new Date() || isLoading}
+                        disabled={(date) => date <= new Date() || isLoading}
                         initialFocus
                       />
                     </PopoverContent>
@@ -163,3 +188,13 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
 };
 
 export default ChangeDueDate;
+
+const isPastDue = (dueDate: Date) => {
+  const today = new Date();
+  return dueDate < today;
+};
+
+const isToday = (dueDate: Date) => {
+  const today = new Date();
+  return dueDate.toDateString() === today.toDateString();
+};

@@ -66,7 +66,7 @@ const CardMenuPriority: FC<CardMenuPriorityProps> = ({
   currentPriority,
   displayTitle = false,
 }) => {
-  // const user = useCurrentUser();
+
   const [user, setUser] = useState<User | null>(null);
  
   useEffect(() => {

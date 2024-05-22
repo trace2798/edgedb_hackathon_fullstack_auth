@@ -59,7 +59,7 @@ export const ListOptions = ({ data }: ListOptionsProps) => {
         {/* <div className="text-sm font-medium text-center text-neutral-600 pb-4">
           List actions
         </div> */}
-        <form action={onCopy}>
+        {/* <form action={onCopy}>
           <input hidden name="id" id="id" value={data.id} />
           <input hidden name="boardId" id="boardId" value={data.boardId} />
           <FormSubmit
@@ -68,8 +68,8 @@ export const ListOptions = ({ data }: ListOptionsProps) => {
           >
             Copy list...
           </FormSubmit>
-        </form>
-        <Separator />
+        </form> */}
+        {/* <Separator /> */}
         <form action={onDelete}>
           <input hidden name="id" id="id" value={data.id} />
           <input hidden name="boardId" id="boardId" value={data.boardId} />

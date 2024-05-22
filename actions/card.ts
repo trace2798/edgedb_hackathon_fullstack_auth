@@ -190,7 +190,7 @@ export async function updateCardStatus(
 ) {
   try {
     console.log(id);
-    console.log(status, "PRIORITY");
+    console.log(status, "status");
     console.log(userId, "USER ID");
 
     const user = await e
@@ -238,7 +238,7 @@ export async function updateCardDueDate(
 ) {
   try {
     console.log(id);
-    console.log(duedate, "PRIORITY");
+    console.log(duedate, "Duedate");
     console.log(userId, "USER ID");
 
     const user = await e
@@ -275,7 +275,7 @@ export async function updateCardDueDate(
     return "Card Due Date Updated";
   } catch (error) {
     console.error(error);
-    return "Error Updating Status";
+    return "Error Updating Due Date";
   }
 }
 
