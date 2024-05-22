@@ -155,7 +155,25 @@ module default {
       on target delete delete source;
     }
     required link workspaceMember -> WorkspaceMember;
+    multi lists := .<board[is List];
     index on (.workspace);
 }
+  type List {
+      required title: str;
+      required order: int64;
+      required boardId := .board.id;
+      created: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+      }
+      updated: cal::local_datetime {
+        default := cal::to_local_datetime(datetime_current(), 'UTC');
+        rewrite update using (cal::to_local_datetime(datetime_current(), 'UTC'));
+      }
+      required link board -> Board {
+        on target delete delete source;
+      }
+      
+      index on (.board);
+  }
 
 }

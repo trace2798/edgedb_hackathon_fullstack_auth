@@ -753,6 +753,7 @@ export type $ObjectTypeλShape = $.typeutil.flatten<$SourceλShape & Omit<$Consi
   "<__type__[is TaskActivity]": $.LinkDesc<_default.$TaskActivity, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__[is WebsiteAddress]": $.LinkDesc<_default.$WebsiteAddress, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__[is Board]": $.LinkDesc<_default.$Board, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<__type__[is List]": $.LinkDesc<_default.$List, $.Cardinality.Many, {}, false, false,  false, false>;
   "<__type__": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<intersection_of": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<subject": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
