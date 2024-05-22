@@ -27,9 +27,7 @@ import {
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Check
-} from "lucide-react";
+import { Check } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -66,7 +64,7 @@ const ChangeCardAssignee: FC<ChangeCardAssigneeProps> = ({
 
     fetchUser();
   }, []);
- 
+
   console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -135,7 +133,7 @@ const ChangeCardAssignee: FC<ChangeCardAssigneeProps> = ({
                                 ? members?.find(
                                     (member) =>
                                       (member?.id as string) === field.value
-                                  )?.name
+                                  )?.githubUsername
                                 : "Assignee"}
                             </HoverCardTrigger>
                             <HoverCardContent
@@ -166,7 +164,7 @@ const ChangeCardAssignee: FC<ChangeCardAssigneeProps> = ({
                               }}
                             >
                               <div className="flex items-center">
-                                {member.name}
+                                {member.githubUsername}
                               </div>
                               <Check
                                 className={cn(

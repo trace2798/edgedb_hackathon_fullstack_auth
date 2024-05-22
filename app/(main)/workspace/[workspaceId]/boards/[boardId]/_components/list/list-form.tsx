@@ -5,13 +5,9 @@ import { Plus, X } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import { useState, useRef, ElementRef } from "react";
 import { useEventListener, useOnClickOutside } from "usehooks-ts";
-
-// import { useAction } from "@/hooks/use-action";
 import { Button } from "@/components/ui/button";
-// import { createList } from "@/actions/create-list";
 import { FormInput } from "../form-input";
 import { FormSubmit } from "../form-submit";
-
 import { ListWrapper } from "./list-wrapper";
 import { createList } from "@/actions/lists";
 
@@ -41,17 +37,6 @@ export const ListForm = ({
     setIsEditing(false);
   };
 
-  // const { execute, fieldErrors } = useAction(createList, {
-  //   onSuccess: (data) => {
-  //     toast.success(`List "${data[0].title}" created`);
-  //     disableEditing();
-  //     router.refresh();
-  //   },
-  //   onError: (error) => {
-  //     toast.error(error);
-  //   },
-  // });
-  // const createList = ({ title, boardId, tenant_id }: any) => {};
   const onKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") {
       disableEditing();
@@ -82,7 +67,7 @@ export const ListForm = ({
         <form
           action={onSubmit}
           ref={formRef}
-          className="w-full p-3 rounded-md bg-white space-y-4 shadow-md"
+          className="w-full p-3 rounded-md bg-slate-600/50 space-y-4 shadow-md"
         >
           <FormInput
             ref={inputRef}

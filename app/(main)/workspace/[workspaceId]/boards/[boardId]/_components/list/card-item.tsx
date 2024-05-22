@@ -41,7 +41,7 @@ export const CardItem = ({ data, index, members }: CardItemProps) => {
             </div>
             <ChangeDueDate
               id={data.id}
-              currentDueDate={data.duedate as LocalDateTime}
+              currentDueDate={data.duedate as Date}
             />
           </div>
           <div>

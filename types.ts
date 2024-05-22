@@ -23,6 +23,7 @@ export type List = {
   title: string;
   order: number;
   boardId: string;
+  workspaceId: string;
   created: LocalDateTime;
   updated: LocalDateTime;
 };

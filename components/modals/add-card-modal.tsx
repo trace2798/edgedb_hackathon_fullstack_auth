@@ -14,8 +14,7 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
-  FormMessage,
+  FormMessage
 } from "@/components/ui/form";
 import {
   Popover,
@@ -24,15 +23,16 @@ import {
 } from "@/components/ui/popover";
 import { useCurrentUser } from "@/hooks/use-current-user";
 // import { useIssues } from "@/hooks/use-issues";
+import { createCard } from "@/actions/card";
+import { useAddCardModal } from "@/hooks/use-add-card-modal";
 import { priorities, statuses } from "@/lib/constant";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { Check } from "lucide-react";
-import { User } from "next-auth";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { SubmitHandler, useFieldArray, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import * as z from "zod";
 import { Spinner } from "../spinner";
@@ -40,8 +40,7 @@ import { Button } from "../ui/button";
 import { Calendar } from "../ui/calendar";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
-import { createCard } from "@/actions/card";
-import { useAddCardModal } from "@/hooks/use-add-card-modal";
+import { User } from "@/types";
 
 interface CardModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
@@ -343,7 +342,7 @@ export function AddCardModal({ className, ...props }: CardModalProps) {
                                   ? members?.find(
                                       (member) =>
                                         (member?.id as string) === field.value
-                                    )?.name
+                                    )?.githubUsername
                                   : "Assignee"}
                               </Button>
                             </FormControl>
@@ -363,7 +362,7 @@ export function AddCardModal({ className, ...props }: CardModalProps) {
                                     }}
                                   >
                                     <div className="flex items-center">
-                                      {member.name}
+                                      {member.githubUsername}
                                     </div>
                                     <Check
                                       className={cn(

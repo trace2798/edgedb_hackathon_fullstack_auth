@@ -3,7 +3,6 @@
 import { toast } from "sonner";
 import { useEffect, useState } from "react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
-// import { Card, ListWithCards } from "@/types";
 import { ListForm } from "./list-form";
 import { ListItem } from "./list-item";
 import { updateCardOrder } from "@/actions/update-card-order";

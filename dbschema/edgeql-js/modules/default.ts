@@ -86,8 +86,11 @@ export type $ListλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c2
   "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "cards": $.LinkDesc<$Card, $.Cardinality.Many, {}, false, true,  false, false>;
+  "workspace": $.LinkDesc<$Workspace, $.Cardinality.One, {}, false, false,  false, false>;
+  "workspaceId": $.PropertyDesc<_std.$uuid, $.Cardinality.One, false, true, false, false>;
   "<lists[is Board]": $.LinkDesc<$Board, $.Cardinality.Many, {}, false, false,  false, false>;
   "<list[is Card]": $.LinkDesc<$Card, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<lists[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
   "<list": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<lists": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;
@@ -189,12 +192,14 @@ export type $WorkspaceλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73
   "activities": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, true,  false, false>;
   "tasks": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, true,  false, false>;
   "boards": $.LinkDesc<$Board, $.Cardinality.Many, {}, false, true,  false, false>;
+  "lists": $.LinkDesc<$List, $.Cardinality.Many, {}, false, true,  false, false>;
   "<workspaces[is User]": $.LinkDesc<$User, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces[is current_user]": $.LinkDesc<$current_user, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is Activity]": $.LinkDesc<$Activity, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is WorkspaceMember]": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is Task]": $.LinkDesc<$Task, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace[is Board]": $.LinkDesc<$Board, $.Cardinality.Many, {}, false, false,  false, false>;
+  "<workspace[is List]": $.LinkDesc<$List, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspace": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
   "<workspaces": $.LinkDesc<$.ObjectType, $.Cardinality.Many, {}, false, false,  false, false>;
 }>;

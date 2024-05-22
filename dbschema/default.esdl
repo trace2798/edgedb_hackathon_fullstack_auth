@@ -49,7 +49,8 @@ module default {
     multi workspaceMembers := .<workspace[is WorkspaceMember];
     multi activities := .<workspace[is Activity];
     multi tasks := .<workspace[is Task];
-     multi boards := .<workspace[is Board];
+    multi boards := .<workspace[is Board];
+    multi lists := .<workspace[is List];
   }
 
   type WorkspaceMember {
@@ -162,12 +163,16 @@ module default {
       required title: str;
       required order: int64;
       required boardId := .board.id;
+      required workspaceId := .workspace.id;
       created: cal::local_datetime {
         default := cal::to_local_datetime(datetime_current(), 'UTC');
       }
       updated: cal::local_datetime {
         default := cal::to_local_datetime(datetime_current(), 'UTC');
         rewrite update using (cal::to_local_datetime(datetime_current(), 'UTC'));
+      }
+      required workspace -> Workspace {
+        on target delete delete source;
       }
       required link board -> Board {
         on target delete delete source;
