@@ -31,7 +31,7 @@ export const ListContainer = ({
   workspaceId,
   members,
 }: ListContainerProps) => {
-  console.log(data);
+  // console.log(data);
   const [orderedData, setOrderedData] = useState(data);
 
   const executeUpdateListOrder = async ({
@@ -39,9 +39,9 @@ export const ListContainer = ({
     boardId,
     workspaceId,
   }: any) => {
-    console.log(items);
+    // console.log(items);
     const response = await updateListOrder(items, boardId, workspaceId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("List reordered");
     } else {
@@ -55,7 +55,7 @@ export const ListContainer = ({
     workspaceId,
   }: any) => {
     const response = await updateCardOrder(items, boardId, workspaceId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("Card reordered");
     } else {
@@ -129,7 +129,7 @@ export const ListContainer = ({
         reorderedCards.forEach((card: Card, idx: number) => {
           card.order = idx;
         });
-        console.log(reorderedCards);
+        // console.log(reorderedCards);
         sourceList.cards = reorderedCards;
 
         setOrderedData(newOrderedData);

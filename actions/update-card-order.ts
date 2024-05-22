@@ -9,9 +9,9 @@ export async function updateCardOrder(
   workspaceId: string
 ) {
   try {
-    console.log(items, "ITEMS");
-    console.log(boardId, "BOARD ID");
-    console.log(workspaceId, "WORKSPACE ID");
+    // console.log(items, "ITEMS");
+    // console.log(boardId, "BOARD ID");
+    // console.log(workspaceId, "WORKSPACE ID");
 
     for (let item of items) {
       if (item.list_id) {
@@ -22,7 +22,7 @@ export async function updateCardOrder(
             filter_single: e.op(list.id, "=", e.uuid(item.list_id as string)),
           }))
           .run(client);
-        console.log(newList);
+        // console.log(newList);
         const query = e.update(e.Card, () => ({
           filter_single: { id: item.id },
           set: {
@@ -33,7 +33,7 @@ export async function updateCardOrder(
           },
         }));
         await query.run(client);
-        console.log(query);
+        // console.log(query);
       } else {
         const query = e.update(e.Card, () => ({
           filter_single: { id: item.id },

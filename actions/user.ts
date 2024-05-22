@@ -14,7 +14,7 @@ export const getUserById = async (id: string) => {
         filter_single: e.op(user.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     return user;
   } catch {
     return null;
@@ -29,7 +29,7 @@ export const getAccountByUserId = async (userId: string) => {
         filter_single: e.op(account.userId, "=", e.uuid(userId)),
       }))
       .run(client);
-    console.log(account);
+    // console.log(account);
     return account;
   } catch {
     return null;

@@ -22,13 +22,13 @@ const Page: FC<PageProps> = async ({}) => {
   // const session = await auth();
   // const session =  auth.getSession();
   // const signedIn = await session.isSignedIn();
-  // console.log(signedIn)
-  // console.log(session);
+  // // console.log(signedIn)
+  // // console.log(session);
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const user = (await useCurrentUser()) as User;
-  console.log(user);
+  // console.log(user);
   const workspaces = await e
     .select(e.Workspace, (workspace) => ({
       id: true,
@@ -40,7 +40,7 @@ const Page: FC<PageProps> = async ({}) => {
       },
     }))
     .run(client);
-  console.log(workspaces);
+  // console.log(workspaces);
   // // query selects Workspace objects where the current user is a member but not the creator, and it returns the id and name properties of these workspaces.
   const workspaceMember = await e
     .select(e.Workspace, (workspace) => ({
@@ -61,7 +61,7 @@ const Page: FC<PageProps> = async ({}) => {
       },
     }))
     .run(client);
-  console.log(workspaceMember);
+  // console.log(workspaceMember);
   return (
     <>
       <div className=" flex flex-col pt-24 items-center text-center bg-zinc-950 h-[100vh] w-[100vw]">

@@ -31,12 +31,12 @@ const DeleteBoard = ({
   boardId: string;
   status: any;
 }) => {
-  console.log(workspaceId);
-  console.log(boardId);
+  // console.log(workspaceId);
+  // console.log(boardId);
   const router = useRouter();
   const handleWorkspaceDelete = async ({}: {}) => {
     const response = await deleteBoard(boardId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       router.push(`/workspace/${workspaceId}/boards`);
       toast.success("Board Deleted");

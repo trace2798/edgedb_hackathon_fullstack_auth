@@ -31,9 +31,9 @@ export const BoardList = async ({
       },
     }))
     .run(client);
-  console.log(boards);
+  // console.log(boards);
   const workspaceId = params.workspaceId;
-  console.log(workspaceId);
+  // console.log(workspaceId);
   // const members = await e
   //   .select(e.WorkspaceMember, (workspaceMember) => ({
   //     id: true,
@@ -49,7 +49,7 @@ export const BoardList = async ({
   //     },
   //   }))
   //   .run(client);
-    console.log(members);
+    // console.log(members);
   return (
     <>
       <div>

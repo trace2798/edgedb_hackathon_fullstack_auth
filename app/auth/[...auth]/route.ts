@@ -9,21 +9,21 @@ export const { GET, POST } = auth.createAuthRouteHandlers({
     }
 
     if (!tokenData) {
-      console.log("email verification required");
+      // console.log("email verification required");
     }
 
     if (true) {
       if (provider === "builtin::oauth_github") {
         const octokit = new Octokit({ auth: tokenData?.provider_token });
-        console.log(octokit);
+        // console.log(octokit);
         const result = await octokit.request("GET /user", {
           headers: {
             "X-GitHub-Api-Version": "2022-11-28",
           },
         });
-        console.log(result);
+        // console.log(result);
         const client = auth.getSession().client;
-        console.log(client);
+        // console.log(client);
         const resultEdge = await client.query(
           `
         INSERT User {

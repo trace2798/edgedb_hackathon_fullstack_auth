@@ -33,7 +33,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       },
     }))
     .run(client);
-  console.log(task);
+  // console.log(task);
   if (!task) {
     return <div>Task not found</div>;
   }

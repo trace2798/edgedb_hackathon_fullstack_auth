@@ -16,9 +16,9 @@ export const MobileHeader = async ({
   // const session = await auth();
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const user = (await useCurrentUser()) as User;
-  console.log(user);
+  // console.log(user);
   const workspaces = await e
     .select(e.Workspace, (workspace) => ({
       id: true,
@@ -30,8 +30,8 @@ export const MobileHeader = async ({
       },
     }))
     .run(client);
-  console.log(workspaceId);
-  console.log(workspaces);
+  // console.log(workspaceId);
+  // console.log(workspaces);
 
   // const workspaceMember = await e
   //   .select(e.Workspace, (workspace) => ({
@@ -52,9 +52,9 @@ export const MobileHeader = async ({
   //     },
   //   }))
   //   .run(client);
-  // console.log(workspaceMember);
+  // // console.log(workspaceMember);
   // const combinedWorkspaces = [...workspaces, ...workspaceMember];
-  // console.log(combinedWorkspaces);
+  // // console.log(combinedWorkspaces);
   return (
     <nav className="lg:hidden px-6 h-[50px] flex items-center justify-between bg-secondary border-b fixed top-0 w-full z-50">
       <MobileSidebar workspaceId={workspaceId} />

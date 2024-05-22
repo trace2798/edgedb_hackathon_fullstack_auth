@@ -37,10 +37,10 @@ const DeleteTaskButton: FC<DeleteTaskButtonProps> = ({ taskId }) => {
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const handleTaskDelete = async ({}: {}) => {
     const response = await deleteTask(taskId, user?.id as string);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("Task Deleted");
       router.refresh();

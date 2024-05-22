@@ -11,10 +11,10 @@ export async function createBoard(
   // currentUsersMembershipId: string
 ) {
   try {
-    console.log(name, "NAME");
-    console.log(description, "DESCRIPTION");
-    console.log(backgroundImage, "BACKGROUND IMAGE");
-    console.log(creatorUserId, "CREATOR USER ID");
+    // console.log(name, "NAME");
+    // console.log(description, "DESCRIPTION");
+    // console.log(backgroundImage, "BACKGROUND IMAGE");
+    // console.log(creatorUserId, "CREATOR USER ID");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -22,7 +22,7 @@ export async function createBoard(
         filter_single: e.op(user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return "User Not Found";
     }
@@ -34,7 +34,7 @@ export async function createBoard(
         filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
-    console.log(verifyMember);
+    // console.log(verifyMember);
     if (!verifyMember) {
       return "Member not found";
     }
@@ -59,7 +59,7 @@ export async function createBoard(
         })),
       })
       .run(client);
-    console.log(newBoard);
+    // console.log(newBoard);
     return "Done";
   } catch (error) {
     return "Error creating Board";
@@ -68,7 +68,7 @@ export async function createBoard(
 
 export async function updateBoardName(boardId: string, name: string) {
   try {
-    console.log(name, "NAME");
+    // console.log(name, "NAME");
 
     // const verifyMember = await e
     //   .select(e.WorkspaceMember, (member) => ({
@@ -79,7 +79,7 @@ export async function updateBoardName(boardId: string, name: string) {
     //     filter_single: e.op(member.id, "=", e.uuid(currentUsersMembershipId)),
     //   }))
     //   .run(client);
-    // console.log(verifyMember);
+    // // console.log(verifyMember);
     // if (!verifyMember) {
     //   return "Member not found";
     // }
@@ -89,7 +89,7 @@ export async function updateBoardName(boardId: string, name: string) {
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
-    console.log(board);
+    // console.log(board);
 
     const updateBoardTitle = await e
       .update(e.Board, () => ({
@@ -99,7 +99,7 @@ export async function updateBoardName(boardId: string, name: string) {
         },
       }))
       .run(client);
-    console.log(updateBoardTitle);
+    // console.log(updateBoardTitle);
 
     return "Done";
   } catch (error) {

@@ -61,10 +61,10 @@ const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
 
   // const user = useCurrentUser();
-  console.log(task);
+  // console.log(task);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -79,7 +79,7 @@ const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
   });
   type FormData = z.infer<typeof formSchema>;
   {
-    console.log(form.getValues());
+    // console.log(form.getValues());
   }
   const { watch } = form;
   const watchedFields = watch();
@@ -98,7 +98,7 @@ const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
       setLoading(true);
-      console.log(values);
+      // console.log(values);
       const response = await updateTask(
         values.id,
         user?.id as string,
@@ -271,7 +271,7 @@ const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
               endpoint="cardFile"
               value={""}
               onChange={(value) => {
-                console.log(value);
+                // console.log(value);
               }}
             /> */}
           </div>

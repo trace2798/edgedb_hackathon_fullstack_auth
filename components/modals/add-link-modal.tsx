@@ -56,7 +56,7 @@ const AddLinkModal: FC<AddLinkModalProps> = ({ taskId }) => {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -76,7 +76,7 @@ const AddLinkModal: FC<AddLinkModalProps> = ({ taskId }) => {
     // Update the values object
     values.url = url;
 
-    console.log(values);
+    // console.log(values);
     const response = await createLink(
       user?.githubUsername as string,
       taskId,

@@ -47,11 +47,11 @@ export const ListForm = ({
   useOnClickOutside(formRef, disableEditing);
 
   const onSubmit = async (formData: FormData) => {
-    console.log(formData);
+    // console.log(formData);
     const title = formData.get("title") as string;
-    console.log(title);
+    // console.log(title);
     const response = await createList(title, boardId, workspaceId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success(`List "${title}" created`);
       disableEditing();

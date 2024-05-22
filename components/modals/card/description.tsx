@@ -30,7 +30,7 @@ export const Description = ({ data }: DescriptionProps) => {
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const params = useParams();
   const [isEditing, setIsEditing] = useState(false);

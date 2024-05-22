@@ -12,14 +12,14 @@ type Props = {
 
 export const SidebarItem = ({ label, href }: Props) => {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
   // const active = pathname === href;
   const parts = pathname.split("/");
   const firstTwoParts = parts.slice(1, 3); // slice(1, 3) because array indices start at 0 and parts[0] will be an empty string due to the leading '/'
   const newPath = "/" + firstTwoParts.join("/");
   const lastPart = parts[parts.length - 1];
-  console.log(lastPart);
-  console.log(href);
+  // console.log(lastPart);
+  // console.log(href);
   const active = `/${lastPart}` === href || pathname.endsWith(href);
 
   return (

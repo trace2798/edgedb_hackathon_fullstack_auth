@@ -17,7 +17,7 @@ const client = createClient();
 //         filter_single: e.op(user.email, "=", e.str_lower(email)),
 //       }))
 //       .run(client);
-//     console.log(user);
+//     // console.log(user);
 //     return user;
 //   } catch {
 //     return null;
@@ -32,9 +32,9 @@ export const addMemberByGithubUsername = async (
     // const session = await auth();
     const session = auth.getSession();
     const signedIn = await session.isSignedIn();
-    console.log(session);
+    // console.log(session);
     const currentUserFe = (await useCurrentUser()) as User;
-    console.log(currentUserFe);
+    // console.log(currentUserFe);
     const currentUser = await e
       .select(e.User, (user) => ({
         id: true,
@@ -53,7 +53,7 @@ export const addMemberByGithubUsername = async (
         filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return "User not found in database";
     }
@@ -64,7 +64,7 @@ export const addMemberByGithubUsername = async (
         filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
       }))
       .run(client);
-    console.log(workspace);
+    // console.log(workspace);
     if (!workspace) {
       return "Workspace not found in database";
     }
@@ -78,7 +78,7 @@ export const addMemberByGithubUsername = async (
         ),
       }))
       .run(client);
-    console.log(workspaceMember);
+    // console.log(workspaceMember);
     if (workspaceMember) {
       return "User is already a member of this workspace";
     }
@@ -94,7 +94,7 @@ export const addMemberByGithubUsername = async (
         })),
       })
       .run(client);
-    console.log(addNewWorkspaceMember);
+    // console.log(addNewWorkspaceMember);
     const activity = await e
       .insert(e.Activity, {
         message:
@@ -116,13 +116,13 @@ export const transferOwnership = async (
   // membershipId: string
 ) => {
   try {
-    console.log(githubUsername, workspaceId);
+    // console.log(githubUsername, workspaceId);
     // const session = await auth();
     const session = auth.getSession();
     const signedIn = await session.isSignedIn();
-    console.log(session);
+    // console.log(session);
     const currentUserFe = (await useCurrentUser()) as User;
-    console.log(currentUserFe);
+    // console.log(currentUserFe);
     const currentUser = await e
       .select(e.User, (user) => ({
         id: true,
@@ -141,7 +141,7 @@ export const transferOwnership = async (
         filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return "User not found in database";
     }
@@ -153,7 +153,7 @@ export const transferOwnership = async (
         filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
       }))
       .run(client);
-    console.log(workspace);
+    // console.log(workspace);
 
     if (!workspace) {
       return "Workspace not found in database";

@@ -9,7 +9,7 @@ export async function createList(
   workspaceId: string
 ) {
   try {
-    console.log(title, boardId, workspaceId);
+    // console.log(title, boardId, workspaceId);
 
     const board = await e
       .select(e.Board, (board) => ({
@@ -17,7 +17,7 @@ export async function createList(
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
-    console.log(board);
+    // console.log(board);
     if (!board) {
       return "Error: Board not found";
     }
@@ -33,9 +33,9 @@ export async function createList(
         limit: 1,
       }))
       .run(client);
-    console.log(lastList);
+    // console.log(lastList);
     const newOrder = lastList ? lastList.order + 1 : 1;
-    console.log(newOrder);
+    // console.log(newOrder);
     const createList = await e
       .insert(e.List, {
         title: title as string,
@@ -48,7 +48,7 @@ export async function createList(
         })),
       })
       .run(client);
-    console.log(createList);
+    // console.log(createList);
     // const issueActivity = await e
     //   .insert(e.IssueActivity, {
     //     message: `${userName} added an link called ${url}.` as string,
@@ -57,7 +57,7 @@ export async function createList(
     //     })),
     //   })
     //   .run(client);
-    // console.log(issueActivity);
+    // // console.log(issueActivity);
     return "Done";
   } catch (error) {
     return "Error Adding Link";

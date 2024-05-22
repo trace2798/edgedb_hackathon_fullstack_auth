@@ -35,7 +35,7 @@ const AddMemberForm: FC<AddMemberFormProps> = ({ workspaceId }) => {
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await addMemberByGithubUsername(values.githubUsername, workspaceId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("Member Added");
       form.reset();

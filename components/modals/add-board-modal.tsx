@@ -49,14 +49,14 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const board = useBoards();
   // const members = useBoards((state) => state.members);
   // const user = useCurrentUser();
-  console.log(user);
-  // console.log(members);
+  // console.log(user);
+  // // console.log(members);
   // const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
   //   members as Member[],
   //   user as User
@@ -64,7 +64,7 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
   // useEffect(() => {
   //   form.setValue("currentUsersMembershipId", membershipIdOfCurrentUser);
   // }, [membershipIdOfCurrentUser]);
-  // console.log(membershipIdOfCurrentUser);
+  // // console.log(membershipIdOfCurrentUser);
   useEffect(() => {
     form.setValue("creatorUserId", user?.id as string);
   }, [user?.id]);
@@ -81,13 +81,13 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
   });
   type FormData = z.infer<typeof formSchema>;
   {
-    console.log(form.getValues());
+    // console.log(form.getValues());
   }
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
       setLoading(true);
 
-      console.log(values);
+      // console.log(values);
       const response = await createBoard(
         values.name,
         values.description,
@@ -95,7 +95,7 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
         values.creatorUserId
         // values.currentUsersMembershipId
       );
-      console.log(response);
+      // console.log(response);
       if (response === "Done") {
         toast.success("Board Created.");
         form.reset();

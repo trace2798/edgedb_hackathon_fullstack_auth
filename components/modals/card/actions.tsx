@@ -55,7 +55,7 @@ export const Actions = ({ data }: ActionsProps) => {
       params.boardId as string,
       data.listId
     );
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       router.refresh();
       cardModal.onClose();
@@ -71,7 +71,7 @@ export const Actions = ({ data }: ActionsProps) => {
       params.workspaceId as string,
       params.boardId as string
     );
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       router.refresh();
       cardModal.onClose();

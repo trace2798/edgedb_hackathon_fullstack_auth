@@ -23,10 +23,10 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
   // const session = await auth();
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const user = (await useCurrentUser()) as User;
-  console.log(user);
-  console.log(workspaceId);
+  // console.log(user);
+  // console.log(workspaceId);
   const workspaces = await e
     .select(e.Workspace, (workspace) => ({
       id: true,
@@ -38,8 +38,8 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       },
     }))
     .run(client);
-  console.log(workspaceId);
-  console.log(workspaces);
+  // console.log(workspaceId);
+  // console.log(workspaces);
 
   const workspaceMember = await e
     .select(e.Workspace, (workspace) => ({
@@ -60,9 +60,9 @@ export const Sidebar = async ({ className, workspaceId }: Props) => {
       },
     }))
     .run(client);
-  console.log(workspaceMember);
+  // console.log(workspaceMember);
   const combinedWorkspaces = [...workspaces, ...workspaceMember];
-  console.log(combinedWorkspaces);
+  // console.log(combinedWorkspaces);
   return (
     <div
       className={cn(

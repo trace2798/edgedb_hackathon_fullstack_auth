@@ -40,7 +40,7 @@ interface ChangeDueDateProps {
 }
 
 const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
-  console.log(currentDueDate);
+  // console.log(currentDueDate);
   // const user = useCurrentUser();
   const [user, setUser] = useState<User | null>(null);
 
@@ -53,7 +53,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -85,7 +85,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
 
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       const response = await updateDueDate(
         values.id,
         values.duedate as Date,

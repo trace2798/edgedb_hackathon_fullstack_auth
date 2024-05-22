@@ -66,21 +66,21 @@ export function AddCardModal({ className, ...props }: CardModalProps) {
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const card = useAddCardModal();
   const members = useAddCardModal((state) => state.members);
   const listId = useAddCardModal((state) => state.listId);
 
-  //   console.log(defaultStatus);
-  console.log(listId);
-  console.log(members);
+  //   // console.log(defaultStatus);
+  // console.log(listId);
+  // console.log(members);
   // const user = useCurrentUser();
-  console.log(user);
+  // console.log(user);
   const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
     members as Member[],
     user as User
   ) as string;
-  console.log(membershipIdOfCurrentUser);
+  // console.log(membershipIdOfCurrentUser);
 
   useEffect(() => {
     form.setValue("assigneeId", membershipIdOfCurrentUser);
@@ -102,13 +102,13 @@ export function AddCardModal({ className, ...props }: CardModalProps) {
   });
   type FormData = z.infer<typeof formSchema>;
   {
-    console.log(form.getValues());
+    // console.log(form.getValues());
   }
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
       setLoading(true);
 
-      console.log(values);
+      // console.log(values);
       await createCard(
         user?.id as string,
         values.title,

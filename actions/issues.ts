@@ -15,12 +15,12 @@ export async function createTask(
   duedate: Date | undefined
 ) {
   try {
-    console.log(userId, "USER ID");
-    console.log(title, "CONTENT");
-    console.log(status, "STATUS");
-    console.log(priority, "PRIORITY");
-    console.log(assigneeId, "ASSIGNEE ID");
-    console.log(duedate, "DUE DATE");
+    // console.log(userId, "USER ID");
+    // console.log(title, "CONTENT");
+    // console.log(status, "STATUS");
+    // console.log(priority, "PRIORITY");
+    // console.log(assigneeId, "ASSIGNEE ID");
+    // console.log(duedate, "DUE DATE");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -39,7 +39,7 @@ export async function createTask(
         filter_single: e.op(member.id, "=", e.uuid(assigneeId)),
       }))
       .run(client);
-    console.log(verifyMember);
+    // console.log(verifyMember);
     const newTask = await e
       .insert(e.Task, {
         title: title as string,
@@ -60,7 +60,7 @@ export async function createTask(
         assigneeId: e.uuid(assigneeId as string),
       })
       .run(client);
-    console.log(newTask);
+    // console.log(newTask);
 
     const activity = await e
       .insert(e.Activity, {
@@ -75,7 +75,7 @@ export async function createTask(
         })),
       })
       .run(client);
-    console.log(activity);
+    // console.log(activity);
     const taskActivity = await e
       .insert(e.TaskActivity, {
         message: `${user.githubUsername} created this issue.` as string,
@@ -98,9 +98,9 @@ export async function updatePriority(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(priority, "PRIORITY");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(priority, "PRIORITY");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -121,7 +121,7 @@ export async function updatePriority(
         filter_single: e.op(task.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task not found";
     }
@@ -134,7 +134,7 @@ export async function updatePriority(
         },
       }))
       .run(client);
-    console.log(updateTaskPriority);
+    // console.log(updateTaskPriority);
 
     const taskActivity = await e
       .insert(e.TaskActivity, {
@@ -155,9 +155,9 @@ export async function updatePriority(
 
 export async function updateStatus(id: string, status: string, userId: string) {
   try {
-    console.log(id);
-    console.log(status, "Status");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(status, "Status");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -178,7 +178,7 @@ export async function updateStatus(id: string, status: string, userId: string) {
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task not found";
     }
@@ -191,7 +191,7 @@ export async function updateStatus(id: string, status: string, userId: string) {
         },
       }))
       .run(client);
-    console.log(updateTaskPriority);
+    // console.log(updateTaskPriority);
 
     const issueActivity = await e
       .insert(e.TaskActivity, {
@@ -216,9 +216,9 @@ export async function updateAssigneeId(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(assigneeId, "Status");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(assigneeId, "Status");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -239,7 +239,7 @@ export async function updateAssigneeId(
         filter_single: e.op(task.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task not found";
     }
@@ -255,7 +255,7 @@ export async function updateAssigneeId(
         ),
       }))
       .run(client);
-    console.log(member);
+    // console.log(member);
     const updateIssueAssignee = await e
       .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
@@ -264,7 +264,7 @@ export async function updateAssigneeId(
         },
       }))
       .run(client);
-    console.log(updateIssueAssignee);
+    // console.log(updateIssueAssignee);
 
     const issueActivity = await e
       .insert(e.TaskActivity, {
@@ -289,9 +289,9 @@ export async function updateDueDate(
   userId: string
 ) {
   try {
-    console.log(id);
-    // console.log(status, "Status");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // // console.log(status, "Status");
+    // console.log(userId, "USER ID");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -311,7 +311,7 @@ export async function updateDueDate(
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task not found";
     }
@@ -323,7 +323,7 @@ export async function updateDueDate(
         },
       }))
       .run(client);
-    console.log(updateTaskDueDate);
+    // console.log(updateTaskDueDate);
 
     const issueActivity = await e
       .insert(e.TaskActivity, {
@@ -354,7 +354,7 @@ export async function deleteTask(id: string, currentUserId: string) {
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task Not Found";
     }
@@ -370,7 +370,7 @@ export async function deleteTask(id: string, currentUserId: string) {
         ),
       }))
       .run(client);
-    console.log(currentUserMemberInfo);
+    // console.log(currentUserMemberInfo);
     if (
       findTask.workspaceMember.id === currentUserMemberInfo?.id ||
       currentUserMemberInfo?.memberRole === "owner"
@@ -398,10 +398,10 @@ export async function updateTask(
   duedate: Date | null
 ) {
   try {
-    console.log(id);
-    console.log(userId, "USER ID");
-    console.log(title, "CONTENT");
-    console.log(duedate, "DUE DATE");
+    // console.log(id);
+    // console.log(userId, "USER ID");
+    // console.log(title, "CONTENT");
+    // console.log(duedate, "DUE DATE");
     const findTask = await e
       .select(e.Task, (issue) => ({
         id: true,
@@ -412,7 +412,7 @@ export async function updateTask(
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -434,7 +434,7 @@ export async function updateTask(
         },
       }))
       .run(client);
-    console.log(updatedIssue);
+    // console.log(updatedIssue);
 
     const issueActivity = await e
       .insert(e.TaskActivity, {

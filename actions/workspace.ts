@@ -10,8 +10,8 @@ export async function createWorkspace(
   description: string
 ) {
   try {
-    console.log(userId, "USER ID");
-    console.log(name, "CONTENT");
+    // console.log(userId, "USER ID");
+    // console.log(name, "CONTENT");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -21,7 +21,7 @@ export async function createWorkspace(
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return "User Not Found";
     }
@@ -34,7 +34,7 @@ export async function createWorkspace(
         })),
       })
       .run(client);
-    console.log(newWorkspace);
+    // console.log(newWorkspace);
 
     const addWorkspaceCreatorAsOwner = await e
       .insert(e.WorkspaceMember, {
@@ -48,7 +48,7 @@ export async function createWorkspace(
         })),
       })
       .run(client);
-    console.log(addWorkspaceCreatorAsOwner);
+    // console.log(addWorkspaceCreatorAsOwner);
 
     const activity = await e
       .insert(e.Activity, {
@@ -59,7 +59,7 @@ export async function createWorkspace(
         })),
       })
       .run(client);
-    console.log(activity);
+    // console.log(activity);
 
     return "Workspace Created";
   } catch (error) {
@@ -78,7 +78,7 @@ export async function deleteWorkspace(workspaceId: string, memberRole: string) {
         }))
         .run(client);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
     revalidatePath(`/workspace`);
     return "Done";

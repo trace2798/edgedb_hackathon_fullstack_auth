@@ -24,7 +24,7 @@ export const BoardListName = async ({
       },
     }))
     .run(client);
-  console.log(boards);
+  // console.log(boards);
   return (
     <div className="flex flex-col">
       {boards.map((board) => (

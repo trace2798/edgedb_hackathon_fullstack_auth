@@ -2,10 +2,10 @@ import { auth } from "@/edgedb";
 
 export default async function Home() {
   // const session = await auth();
-  // console.log(session);
+  // // console.log(session);
   const session =  auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(signedIn);
+  // console.log(signedIn);
   return (
     <>
       {/* <main className=""> */}

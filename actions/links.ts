@@ -19,7 +19,7 @@ export async function createLink(
         filter_single: e.op(task.id, "=", e.uuid(taskId)),
       }))
       .run(client);
-    console.log(findTask);
+    // console.log(findTask);
     if (!findTask) {
       return "Task not found";
     }
@@ -32,7 +32,7 @@ export async function createLink(
         })),
       })
       .run(client);
-    console.log(createLink);
+    // console.log(createLink);
     const taskActivity = await e
       .insert(e.TaskActivity, {
         message: `${githubUsername} added an link called ${url}.` as string,
@@ -41,7 +41,7 @@ export async function createLink(
         })),
       })
       .run(client);
-    console.log(taskActivity);
+    // console.log(taskActivity);
     return "Done";
   } catch (error) {
     return "Error Adding Link";

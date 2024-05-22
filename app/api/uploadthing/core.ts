@@ -10,7 +10,7 @@ const HandleAuth = async () => {
   // const session = await auth.getSession();
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const User = (await useCurrentUser()) as User;
   if (!signedIn) throw new Error("Unauthorized");
   return { userId:  User.id};

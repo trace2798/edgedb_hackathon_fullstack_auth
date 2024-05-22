@@ -30,12 +30,12 @@ const DeleteWorkspace = ({
   status: StatusType;
   workspaceId: string;
 }) => {
-  console.log(workspaceId);
-  console.log(status);
+  // console.log(workspaceId);
+  // console.log(status);
   const router = useRouter();
   const handleWorkspaceDelete = async ({}: {}) => {
     const response = await deleteWorkspace(workspaceId, status.memberRole);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("Workspace Deleted");
       router.push("/workspace");

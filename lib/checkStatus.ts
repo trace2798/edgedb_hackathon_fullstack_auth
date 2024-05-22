@@ -7,14 +7,14 @@ import { User } from "@/types";
 const client = createClient();
 
 export async function CheckStatus({ workspaceId }: { workspaceId: string }) {
-  console.log(workspaceId, "WORKSPACE ID");
+  // console.log(workspaceId, "WORKSPACE ID");
   // const session = await auth();
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const User = (await useCurrentUser()) as User;
-  console.log(User);
-  console.log(session);
+  // console.log(User);
+  // console.log(session);
   const currentLoggedInUsersMemberStatus = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
@@ -28,7 +28,7 @@ export async function CheckStatus({ workspaceId }: { workspaceId: string }) {
       ),
     }))
     .run(client);
-  console.log(currentLoggedInUsersMemberStatus);
+  // console.log(currentLoggedInUsersMemberStatus);
   if (!currentLoggedInUsersMemberStatus) {
     return "not member";
   }

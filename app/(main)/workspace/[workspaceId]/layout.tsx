@@ -9,9 +9,9 @@ type Props = {
 };
 
 const WorkspaceLayout = async ({ children, params }: Props) => {
-  console.log(params);
+  // console.log(params);
   const status = await CheckStatus({ workspaceId: params.workspaceId });
-  console.log(status);
+  // console.log(status);
   if (status === "not member") {
     return <DialogNonUser />;
   }

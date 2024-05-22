@@ -27,7 +27,7 @@ export const Header = ({ data }: HeaderProps) => {
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const inputRef = useRef<ElementRef<"input">>(null);
 
   const [title, setTitle] = useState(data.title);
@@ -41,7 +41,7 @@ export const Header = ({ data }: HeaderProps) => {
     if (title === data.title) {
       return;
     }
-    console.log(title);
+    // console.log(title);
     const response = await updateCardTitle(data.id, title, user?.id as string);
     if (response === "Card Title Updated") {
       toast.success(`Card Title Updated`);

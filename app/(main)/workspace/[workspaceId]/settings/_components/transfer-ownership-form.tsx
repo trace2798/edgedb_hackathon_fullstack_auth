@@ -28,7 +28,7 @@ interface TransferOwnershipFormProps {
 const TransferOwnershipForm: FC<TransferOwnershipFormProps> = ({
   workspaceId,
 }) => {
-  console.log(workspaceId);
+  // console.log(workspaceId);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -38,7 +38,7 @@ const TransferOwnershipForm: FC<TransferOwnershipFormProps> = ({
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const response = await transferOwnership(values.githubUsername, workspaceId);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("Member Added");
       form.reset();

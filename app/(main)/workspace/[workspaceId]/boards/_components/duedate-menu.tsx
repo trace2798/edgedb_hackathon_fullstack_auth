@@ -51,9 +51,9 @@
 //     fetchUser();
 //   }, []);
 
-//   console.log(user);
+//   // console.log(user);
 
-//   console.log(currentDueDate);
+//   // console.log(currentDueDate);
 //   // const user = useCurrentUser();
 //   const router = useRouter();
 //   const form = useForm<z.infer<typeof formSchema>>({
@@ -66,7 +66,7 @@
 //   type FormData = z.infer<typeof formSchema>;
 //   const onSubmit: SubmitHandler<FormData> = async (values) => {
 //     try {
-//       console.log(values);
+//       // console.log(values);
 //       const response = await updateCardDueDate(
 //         values.id,
 //         values.duedate as Date,
@@ -231,9 +231,9 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
 
-  console.log(currentDueDate);
+  // console.log(currentDueDate);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -245,7 +245,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
   type FormData = z.infer<typeof formSchema>;
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       const response = await updateCardDueDate(
         values.id,
         values.duedate as Date,

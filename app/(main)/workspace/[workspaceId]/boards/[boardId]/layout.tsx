@@ -21,7 +21,7 @@ export async function generateMetadata({
       },
     }))
     .run(client);
-  console.log(board);
+  // console.log(board);
 
   return {
     name: board?.name || "Board",
@@ -51,7 +51,7 @@ const BoardIdLayout = async ({
       },
     }))
     .run(client);
-  console.log(board);
+  // console.log(board);
 
   if (!board) {
     notFound();

@@ -47,7 +47,7 @@ export const BoardTitleForm = ({ data }: BoardTitleFormProps) => {
   const onSubmit = async (formData: FormData) => {
     const title = formData.get("title") as string;
     const response = await updateBoardName(data.id, title);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success(`Board name updated!`);
     } else {

@@ -22,7 +22,7 @@ export async function createCard(
         filter_single: e.op(list.id, "=", e.uuid(listId)),
       }))
       .run(client);
-    console.log(list);
+    // console.log(list);
     if (!list) {
       return "Error: List not found";
     }
@@ -37,9 +37,9 @@ export async function createCard(
         limit: 1,
       }))
       .run(client);
-    console.log(lastCard);
+    // console.log(lastCard);
     const newOrder = lastCard ? lastCard.order + 1 : 1;
-    console.log(newOrder);
+    // console.log(newOrder);
     const createCard = await e
       .insert(e.Card, {
         title: title as string,
@@ -54,7 +54,7 @@ export async function createCard(
         })),
       })
       .run(client);
-    console.log(createCard);
+    // console.log(createCard);
     // const issueActivity = await e
     //   .insert(e.IssueActivity, {
     //     message: `${userName} added an link called ${url}.` as string,
@@ -63,7 +63,7 @@ export async function createCard(
     //     })),
     //   })
     //   .run(client);
-    // console.log(issueActivity);
+    // // console.log(issueActivity);
     return "Done";
   } catch (error) {
     return "Error Adding Link";
@@ -101,7 +101,7 @@ export async function cardToCopy(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
     if (!card) {
       return "Error: Card not found";
     }
@@ -116,7 +116,7 @@ export async function cardToCopy(
         limit: 1,
       }))
       .run(client);
-    console.log(lastCard);
+    // console.log(lastCard);
     const newOrder = lastCard ? lastCard.order + 1 : 1;
     const createCard = await e
       .insert(e.Card, {
@@ -127,7 +127,7 @@ export async function cardToCopy(
         })),
       })
       .run(client);
-    console.log(createCard);
+    // console.log(createCard);
     revalidatePath(`/workspace/${workspaceId}/board/${boardId}`);
     return "Done";
   } catch (error) {
@@ -141,9 +141,9 @@ export async function updateCardPriority(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(priority, "PRIORITY");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(priority, "PRIORITY");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -164,7 +164,7 @@ export async function updateCardPriority(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardPriority = await e
       .update(e.Card, () => ({
@@ -174,7 +174,7 @@ export async function updateCardPriority(
         },
       }))
       .run(client);
-    console.log(updateCardPriority);
+    // console.log(updateCardPriority);
 
     return "Card Priority Updated";
   } catch (error) {
@@ -189,9 +189,9 @@ export async function updateCardStatus(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(status, "status");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(status, "status");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -212,7 +212,7 @@ export async function updateCardStatus(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardPriority = await e
       .update(e.Card, () => ({
@@ -222,7 +222,7 @@ export async function updateCardStatus(
         },
       }))
       .run(client);
-    console.log(updateCardPriority);
+    // console.log(updateCardPriority);
 
     return "Card Status Updated";
   } catch (error) {
@@ -237,9 +237,9 @@ export async function updateCardDueDate(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(duedate, "Duedate");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(duedate, "Duedate");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -260,7 +260,7 @@ export async function updateCardDueDate(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardduedate = await e
       .update(e.Card, () => ({
@@ -270,7 +270,7 @@ export async function updateCardDueDate(
         },
       }))
       .run(client);
-    console.log(updateCardduedate);
+    // console.log(updateCardduedate);
 
     return "Card Due Date Updated";
   } catch (error) {
@@ -286,9 +286,9 @@ export async function updateCardAssigneeId(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(assigneeId, "assigneeId");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(assigneeId, "assigneeId");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -309,7 +309,7 @@ export async function updateCardAssigneeId(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardAssignee = await e
       .update(e.Card, () => ({
@@ -319,7 +319,7 @@ export async function updateCardAssigneeId(
         },
       }))
       .run(client);
-    console.log(updateCardAssignee);
+    // console.log(updateCardAssignee);
 
     return "Card Assignee Updated";
   } catch (error) {
@@ -334,9 +334,9 @@ export async function updateCardTitle(
   userId: string
 ) {
   try {
-    console.log(id);
-    console.log(title, "assigneeId");
-    console.log(userId, "USER ID");
+    // console.log(id);
+    // console.log(title, "assigneeId");
+    // console.log(userId, "USER ID");
 
     const user = await e
       .select(e.User, (user) => ({
@@ -357,7 +357,7 @@ export async function updateCardTitle(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardTitle = await e
       .update(e.Card, () => ({
@@ -367,7 +367,7 @@ export async function updateCardTitle(
         },
       }))
       .run(client);
-    console.log(updateCardTitle);
+    // console.log(updateCardTitle);
 
     return "Card Title Updated";
   } catch (error) {
@@ -383,10 +383,10 @@ export async function updateCardDescription(
   boardId: string
 ) {
   try {
-    console.log(id);
-    console.log(description, "assigneeId");
-    console.log(userId, "USER ID");
-    console.log(boardId, "boardID");
+    // console.log(id);
+    // console.log(description, "assigneeId");
+    // console.log(userId, "USER ID");
+    // console.log(boardId, "boardID");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -395,7 +395,7 @@ export async function updateCardDescription(
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
-    console.log(user);
+    // console.log(user);
     if (!user) {
       return "User Not Found";
     }
@@ -408,7 +408,7 @@ export async function updateCardDescription(
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
-    console.log(board);
+    // console.log(board);
 
     const card = await e
       .select(e.Card, (card) => ({
@@ -418,7 +418,7 @@ export async function updateCardDescription(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(card);
+    // console.log(card);
 
     const updateCardTitle = await e
       .update(e.Card, () => ({
@@ -428,7 +428,7 @@ export async function updateCardDescription(
         },
       }))
       .run(client);
-    console.log(updateCardTitle);
+    // console.log(updateCardTitle);
     revalidatePath(`/workspace/${board?.workspace.id}/board/${boardId}`);
     return "Card Description Updated";
   } catch (error) {

@@ -65,19 +65,19 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
     FetchUser();
   }, []);
 
-  console.log(user);
+  // console.log(user);
   const issues = useIssues();
   const members = useIssues((state) => state.members);
   const defaultStatus = useIssues((state) => state.defaultStatus);
-  console.log(defaultStatus);
-  console.log(members);
+  // console.log(defaultStatus);
+  // console.log(members);
   // const user = useCurrentUser();
-  console.log(user);
+  // console.log(user);
   const membershipIdOfCurrentUser = findCurrentUsersMembershipId(
     members as Member[],
     user as User
   ) as string;
-  console.log(membershipIdOfCurrentUser);
+  // console.log(membershipIdOfCurrentUser);
 
   useEffect(() => {
     form.setValue("assigneeId", membershipIdOfCurrentUser);
@@ -98,13 +98,13 @@ export function IssueModal({ className, ...props }: IssueModalProps) {
   });
   type FormData = z.infer<typeof formSchema>;
   {
-    console.log(form.getValues());
+    // console.log(form.getValues());
   }
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
       setLoading(true);
 
-      console.log(values);
+      // console.log(values);
       const response = await createTask(
         user?.id as string,
         values.title,

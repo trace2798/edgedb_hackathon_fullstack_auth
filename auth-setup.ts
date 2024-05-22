@@ -343,7 +343,7 @@ ${JSON.stringify(existingConfig, null, 2)}`,
     `;
   }
 
-  console.log("The following query will be executed:\n", query);
+  // console.log("The following query will be executed:\n", query);
   const confirm = await inquirer.prompt({
     type: "confirm",
     name: "execute",

@@ -4,11 +4,11 @@ import { auth } from "@/edgedb";
 
 export const useCurrentUser = async () => {
   const session = auth.getSession();
-  console.log(session);
+  // console.log(session);
   const [user] = await session.client.query(
     `SELECT User {*} FILTER .id = global current_user.id`
   );
-  console.log(user);
+  // console.log(user);
   if (!user) {
     // Handle the case when user is undefined
     // You can return a default value or throw an error
@@ -16,7 +16,7 @@ export const useCurrentUser = async () => {
   }
   // const currentUser = await user
   const currentUser = JSON.parse(JSON.stringify(await user));
-  // console.log(currentUser);
-  // console.log(currentUser);
+  // // console.log(currentUser);
+  // // console.log(currentUser);
   return currentUser;
 };

@@ -43,7 +43,7 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
       },
     }))
     .run(client);
-  console.log(members);
+  // console.log(members);
   const tasks = await e
     .select(e.Task, (task) => ({
       id: true,
@@ -64,7 +64,7 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
       },
     }))
     .run(client);
-  console.log(tasks);
+  // console.log(tasks);
   return (
     <>
       <div className="pt-[50px] lg:pt-0 lg:mt-0 dark:bg-[#0f1011] min-h-screen flex-flex-col rounded-2xl">

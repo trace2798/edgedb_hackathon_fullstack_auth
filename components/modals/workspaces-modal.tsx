@@ -43,7 +43,7 @@ export function WorkspaceModal({ className, ...props }: WorkspaceModalProps) {
     FetchUser();
   }, []);
   const workspaces = useWorkspaces();
-  console.log(user);
+  // console.log(user);
 
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({

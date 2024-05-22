@@ -200,7 +200,7 @@ ${JSON.stringify(existingConfig, null, 2)}
       ext::auth::SMTPConfig::validate_certs := false;
     `;
 
-  console.log("The following query will be executed:\n", query);
+  // console.log("The following query will be executed:\n", query);
   const confirm = await inquirer.prompt({
     type: "confirm",
     name: "execute",

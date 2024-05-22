@@ -19,11 +19,11 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   // const session = auth.getSession();
-  // console.log(session)
+  // // console.log(session)
   // const [user] = await session.client.query(
   //   `SELECT User {*} FILTER .id = global current_user.id`
   // );
-  // console.log(user);
+  // // console.log(user);
   return (
     <html lang="en">
     <body className={inter.className}>

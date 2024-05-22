@@ -18,9 +18,9 @@ const Page: FC<PageProps> = async ({ params }) => {
   // const session = await auth();
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const currentUserFe = (await useCurrentUser()) as User;
-  console.log(currentUserFe);
+  // console.log(currentUserFe);
   const board = await e
     .select(e.Board, (board) => ({
       id: true,
@@ -33,7 +33,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       },
     }))
     .run(client);
-  console.log(board);
+  // console.log(board);
 
   const lists = await e
     .select(e.List, (list) => ({
@@ -69,7 +69,7 @@ const Page: FC<PageProps> = async ({ params }) => {
     }))
     .run(client);
 
-  console.log(lists);
+  // console.log(lists);
   const members = await e
     .select(e.WorkspaceMember, (workspaceMember) => ({
       id: true,
@@ -88,7 +88,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       },
     }))
     .run(client);
-  console.log(members);
+  // console.log(members);
   return (
     <>
       <div className="p-4 h-full overflow-x-auto">

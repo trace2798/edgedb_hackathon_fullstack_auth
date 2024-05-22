@@ -10,7 +10,7 @@ type Props = {
 
 const client = createClient();
 const IssueIdLayout = async ({ children, params }: Props) => {
-  console.log(params);
+  // console.log(params);
   const workspace = await e
     .select(e.Workspace, (workspace) => ({
       id: true,
@@ -19,7 +19,7 @@ const IssueIdLayout = async ({ children, params }: Props) => {
       filter_single: e.op(workspace.id, "=", e.uuid(params.workspaceId)),
     }))
     .run(client);
-  console.log(workspace);
+  // console.log(workspace);
   const allTasks = await e
     .select(e.Task, (task) => ({
       id: true,
@@ -36,7 +36,7 @@ const IssueIdLayout = async ({ children, params }: Props) => {
       },
     }))
     .run(client);
-  console.log(allTasks);
+  // console.log(allTasks);
   const task = await e
     .select(e.Task, (task) => ({
       id: true,
@@ -45,7 +45,7 @@ const IssueIdLayout = async ({ children, params }: Props) => {
       filter_single: e.op(task.id, "=", e.uuid(params.taskId)),
     }))
     .run(client);
-  console.log(task);
+  // console.log(task);
   const currentTaskIndex = allTasks.findIndex(
     (task) => task.id === params.taskId
   );

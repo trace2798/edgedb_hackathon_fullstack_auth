@@ -22,9 +22,9 @@ type User = {
 const NavBar: FC<NavBarProps> = async ({}) => {
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
-  console.log(session);
+  // console.log(session);
   const user = (await useCurrentUser()) as User;
-  console.log(user);
+  // console.log(user);
 
   return (
     <>

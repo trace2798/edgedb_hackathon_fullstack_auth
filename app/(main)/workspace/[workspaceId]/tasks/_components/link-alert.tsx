@@ -17,11 +17,11 @@ interface LinkAlertProps {
 }
 
 const LinkAlert: FC<LinkAlertProps> = ({ id, currentUrls }) => {
-  console.log(currentUrls);
+  // console.log(currentUrls);
   const [currentLinks, setCurrentLinks] = useState(currentUrls);
 
   const handleRemove = (urlToRemove: string) => {
-    console.log(urlToRemove);
+    // console.log(urlToRemove);
     setCurrentLinks(currentUrls.filter((url) => url !== urlToRemove));
 
   };

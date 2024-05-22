@@ -25,7 +25,7 @@ const Page = async ({ params }: { params: { workspaceId: string } }) => {
       },
     }))
     .run(client);
-  console.log(members);
+  // console.log(members);
 
   return (
     <>

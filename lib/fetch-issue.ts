@@ -36,6 +36,6 @@ export async function fetchIssue({ issueId }: { issueId: string }) {
       .run(client);
       return issue
   } catch (error) {
-    console.log(error);
+    // console.log(error);
   }
 }

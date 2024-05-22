@@ -78,7 +78,7 @@ const CardMenuPriority: FC<CardMenuPriorityProps> = ({
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,7 +102,7 @@ const CardMenuPriority: FC<CardMenuPriorityProps> = ({
 
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       const response = await updateCardPriority(
         values.id,
         values.priority,

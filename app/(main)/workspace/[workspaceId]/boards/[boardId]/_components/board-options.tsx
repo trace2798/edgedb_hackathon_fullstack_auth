@@ -75,7 +75,7 @@ export const BoardOptions = ({ id, workspaceId }: BoardOptionsProps) => {
             }`}
             onMouseEnter={() => setIsDeleteHovered(true)}
             onMouseLeave={() => setIsDeleteHovered(false)}
-            onClick={() => console.log("Delete")}
+            onClick={() => // console.log("Delete")}
           >
             <Trash className="mr-2 h-4 w-4" />
             <span>Delete</span>

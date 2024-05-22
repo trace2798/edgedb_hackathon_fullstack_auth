@@ -32,7 +32,7 @@ export const ListOptions = ({ data }: ListOptionsProps) => {
     const id = formData.get("id") as string;
     const boardId = formData.get("boardId") as string;
     const response = await deleteList(id);
-    console.log(response);
+    // console.log(response);
     if (response === "Done") {
       toast.success("List deleted");
       router.refresh();

@@ -9,9 +9,9 @@ export async function updateListOrder(
   workspaceId: string
 ) {
   try {
-    console.log(items, "ITEMS");
-    // console.log(boardId, "BOARD ID");
-    // console.log(workspaceId, "WORKSPACE ID");
+    // console.log(items, "ITEMS");
+    // // console.log(boardId, "BOARD ID");
+    // // console.log(workspaceId, "WORKSPACE ID");
 
     for (let item of items) {
       const query = e.update(e.List, () => ({

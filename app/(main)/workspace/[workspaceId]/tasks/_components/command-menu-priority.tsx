@@ -78,7 +78,7 @@ const CommandMenuPriority: FC<CommandMenuPriorityProps> = ({
     FetchUser();
   }, []);
  
-  console.log(user);
+  // console.log(user);
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -102,7 +102,7 @@ const CommandMenuPriority: FC<CommandMenuPriorityProps> = ({
 
   const onSubmit: SubmitHandler<FormData> = async (values) => {
     try {
-      console.log(values);
+      // console.log(values);
       const response = await updatePriority(
         values.id,
         values.priority,
@@ -317,7 +317,7 @@ export default CommandMenuPriority;
 //   function onSubmit(values: z.infer<typeof formSchema>) {
 //     // Do something with the form values.
 //     // ✅ This will be type-safe and validated.
-//     console.log(values);
+//     // console.log(values);
 //   }
 
 //   // useEffect(() => {
@@ -358,8 +358,8 @@ export default CommandMenuPriority;
 //     return () => document.removeEventListener("keydown", down);
 //   }, []);
 
-//   console.log(setIsHovered);
-//   console.log(isHovered);
+//   // console.log(setIsHovered);
+//   // console.log(isHovered);
 //   return (
 //     <>
 //       <div

@@ -10,7 +10,7 @@ const Page = async ({
   params: { workspaceId: string; boardId: string };
 }) => {
   const status = await CheckStatus({ workspaceId: params.workspaceId });
-  console.log(status);
+  // console.log(status);
   return (
     <>
       <div className="space-y-5 py-24 px-[10vw]  lg:pl-[256px]">

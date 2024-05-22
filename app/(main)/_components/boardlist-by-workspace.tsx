@@ -8,7 +8,7 @@ interface BoardListByWorkspaceProps {
 const BoardListByWorkspace: FC<BoardListByWorkspaceProps> = ({
   currentWorkspaceId,
 }) => {
-  console.log(currentWorkspaceId);
+  // console.log(currentWorkspaceId);
   return (
     <>
       <div>

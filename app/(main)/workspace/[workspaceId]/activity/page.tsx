@@ -22,7 +22,7 @@ const ActivityPage = async ({
       },
     }))
     .run(client);
-  console.log(activity);
+  // console.log(activity);
   return (
     <>
       <div className="py-24 px-[10vw] lg:pl-[256px]">

@@ -18,7 +18,7 @@ interface FileUploadProps {
 
 export const FileUpload = ({ onChange, value, endpoint, title }: FileUploadProps) => {
   const fileType = value?.split(".").pop();
-  console.log(value, fileType);
+  // console.log(value, fileType);
   if (value && fileType !== "pdf") {
     return (
       <div className="relative h-20 w-20">
@@ -82,7 +82,7 @@ export const FileUpload = ({ onChange, value, endpoint, title }: FileUploadProps
             onChange(res?.[0].url);
           }}
           onUploadError={(error: Error) => {
-            console.log(error);
+            // console.log(error);
           }}
         />
       </DialogContent>
