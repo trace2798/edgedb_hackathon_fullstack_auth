@@ -93,7 +93,7 @@ module default {
         index on (.status);
       }
       description: str;
-      duedate: cal::local_datetime;
+      duedate: datetime;
       required priority: str {
         default := "no priority";
         index on (.priority);

@@ -23,9 +23,8 @@ import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
-import { LocalDateTime } from "edgedb";
 import { useRouter } from "next/navigation";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
@@ -36,7 +35,7 @@ const formSchema = z.object({
 });
 interface ChangeDueDateProps {
   id: string;
-  currentDueDate: LocalDateTime | undefined;
+  currentDueDate: Date | null;
 }
 
 const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
@@ -61,7 +60,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: id,
-      duedate: currentDueDate as LocalDateTime,
+      duedate: currentDueDate as Date | null,
     },
   });
   type FormData = z.infer<typeof formSchema>;

@@ -1,5 +1,5 @@
 "use client";
-import { updateIssue } from "@/actions/issues";
+import { updateTask } from "@/actions/issues";
 import AddLinkModal from "@/components/modals/add-link-modal";
 import { Spinner } from "@/components/spinner";
 
@@ -32,9 +32,9 @@ import ChangeAssignee from "../../_components/assignee-button";
 import CommandMenuStatus from "../../_components/command-menu-issue";
 import CommandMenuPriority from "../../_components/command-menu-priority";
 
+import { User } from "@/types";
 import ActivityAccordian from "./activity-accordian";
 import LinkAccordian from "./link-accordian";
-import { User } from "@/types";
 
 interface IssueContentProps {
   task: any;
@@ -45,7 +45,7 @@ const formSchema = z.object({
   id: z.string(),
   title: z.string().min(2).max(50),
   description: z.string().min(0).max(250),
-  duedate: z.date().optional(),
+  duedate: z.any().optional(),
 });
 
 const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
@@ -99,20 +99,24 @@ const IssueContent: FC<IssueContentProps> = ({ task, members }) => {
     try {
       setLoading(true);
       console.log(values);
-      await updateIssue(
+      const response = await updateTask(
         values.id,
         user?.id as string,
         values.title,
         values.description,
         values.duedate
       );
-      form.reset();
-      toast.success("Issue Updated.");
-      window.location.reload();
-      setIsModified(false);
+      if (response === "Task Updated") {
+        form.reset();
+        toast.success("Issue Updated.");
+        window.location.reload();
+        setIsModified(false);
+      } else {
+        toast.error(response);
+      }
     } catch (error) {
       console.error(error);
-      toast.error("Error creating Workspace.");
+      toast.error("Error updating Task.");
     }
   };
   const isLoading = form.formState.isSubmitting;

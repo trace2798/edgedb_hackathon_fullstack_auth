@@ -1,6 +1,7 @@
 "use server";
 import e, { createClient } from "@/dbschema/edgeql-js";
 import { LocalDateTime } from "edgedb";
+import { revalidatePath } from "next/cache";
 
 const client = createClient();
 
@@ -45,7 +46,7 @@ export async function createTask(
         description: description as string,
         status: status as string,
         priority: priority as string,
-        duedate: duedate as LocalDateTime | undefined,
+        duedate: duedate as Date | null,
         workspace: e.select(e.Workspace, (workspace) => ({
           filter_single: e.op(
             workspace.id,
@@ -83,7 +84,7 @@ export async function createTask(
         })),
       })
       .run(client);
-
+    revalidatePath(`/workspace/${verifyMember?.workspaceId}`);
     return "Task Created";
   } catch (error) {
     console.error(error);
@@ -111,7 +112,7 @@ export async function updatePriority(
     if (!user) {
       return "User Not Found";
     }
-    const task = await e
+    const findTask = await e
       .select(e.Task, (task) => ({
         id: true,
         title: true,
@@ -120,7 +121,10 @@ export async function updatePriority(
         filter_single: e.op(task.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(task);
+    console.log(findTask);
+    if (!findTask) {
+      return "Task not found";
+    }
 
     const updateTaskPriority = await e
       .update(e.Task, () => ({
@@ -135,13 +139,13 @@ export async function updatePriority(
     const taskActivity = await e
       .insert(e.TaskActivity, {
         message:
-          `${user.githubUsername} changed Priority from: ${task?.priority} to: ${priority}.` as string,
+          `${user.githubUsername} changed Priority from: ${findTask?.priority} to: ${priority}.` as string,
         task: e.select(e.Task, (task) => ({
           filter_single: e.op(task.id, "=", e.uuid(id as string)),
         })),
       })
       .run(client);
-
+    revalidatePath(`/workspace/${findTask?.workspaceId}`);
     return "Task Priority Updated";
   } catch (error) {
     console.error(error);
@@ -198,7 +202,7 @@ export async function updateStatus(id: string, status: string, userId: string) {
         })),
       })
       .run(client);
-
+    revalidatePath(`/workspace/${findTask?.workspaceId}`);
     return "Task Status Updated";
   } catch (error) {
     console.error(error);
@@ -271,7 +275,7 @@ export async function updateAssigneeId(
         })),
       })
       .run(client);
-
+    revalidatePath(`/workspace/${findTask?.workspaceId}`);
     return "Task Assignee Updated";
   } catch (error) {
     console.error(error);
@@ -281,27 +285,25 @@ export async function updateAssigneeId(
 
 export async function updateDueDate(
   id: string,
-  duedate: Date | undefined,
+  duedate: Date | null,
   userId: string
 ) {
   try {
     console.log(id);
     // console.log(status, "Status");
     console.log(userId, "USER ID");
-
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
     if (!user) {
       return "User Not Found";
     }
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (issue) => ({
         id: true,
         title: true,
         duedate: true,
@@ -309,28 +311,31 @@ export async function updateDueDate(
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
-
-    const updateIssueDueDate = await e
-      .update(e.Issue, () => ({
+    console.log(findTask);
+    if (!findTask) {
+      return "Task not found";
+    }
+    const updateTaskDueDate = await e
+      .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
         set: {
           duedate: duedate,
         },
       }))
       .run(client);
-    console.log(updateIssueDueDate);
+    console.log(updateTaskDueDate);
 
     const issueActivity = await e
-      .insert(e.IssueActivity, {
-        message: `${user.name} updated due-date to: ${duedate}` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+      .insert(e.TaskActivity, {
+        message:
+          `${user.githubUsername} updated due-date to: ${duedate}` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Due Date Updated";
+    return "Task Due Date Updated";
   } catch (error) {
     console.error(error);
     return "Error Updating Due Date";
@@ -375,6 +380,7 @@ export async function deleteTask(id: string, currentUserId: string) {
           filter_single: e.op(issue.id, "=", e.uuid(id)),
         }))
         .run(client);
+      revalidatePath(`/workspace/${findTask?.workspaceId}`);
       return "Done";
     } else {
       return "You do not have permission to delete this issue.";
@@ -384,20 +390,20 @@ export async function deleteTask(id: string, currentUserId: string) {
   }
 }
 
-export async function updateIssue(
+export async function updateTask(
   id: string,
   userId: string,
   title: string,
   description: string,
-  duedate: Date | undefined
+  duedate: Date | null
 ) {
   try {
     console.log(id);
     console.log(userId, "USER ID");
     console.log(title, "CONTENT");
     console.log(duedate, "DUE DATE");
-    const issue = await e
-      .select(e.Issue, (issue) => ({
+    const findTask = await e
+      .select(e.Task, (issue) => ({
         id: true,
         title: true,
         status: true,
@@ -406,12 +412,11 @@ export async function updateIssue(
         filter_single: e.op(issue.id, "=", e.uuid(id)),
       }))
       .run(client);
-    console.log(issue);
+    console.log(findTask);
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-        email: true,
-        name: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(userId)),
       }))
       .run(client);
@@ -420,7 +425,7 @@ export async function updateIssue(
     }
 
     const updatedIssue = await e
-      .update(e.Issue, () => ({
+      .update(e.Task, () => ({
         filter_single: { id: e.uuid(id) },
         set: {
           title: title,
@@ -432,15 +437,15 @@ export async function updateIssue(
     console.log(updatedIssue);
 
     const issueActivity = await e
-      .insert(e.IssueActivity, {
-        message: `${user.name} updated the issue.` as string,
-        issue: e.select(e.Issue, (iss) => ({
-          filter_single: e.op(iss.id, "=", e.uuid(issue?.id as string)),
+      .insert(e.TaskActivity, {
+        message: `${user.githubUsername} updated the issue.` as string,
+        task: e.select(e.Task, (task) => ({
+          filter_single: e.op(task.id, "=", e.uuid(findTask?.id as string)),
         })),
       })
       .run(client);
 
-    return "Issue Updated";
+    return "Task Updated";
   } catch (error) {
     console.error(error);
     return "Error Updating Issue";

@@ -19,6 +19,8 @@ import AddTaskButtonFooter from "./add-task-button-footer";
 import CommandMenuStatus from "./command-menu-issue";
 import CommandMenuPriority from "./command-menu-priority";
 import DeleteTaskButton from "./delete-issue-button";
+import ChangeDueDate from "./change-due-date";
+import { LocalDateTime } from "edgedb";
 
 const client = createClient();
 
@@ -106,20 +108,16 @@ export const IssueList = async ({
               </div>
               <div className="flex space-x-3">
                 <div>
+                  {/* <ChangeDueDate id={task.id as string} currentDueDate={task.duedate as Date | null} /> */}
                   {task.duedate ? (
                     <HoverCard>
                       <HoverCardTrigger asChild>
                         <h1 className="w-[60px] px-1">
-                          {/* {format(new Date(task.duedate as Date), "MMM dd")} */}
-                          {format(parseISO(task.duedate.toString()), "MMM dd")}
+                          {format(new Date(task.duedate), "MMM dd")}
                         </h1>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-fit text-sm py-1 px-2">
-                        Due on:{" "}
-                        {format(
-                          parseISO(task.duedate.toString()),
-                          "MMM dd, yyyy"
-                        )}
+                        Due on: {format(new Date(task.duedate), "MMM dd, yyyy")}
                       </HoverCardContent>
                     </HoverCard>
                   ) : (
@@ -130,7 +128,7 @@ export const IssueList = async ({
                   {task.updated ? (
                     <HoverCard>
                       <HoverCardTrigger asChild>
-                        <h1 className="w-[60px] px-1">
+                        <h1 className="w-[60px] px-1 text-muted-foreground">
                           {format(parseISO(task?.updated.toString()), "MMM dd")}
                         </h1>
                       </HoverCardTrigger>

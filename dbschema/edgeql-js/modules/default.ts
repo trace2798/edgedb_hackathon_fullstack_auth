@@ -43,11 +43,11 @@ export type $TaskλShape = $.typeutil.flatten<_std.$Object_8ce8c71ee4fa5f73840c2
   "assigneeId": $.PropertyDesc<_std.$uuid, $.Cardinality.AtMostOne, false, false, false, false>;
   "created": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "description": $.PropertyDesc<_std.$str, $.Cardinality.AtMostOne, false, false, false, false>;
-  "duedate": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, false>;
   "title": $.PropertyDesc<_std.$str, $.Cardinality.One, false, false, false, false>;
   "updated": $.PropertyDesc<_cal.$local_datetime, $.Cardinality.AtMostOne, false, false, false, true>;
   "taskactivities": $.LinkDesc<$TaskActivity, $.Cardinality.Many, {}, false, true,  false, false>;
   "websiteaddresses": $.LinkDesc<$WebsiteAddress, $.Cardinality.Many, {}, false, true,  false, false>;
+  "duedate": $.PropertyDesc<_std.$datetime, $.Cardinality.AtMostOne, false, false, false, false>;
   "<tasks[is Workspace]": $.LinkDesc<$Workspace, $.Cardinality.Many, {}, false, false,  false, false>;
   "<tasks[is WorkspaceMember]": $.LinkDesc<$WorkspaceMember, $.Cardinality.Many, {}, false, false,  false, false>;
   "<task[is TaskActivity]": $.LinkDesc<$TaskActivity, $.Cardinality.Many, {}, false, false,  false, false>;

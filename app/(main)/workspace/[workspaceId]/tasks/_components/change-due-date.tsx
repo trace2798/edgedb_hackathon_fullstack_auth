@@ -31,11 +31,11 @@ import { z } from "zod";
 
 const formSchema = z.object({
   id: z.string(),
-  duedate: z.date().optional(),
+  duedate: z.any().optional(),
 });
 interface ChangeDueDateProps {
   id: string;
-  currentDueDate: Date | undefined;
+  currentDueDate: Date | null;
 }
 
 const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
@@ -79,7 +79,7 @@ const ChangeDueDate: FC<ChangeDueDateProps> = ({ id, currentDueDate }) => {
         values.duedate as Date,
         user?.id as string
       );
-      if (response === "Issue Due Date Updated") {
+      if (response === "Task Due Date Updated") {
         toast.success("Due Date updated");
         router.refresh();
       } else {
