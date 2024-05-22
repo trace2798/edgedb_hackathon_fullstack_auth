@@ -19,6 +19,8 @@ import AddTaskButtonFooter from "../_components/add-task-button-footer";
 import CommandMenuStatus from "../_components/command-menu-issue";
 import CommandMenuPriority from "../_components/command-menu-priority";
 import DeleteTaskButton from "../_components/delete-issue-button";
+import { buttonVariants } from "@/components/ui/button";
+import ChangeDueDate from "../_components/change-due-date";
 
 const client = createClient();
 
@@ -130,13 +132,16 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
                   <div className="line-clamp-1">{task.title}</div>
                 </div>
 
-                <div className="flex space-x-3">
-                  <div>
+                <div className="space-x-3 hidden lg:flex">
+                  <ChangeDueDate
+                    id={task.id as string}
+                    currentDueDate={task.duedate as Date | null}
+                  />
+                  {/* <div>
                     {task.duedate ? (
                       <HoverCard>
                         <HoverCardTrigger asChild>
                           <h1 className="w-[60px] px-1">
-                            {/* {format(new Date(task.duedate as Date), "MMM dd")} */}
                             {format(
                               parseISO(task.duedate.toString()),
                               "MMM dd"
@@ -154,11 +159,17 @@ const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
                     ) : (
                       <h1 className="w-[60px] px-1"></h1>
                     )}
-                  </div>
+                  </div> */}
                   <div className="hidden lg:flex">
                     {task.updated ? (
                       <HoverCard>
-                        <HoverCardTrigger asChild>
+                        <HoverCardTrigger
+                          asChild
+                          className={buttonVariants({
+                            variant: "sidebar",
+                            size: "sidebar",
+                          })}
+                        >
                           <h1 className="w-[60px] px-1">
                             {format(
                               parseISO(task?.updated.toString()),
