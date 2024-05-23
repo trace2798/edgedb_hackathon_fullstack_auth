@@ -17,9 +17,7 @@ import { LocalDateTime } from "edgedb";
 // You can use a Zod schema here if you want.
 export type Member = {
   id: string;
-  // name: string;
   memberRole: "member" | "owner" | "admin";
-  // email: string;
   githubUsername: string;
   created: LocalDateTime;
   userId?: string;

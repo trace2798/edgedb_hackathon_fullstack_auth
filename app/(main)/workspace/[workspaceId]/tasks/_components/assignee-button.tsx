@@ -129,7 +129,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
                           className="text-muted-foreground hover:text-indigo-400"
                         >
                           <HoverCard>
-                            <HoverCardTrigger className="flex items-center capitalize text-sm">
+                            <HoverCardTrigger className="flex items-center capitalize text-sm max-w-[60px] overflow-hidden">
                               {field.value
                                 ? members?.find(
                                     (member) =>
@@ -140,10 +140,11 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
                             <HoverCardContent
                               className={buttonVariants({
                                 variant: "sidebar",
-                                size: "sidebar",
-                                className: "w-fit px-2 dark:bg-black",
+                                // size: "sidebar",
+                                className: "w-fit px-2 py-3 dark:bg-black",
                               })}
-                            >
+                            > 
+                           Assigned to: {field.value && members?.find((member) => (member?.id as string) === field.value)?.githubUsername}<br/>
                               Click to change assignee
                             </HoverCardContent>
                           </HoverCard>

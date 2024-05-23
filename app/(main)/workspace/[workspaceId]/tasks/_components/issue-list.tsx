@@ -21,8 +21,9 @@ import CommandMenuPriority from "./command-menu-priority";
 import DeleteTaskButton from "./delete-issue-button";
 import ChangeDueDate from "./change-due-date";
 import { LocalDateTime } from "edgedb";
-import { buttonVariants } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import ChangeAssignee from "./assignee-button";
+import { CalendarClock } from "lucide-react";
 
 const client = createClient();
 
@@ -106,21 +107,41 @@ export const IssueList = async ({
                   />
                 </div>
                 <Link href={`tasks/${task.id}`}>
-                  <div className="line-clamp-1">{task.title}</div>
+                  <div className="line-clamp-1 hover:text-indigo-400">
+                    {task.title}
+                  </div>
                 </Link>
               </div>
               <div className="space-x-3 hidden lg:flex">
                 <div>
-                  <ChangeDueDate
-                    id={task.id as string}
-                    currentDueDate={task.duedate as Date | null}
-                  />
-                  {/* {task.duedate ? (
+                  {task.duedate ? (
                     <HoverCard>
                       <HoverCardTrigger asChild>
-                        <h1 className="w-[60px] px-1">
+                        {/* <h1 className="w-[60px] px-1">
                           {format(new Date(task.duedate), "MMM dd")}
-                        </h1>
+                        </h1> */}
+                        <Button
+                          variant="sidebar"
+                          size={"sidebar"}
+                          role="combobox"
+                          className="text-muted-foreground hover:text-indigo-400"
+                        >
+                          <div
+                            className={`${
+                              isPastDue(task.duedate)
+                                ? "text-red-500" // Red for past due
+                                : isToday(task.duedate)
+                                ? "text-orange-500" // Orange for today
+                                : "text-green-500" // Green for future due date
+                            } flex items-center`}
+                          >
+                            <CalendarClock className="w-4 h-4 mr-1" />
+                            <span>
+                              {" "}
+                              {format(new Date(task.duedate), "MMM dd")}
+                            </span>
+                          </div>
+                        </Button>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-fit text-sm py-1 px-2">
                         Due on: {format(new Date(task.duedate), "MMM dd, yyyy")}
@@ -128,7 +149,7 @@ export const IssueList = async ({
                     </HoverCard>
                   ) : (
                     <h1 className="w-[60px] px-1"></h1>
-                  )} */}
+                  )}
                 </div>
                 <div className="hidden lg:flex">
                   {task.updated ? (
@@ -157,7 +178,11 @@ export const IssueList = async ({
                   )}
                 </div>
                 <div>
-                  <ChangeAssignee id={task.id as string} members={members}  currentAssigneeId={task.assigneeId as string} />
+                  <ChangeAssignee
+                    id={task.id as string}
+                    members={members}
+                    currentAssigneeId={task.assigneeId as string}
+                  />
                 </div>
               </div>
             </div>
@@ -182,4 +207,14 @@ IssueList.Skeleton = function SkeletonIssueList() {
       <Skeleton className="aspect-video h-10 w-full p-2" />
     </div>
   );
+};
+
+const isPastDue = (dueDate: Date) => {
+  const today = new Date();
+  return dueDate < today;
+};
+
+const isToday = (dueDate: Date) => {
+  const today = new Date();
+  return dueDate.toDateString() === today.toDateString();
 };
