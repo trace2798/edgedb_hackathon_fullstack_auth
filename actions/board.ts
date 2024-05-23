@@ -79,7 +79,7 @@ export async function createBoard(
     console.log(newBoard);
     return "Done";
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return "Error creating Board";
   }
 }
@@ -131,7 +131,9 @@ export async function deleteBoard(boardId: string) {
     const board = await e
       .select(e.Board, (board) => ({
         id: true,
-        workspaceId: true,
+        workspace: {
+          id: true,
+        },
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
@@ -140,9 +142,10 @@ export async function deleteBoard(boardId: string) {
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
-    revalidatePath(`/workspace/${board?.workspaceId}/board`);
+    revalidatePath(`/workspace/${board?.workspace.id}/board`);
     return "Done";
   } catch (error) {
+    // console.log(error);
     return "Error deleting Board";
   }
 }
