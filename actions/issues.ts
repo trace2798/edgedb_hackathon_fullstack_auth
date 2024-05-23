@@ -15,12 +15,12 @@ export async function createTask(
   duedate: Date | undefined
 ) {
   try {
-    // console.log(userId, "USER ID");
-    // console.log(title, "CONTENT");
-    // console.log(status, "STATUS");
-    // console.log(priority, "PRIORITY");
-    // console.log(assigneeId, "ASSIGNEE ID");
-    // console.log(duedate, "DUE DATE");
+    console.log(userId, "USER ID");
+    console.log(title, "CONTENT");
+    console.log(status, "STATUS");
+    console.log(priority, "PRIORITY");
+    console.log(assigneeId, "ASSIGNEE ID");
+    console.log(duedate, "DUE DATE");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -40,6 +40,24 @@ export async function createTask(
       }))
       .run(client);
     // console.log(verifyMember);
+    if (!verifyMember) {
+      return "Failed Verification";
+    }
+    // const userMembershipINfo = await e
+    //   .select(e.WorkspaceMember, (member) => ({
+    //     id: true,
+    //     githubUsername: true,
+    //     workspaceId: true,
+    //     // filter: e.op(member.user.id, "=", e.uuid(userId)),
+    //     filter_single: e.op(
+    //       e.op(member.user.id, "=", e.uuid(userId)),
+    //       "and",
+    //       e.op(member.workspaceId, "=", e.uuid(verifyMember?.workspaceId))
+    //     ),
+    //   }))
+    //   .run(client);
+    // console.log(userMembershipINfo);
+    // try {
     const newTask = await e
       .insert(e.Task, {
         title: title as string,
@@ -55,12 +73,20 @@ export async function createTask(
           ),
         })),
         workspaceMember: e.select(e.WorkspaceMember, (member) => ({
-          filter_single: e.op(member.user.id, "=", e.uuid(userId as string)),
+          // filter_single: e.op(member.user.id, "=", e.uuid(userId as string)),
+          filter_single: e.op(
+            e.op(member.user.id, "=", e.uuid(userId)),
+            "and",
+            e.op(member.workspaceId, "=", e.uuid(verifyMember?.workspaceId))
+          ),
         })),
         assigneeId: e.uuid(assigneeId as string),
       })
       .run(client);
     // console.log(newTask);
+    // } catch (error) {
+    //   console.log(error);
+    // }
 
     const activity = await e
       .insert(e.Activity, {

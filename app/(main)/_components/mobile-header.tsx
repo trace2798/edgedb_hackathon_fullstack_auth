@@ -33,35 +33,35 @@ export const MobileHeader = async ({
   // console.log(workspaceId);
   // console.log(workspaces);
 
-  // const workspaceMember = await e
-  //   .select(e.Workspace, (workspace) => ({
-  //     id: true,
-  //     name: true,
-  //     filter: e.op(
-  //       e.op(
-  //         workspace.workspaceMember.user.id,
-  //         "=",
-  //         e.uuid(session?.user?.id as string)
-  //       ),
-  //       "and",
-  //       e.op(workspace.user.id, "!=", e.uuid(session?.user?.id as string))
-  //     ),
-  //     order_by: {
-  //       expression: workspace.created,
-  //       direction: e.DESC,
-  //     },
-  //   }))
-  //   .run(client);
-  // // console.log(workspaceMember);
-  // const combinedWorkspaces = [...workspaces, ...workspaceMember];
-  // // console.log(combinedWorkspaces);
+  const workspaceMember = await e
+    .select(e.Workspace, (workspace) => ({
+      id: true,
+      name: true,
+      filter: e.op(
+        e.op(
+          workspace.workspaceMembers.user.id,
+          "=",
+          e.uuid(user?.id as string)
+        ),
+        "and",
+        e.op(workspace.user.id, "!=", e.uuid(user?.id as string))
+      ),
+      order_by: {
+        expression: workspace.created,
+        direction: e.DESC,
+      },
+    }))
+    .run(client);
+  // console.log(workspaceMember);
+  const combinedWorkspaces = [...workspaces, ...workspaceMember];
+  // console.log(combinedWorkspaces);
   return (
     <nav className="lg:hidden px-6 h-[50px] flex items-center justify-between bg-secondary border-b fixed top-0 w-full z-50">
       <MobileSidebar workspaceId={workspaceId} />
-      {/* <SelectWorkspaceBox
+      <SelectWorkspaceBox
         workspace={combinedWorkspaces}
         currentWorkspaceId={workspaceId}
-      /> */}
+      />
       <Link href={"/"}>
         <h1 className="text-xl font-semibold tracking-wide bg-gradient-to-r bg-clip-text text-transparent from-indigo-500  to-indigo-300 hover:cursor-pointer">
           Productivus

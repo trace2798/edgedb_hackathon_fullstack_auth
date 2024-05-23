@@ -4,6 +4,7 @@ import e, { createClient } from "@/dbschema/edgeql-js";
 import { auth } from "@/edgedb";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@/types";
+import { revalidatePath } from "next/cache";
 import { EnumLike } from "zod";
 
 const client = createClient();
@@ -104,6 +105,7 @@ export const addMemberByGithubUsername = async (
         })),
       })
       .run(client);
+    revalidatePath(`/workspace`);
     return "Done";
   } catch {
     return "Error adding member to workspace";
@@ -113,16 +115,12 @@ export const addMemberByGithubUsername = async (
 export const transferOwnership = async (
   githubUsername: string,
   workspaceId: string
-  // membershipId: string
 ) => {
   try {
-    // console.log(githubUsername, workspaceId);
-    // const session = await auth();
+  
     const session = auth.getSession();
     const signedIn = await session.isSignedIn();
-    // console.log(session);
     const currentUserFe = (await useCurrentUser()) as User;
-    // console.log(currentUserFe);
     const currentUser = await e
       .select(e.User, (user) => ({
         id: true,
@@ -141,11 +139,9 @@ export const transferOwnership = async (
         filter_single: e.op(user.githubUsername, "=", e.str(githubUsername)),
       }))
       .run(client);
-    // console.log(user);
     if (!user) {
       return "User not found in database";
     }
-
     const workspace = await e
       .select(e.Workspace, (workspace) => ({
         id: true,
@@ -153,8 +149,6 @@ export const transferOwnership = async (
         filter_single: e.op(workspace.id, "=", e.uuid(workspaceId)),
       }))
       .run(client);
-    // console.log(workspace);
-
     if (!workspace) {
       return "Workspace not found in database";
     }
