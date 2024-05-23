@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-// import { auth } from "@/edgedb";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { ModalProvider } from "@/components/providers/modal-provider";
@@ -49,18 +48,13 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // const session = auth.getSession();
-  // // console.log(session)
-  // const [user] = await session.client.query(
-  //   `SELECT User {*} FILTER .id = global current_user.id`
-  // );
-  // // console.log(user);
+  
   return (
     <html lang="en">
       <body className={inter.className}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >

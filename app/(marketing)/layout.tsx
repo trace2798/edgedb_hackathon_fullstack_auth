@@ -1,3 +1,4 @@
+import Footer from "@/components/footer";
 import NavBar from "@/components/navbar";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,7 @@ const MarketingLayout = ({ children }: Props) => {
         >
         <NavBar />
         {children}
+        <Footer/>
       </div>
     </>
   );

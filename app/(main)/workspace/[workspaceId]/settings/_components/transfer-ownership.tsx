@@ -29,9 +29,8 @@ const TransferOwnership = ({
         <CardHeader>
           <CardTitle>Transfer Workspace ownership</CardTitle>
           <CardDescription>
-            The owner of the workspace will change. Only the current owner has
-            the privilege to transfer ownership. This action is irreversible and
-            can not be undone.
+            The owner of the workspace will change. Only the current owner/owners has
+            the privilege to transfer ownership.
           </CardDescription>
         </CardHeader>
         <CardFooter className="bg-primary-foreground rounded-xl pt-2">

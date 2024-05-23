@@ -22,7 +22,7 @@ export const Heading = ({
           {subdescription}
         </p>
 
-        <Separator className="my-5" />
+        {/* <Separator className="my-5" /> */}
       </div>
     </>
   );

@@ -402,11 +402,11 @@ function walkExprTree(
   if (seenExpr) {
     seenExpr.refCount += 1;
     // if (seenExpr.refCount > 1) {
-    // // console.log(`###########\nSEEN ${seenExpr.refCount} times`);
-    // // console.log(expr.__kind__);
-    // // console.log(expr.__element__.__name__);
+    // console.log(`###########\nSEEN ${seenExpr.refCount} times`);
+    // console.log(expr.__kind__);
+    // console.log(expr.__element__.__name__);
     // const arg = (expr as any)?.__parent__ || (expr as any)?.__name__;
-    // if (arg) // console.log(arg);
+    // if (arg) console.log(arg);
     // }
     seenExpr.parentScopes.add(parentScope);
     return [expr, ...seenExpr.childExprs];
