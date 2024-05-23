@@ -35,7 +35,7 @@ export async function createBoard(
         filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
-    // console.log(verifyMember);
+    console.log(verifyMember);
     if (!verifyMember) {
       return "Member not found";
     }
@@ -61,9 +61,10 @@ export async function createBoard(
       })
       .run(client);
     revalidatePath(`/workspace/${verifyMember?.workspaceId}/board`);
-    // console.log(newBoard);
+    console.log(newBoard);
     return "Done";
   } catch (error) {
+    console.log(error)
     return "Error creating Board";
   }
 }
