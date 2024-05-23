@@ -101,7 +101,7 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
       }
     } catch (error) {
       console.error(error);
-      toast.error("Error updating status.");
+      toast.error("Error updating assignee.");
     }
   };
   const isLoading = form.formState.isSubmitting;
@@ -153,8 +153,8 @@ const ChangeAssignee: FC<ChangeAssigneeProps> = ({
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0">
                       <Command>
-                        <CommandInput placeholder="Status options..." />
-                        <CommandEmpty>No status option found.</CommandEmpty>
+                        <CommandInput placeholder="Search Members..." />
+                        <CommandEmpty>No member found.</CommandEmpty>
                         <CommandGroup>
                           {members?.map((member) => (
                             <CommandItem
