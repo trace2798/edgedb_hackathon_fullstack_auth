@@ -1,20 +1,11 @@
 "use client";
 
-import { ColumnDef } from "@tanstack/react-table";
-import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { ColumnDef } from "@tanstack/react-table";
+import { format, parseISO } from "date-fns";
 import { LocalDateTime } from "edgedb";
+import { ArrowUpDown } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Member = {
   id: string;
   memberRole: "member" | "owner" | "admin";
@@ -28,10 +19,6 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "memberRole",
     header: "Role",
   },
-  // {
-  //   accessorKey: "email",
-  //   header: "Email",
-  // },
   {
     accessorKey: "githubUsername",
     header: "Github Username",
@@ -49,32 +36,12 @@ export const columns: ColumnDef<Member>[] = [
         </Button>
       );
     },
-  },
-  {
-    id: "actions",
     cell: ({ row }) => {
-      const member = row.original;
-
       return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal className="h-4 w-4" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(member.id)}
-              className="hover:text-indigo-400 hover:cursor-pointer"
-            >
-              Copy Member ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {/* <DropdownMenuItem>View customer</DropdownMenuItem>
-            <DropdownMenuItem>View payment details</DropdownMenuItem> */}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <>
+          {" "}
+          {format(parseISO(row?.original.created.toString()), "MMM dd, yyyy")}
+        </>
       );
     },
   },
