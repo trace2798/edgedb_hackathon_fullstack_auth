@@ -21,8 +21,15 @@ import CommandMenuPriority from "../_components/command-menu-priority";
 import DeleteTaskButton from "../_components/delete-issue-button";
 import ChangeDueDate from "../_components/change-due-date";
 import { buttonVariants } from "@/components/ui/button";
+import { Metadata } from "next";
 
 const client = createClient();
+
+export const metadata: Metadata = {
+  title: "Productivus: Active Tasks",
+  description: "Efficiently manage your tasks",
+};
+
 
 const ActivePage = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e

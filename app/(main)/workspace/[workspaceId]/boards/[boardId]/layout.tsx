@@ -1,8 +1,14 @@
 import { notFound, redirect } from "next/navigation";
 import e, { createClient } from "@/dbschema/edgeql-js";
 import { BoardNavbar } from "./_components/board-navbar";
+import { Metadata } from "next";
 
 const client = createClient();
+
+// export const metadata: Metadata = {
+//   title: "Productivus: Board",
+//   description: "Efficiently manage your tasks",
+// };
 
 export async function generateMetadata({
   params,

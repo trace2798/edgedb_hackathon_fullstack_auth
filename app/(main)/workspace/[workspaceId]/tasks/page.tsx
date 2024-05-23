@@ -4,8 +4,14 @@ import AddIssueButton from "./_components/add-issue-button";
 import { IssueList } from "./_components/issue-list";
 import { Suspense } from "react";
 import { buttonVariants } from "@/components/ui/button";
+import { Metadata } from "next";
 
 const client = createClient();
+
+export const metadata: Metadata = {
+  title: "Productivus: Tasks",
+  description: "Efficiently manage your tasks",
+};
 
 const Page = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e

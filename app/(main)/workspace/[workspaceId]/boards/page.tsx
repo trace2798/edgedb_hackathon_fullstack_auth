@@ -3,8 +3,14 @@ import e, { createClient } from "@/dbschema/edgeql-js";
 import { Suspense } from "react";
 import { Member } from "../members/_components/members/column";
 import { BoardList } from "./_components/board-list";
+import { Metadata } from "next";
 
 const client = createClient();
+
+export const metadata: Metadata = {
+  title: "Productivus: Boards",
+  description: "Efficiently manage your tasks",
+};
 
 const page = async ({ params }: { params: { workspaceId: string } }) => {
   const members = await e

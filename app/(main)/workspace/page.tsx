@@ -14,16 +14,18 @@ import { Separator } from "@/components/ui/separator";
 import { auth } from "@/edgedb";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { User } from "@/types";
+import { Metadata } from "next";
 
 interface PageProps {}
 
 const client = createClient();
+
+export const metadata: Metadata = {
+  title: "Productivus: Workspace",
+  description: "Efficiently manage your tasks",
+};
 const Page: FC<PageProps> = async ({}) => {
-  // const session = await auth();
-  // const session =  auth.getSession();
-  // const signedIn = await session.isSignedIn();
-  // // console.log(signedIn)
-  // // console.log(session);
+ 
   const session = auth.getSession();
   const signedIn = await session.isSignedIn();
   // console.log(session);

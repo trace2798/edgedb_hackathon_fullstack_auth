@@ -8,6 +8,7 @@ type Props = {
   params: { workspaceId: string };
 };
 
+
 const WorkspaceLayout = async ({ children, params }: Props) => {
   // console.log(params);
   const status = await CheckStatus({ workspaceId: params.workspaceId });
