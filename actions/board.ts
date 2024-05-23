@@ -1,5 +1,6 @@
 "use server";
 import e, { createClient } from "@/dbschema/edgeql-js";
+import { revalidatePath } from "next/cache";
 
 const client = createClient();
 
@@ -7,7 +8,7 @@ export async function createBoard(
   name: string,
   description: string,
   backgroundImage: string,
-  creatorUserId: string,
+  creatorUserId: string
   // currentUsersMembershipId: string
 ) {
   try {
@@ -18,7 +19,7 @@ export async function createBoard(
     const user = await e
       .select(e.User, (user) => ({
         id: true,
-      githubUsername: true,
+        githubUsername: true,
         filter_single: e.op(user.id, "=", e.uuid(creatorUserId)),
       }))
       .run(client);
@@ -29,7 +30,7 @@ export async function createBoard(
     const verifyMember = await e
       .select(e.WorkspaceMember, (member) => ({
         id: true,
-      githubUsername: true,
+        githubUsername: true,
         workspaceId: true,
         filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
       }))
@@ -59,6 +60,7 @@ export async function createBoard(
         })),
       })
       .run(client);
+    revalidatePath(`/workspace/${verifyMember?.workspaceId}/board`);
     // console.log(newBoard);
     return "Done";
   } catch (error) {
@@ -86,6 +88,7 @@ export async function updateBoardName(boardId: string, name: string) {
     const board = await e
       .select(e.Board, (board) => ({
         id: true,
+        workspaceId: true,
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
@@ -100,7 +103,7 @@ export async function updateBoardName(boardId: string, name: string) {
       }))
       .run(client);
     // console.log(updateBoardTitle);
-
+    revalidatePath(`/workspace/${board?.workspaceId}/board`);
     return "Done";
   } catch (error) {
     return "Error creating Board";
@@ -109,12 +112,19 @@ export async function updateBoardName(boardId: string, name: string) {
 
 export async function deleteBoard(boardId: string) {
   try {
-
+    const board = await e
+      .select(e.Board, (board) => ({
+        id: true,
+        workspaceId: true,
+        filter_single: e.op(board.id, "=", e.uuid(boardId)),
+      }))
+      .run(client);
     await e
       .delete(e.Board, (board) => ({
         filter_single: e.op(board.id, "=", e.uuid(boardId)),
       }))
       .run(client);
+    revalidatePath(`/workspace/${board?.workspaceId}/board`);
     return "Done";
   } catch (error) {
     return "Error deleting Board";

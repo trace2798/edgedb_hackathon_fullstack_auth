@@ -334,10 +334,6 @@ export async function updateCardTitle(
   userId: string
 ) {
   try {
-    // console.log(id);
-    // console.log(title, "assigneeId");
-    // console.log(userId, "USER ID");
-
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -357,7 +353,6 @@ export async function updateCardTitle(
         filter_single: e.op(card.id, "=", e.uuid(id)),
       }))
       .run(client);
-    // console.log(card);
 
     const updateCardTitle = await e
       .update(e.Card, () => ({
@@ -367,8 +362,6 @@ export async function updateCardTitle(
         },
       }))
       .run(client);
-    // console.log(updateCardTitle);
-
     return "Card Title Updated";
   } catch (error) {
     console.error(error);
