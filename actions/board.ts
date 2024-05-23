@@ -8,14 +8,16 @@ export async function createBoard(
   name: string,
   description: string,
   backgroundImage: string,
-  creatorUserId: string
+  creatorUserId: string,
+  workspaceId: string
   // currentUsersMembershipId: string
 ) {
   try {
-    // console.log(name, "NAME");
-    // console.log(description, "DESCRIPTION");
-    // console.log(backgroundImage, "BACKGROUND IMAGE");
-    // console.log(creatorUserId, "CREATOR USER ID");
+    console.log(name, "NAME");
+    console.log(description, "DESCRIPTION");
+    console.log(backgroundImage, "BACKGROUND IMAGE");
+    console.log(creatorUserId, "CREATOR USER ID");
+    console.log(workspaceId, "WORKSPACE ID");
     const user = await e
       .select(e.User, (user) => ({
         id: true,
@@ -32,10 +34,15 @@ export async function createBoard(
         id: true,
         githubUsername: true,
         workspaceId: true,
-        filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
+        // filter_single: e.op(member.user.id, "=", e.uuid(creatorUserId)),
+        filter_single: e.op(
+          e.op(member.user.id, "=", e.uuid(creatorUserId)),
+          "and",
+          e.op(member.workspaceId, "=", e.uuid(workspaceId))
+        ),
       }))
       .run(client);
-    console.log(verifyMember);
+    // console.log(verifyMember);
     if (!verifyMember) {
       return "Member not found";
     }
@@ -51,11 +58,19 @@ export async function createBoard(
             e.uuid(verifyMember?.workspaceId as string)
           ),
         })),
+        // workspaceMember: e.select(e.WorkspaceMember, (member) => ({
+        //   filter_single: e.op(
+        //     member.id,
+        //     "=",
+        //     e.uuid(verifyMember?.id as string)
+        //   ),
+        // })),
         workspaceMember: e.select(e.WorkspaceMember, (member) => ({
+          // filter_single: e.op(member.user.id, "=", e.uuid(userId as string)),
           filter_single: e.op(
-            member.id,
-            "=",
-            e.uuid(verifyMember?.id as string)
+            e.op(member.user.id, "=", e.uuid(creatorUserId)),
+            "and",
+            e.op(member.workspaceId, "=", e.uuid(verifyMember?.workspaceId))
           ),
         })),
       })
@@ -64,7 +79,7 @@ export async function createBoard(
     console.log(newBoard);
     return "Done";
   } catch (error) {
-    console.log(error)
+    console.log(error);
     return "Error creating Board";
   }
 }

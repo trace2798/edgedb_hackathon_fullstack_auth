@@ -18,7 +18,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Button } from "../ui/button";
 import { Spinner } from "../spinner";
 import { Input } from "../ui/input";
@@ -32,6 +32,7 @@ const formSchema = z.object({
   description: z.string().min(0).max(250),
   backgroundImage: z.string().optional(),
   creatorUserId: z.string().min(2).max(50),
+  workspaceId: z.string().min(2).max(50),
   // currentUsersMembershipId: z.string().min(2).max(50),
 });
 
@@ -39,7 +40,11 @@ interface AddBoardModalProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
   const [user, setUser] = useState<User | null>(null);
-
+  const pathname = usePathname();
+  console.log(pathname);
+  let parts = pathname.split("/");
+  let workspaceId = parts[2]; // The index 2 corresponds to the workspaceId
+  console.log(workspaceId); // This will log 'e8321118-192a-11ef-9716-67f5107a10ce'
   useEffect(() => {
     const FetchUser = async () => {
       const currentUser = await useCurrentUser();
@@ -73,9 +78,11 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
     defaultValues: {
       name: "",
       description: "",
-      backgroundImage: "https://img.playbook.com/4CmZP_UkfhGGYyHpM6jbQxhJg358eUaJHNtL0Cc1KRo/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2RjNDY3ZGQ1/LTNkM2YtNDc2OS04/OTc2LWIzN2QxZTE4/MmYzNg",
+      backgroundImage:
+        "https://img.playbook.com/4CmZP_UkfhGGYyHpM6jbQxhJg358eUaJHNtL0Cc1KRo/Z3M6Ly9wbGF5Ym9v/ay1hc3NldHMtcHVi/bGljL2RjNDY3ZGQ1/LTNkM2YtNDc2OS04/OTc2LWIzN2QxZTE4/MmYzNg",
       // backgroundImage: "",
       creatorUserId: user?.id as string,
+      workspaceId: workspaceId as string,
       // currentUsersMembershipId: membershipIdOfCurrentUser as string,
     },
   });
@@ -92,7 +99,8 @@ export function AddBoardModal({ className, ...props }: AddBoardModalProps) {
         values.name,
         values.description,
         values.backgroundImage as string,
-        values.creatorUserId
+        values.creatorUserId,
+        values.workspaceId,
         // values.currentUsersMembershipId
       );
       // console.log(response);
