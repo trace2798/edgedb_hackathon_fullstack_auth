@@ -90,7 +90,7 @@ export const ListForm = ({
     <ListWrapper>
       <button
         onClick={enableEditing}
-        className="w-full rounded-md  bg-slate-600/50 hover:bg-indigo-600 transition p-3 flex items-center font-medium text-sm text-neutral-200"
+        className="w-full rounded-md  bg-slate-600/50 hover:bg-slate-900 transition p-3 flex items-center font-medium text-sm text-neutral-200"
       >
         <Plus className="h-4 w-4 mr-2" />
         Add a list
