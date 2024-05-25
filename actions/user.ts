@@ -21,17 +21,17 @@ export const getUserById = async (id: string) => {
   }
 };
 
-export const getAccountByUserId = async (userId: string) => {
-  try {
-    const account = await e
-      .select(e.Account, (account) => ({
-        id: true,
-        filter_single: e.op(account.userId, "=", e.uuid(userId)),
-      }))
-      .run(client);
-    // console.log(account);
-    return account;
-  } catch {
-    return null;
-  }
-};
+// export const getAccountByUserId = async (userId: string) => {
+//   try {
+//     const account = await e
+//       .select(e.Account, (account) => ({
+//         id: true,
+//         filter_single: e.op(account.userId, "=", e.uuid(userId)),
+//       }))
+//       .run(client);
+//     // console.log(account);
+//     return account;
+//   } catch {
+//     return null;
+//   }
+// };

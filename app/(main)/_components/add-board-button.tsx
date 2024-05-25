@@ -7,12 +7,12 @@ import { useBoards } from "@/hooks/use-boards";
 
 interface AddBoardButtonProps {
   // members: Member[];
-  // currentWorkspaceId: string;
+  currentWorkspaceId: string;
 }
 
 const AddBoardButton: FC<AddBoardButtonProps> = ({
   // members,
-  // currentWorkspaceId,
+  currentWorkspaceId,
 }) => {
   const board = useBoards();
   return (

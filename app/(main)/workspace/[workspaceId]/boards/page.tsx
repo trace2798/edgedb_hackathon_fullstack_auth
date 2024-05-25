@@ -43,7 +43,7 @@ const page = async ({ params }: { params: { workspaceId: string } }) => {
             <div>
               <AddBoardButton
                 // members={members as Member[]}
-                // currentWorkspaceId={params.workspaceId}
+                currentWorkspaceId={params.workspaceId}
               />
             </div>
           </div>
